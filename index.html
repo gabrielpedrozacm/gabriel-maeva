@@ -217,25 +217,38 @@ fieldset{border:0;padding:0;margin:0;display:flex;flex-direction:column;gap:10px
 .steps span{color:var(--muted);font-size:17px}
 .deadline{margin-top:26px;display:inline-flex;gap:10px;align-items:center;font-family:var(--caps);font-size:11.5px;letter-spacing:.2em;color:var(--burgundy);border:1px solid var(--burgundy);padding:10px 14px}
 @media (max-width:860px){.checkin-grid{grid-template-columns:minmax(0,1fr)}form{padding:22px}}
-/* boarding pass result */
-.bp{display:grid;grid-template-columns:minmax(0,1fr) 150px;background:var(--paper);border:1px solid var(--linen);margin-top:4px;overflow:hidden}
-.bp-main{padding:0;min-width:0}
-.bp-top{background:var(--burgundy);color:var(--gold);font-family:var(--caps);font-size:12px;letter-spacing:.26em;padding:12px 20px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.bp-top em{font-family:var(--display);font-style:italic;letter-spacing:0;font-size:15px;color:var(--on-dark-soft)}
-.bp-body{padding:18px 20px 20px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 18px}
-.bp-body .k{font-family:var(--caps);font-size:9.5px;letter-spacing:.2em;color:var(--rose)}
-.bp-body .v{font-size:19px;font-weight:500;overflow-wrap:anywhere}
-.bp-body .full{grid-column:1/-1}
-.bp-route{grid-column:1/-1;display:flex;align-items:center;gap:12px;font-family:var(--caps);font-size:30px;letter-spacing:.06em}
-.bp-route i{flex:1;border-top:1px dashed #BBA98D;height:0}
-.bp-stub{background:var(--olive-deep);color:var(--on-dark);border-left:2px dashed var(--linen);padding:18px 14px;display:flex;flex-direction:column;gap:8px;justify-content:space-between}
-.bp-stub .k{font-family:var(--caps);font-size:9px;letter-spacing:.2em;color:var(--gold)}
-.bp-stub .v{font-size:17px}
-.status{font-family:var(--caps);font-size:11px;letter-spacing:.2em;padding:6px 10px;border:1px solid var(--gold);color:var(--gold);align-self:flex-start}
-@media (max-width:560px){.bp{grid-template-columns:minmax(0,1fr)}.bp-stub{border-left:0;border-top:2px dashed var(--linen);flex-direction:row;flex-wrap:wrap}}
+/* boarding pass result — same design as the printed insert */
+.bp{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 196px;background:var(--paper);border-radius:14px;overflow:hidden;box-shadow:0 20px 40px -22px rgba(69,22,31,.45),0 0 0 1px var(--linen);margin-top:4px}
+.bp-main{display:flex;flex-direction:column;min-width:0}
+.bp-top{background:var(--burgundy);color:var(--gold);padding:12px 20px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.bp-top b{font-family:var(--caps);font-weight:500;font-size:12.5px;letter-spacing:.26em}
+.bp-top em{font-family:var(--display);font-size:14px;color:var(--on-dark-soft)}
+.bp-body{padding:16px 20px 18px;display:flex;flex-direction:column;gap:14px}
+.bp-route{display:flex;align-items:center;gap:14px}
+.bp-route .iata{font-family:var(--caps);font-size:40px;line-height:1;letter-spacing:.04em}
+.bp-route small{display:block;font-style:italic;font-size:14px;color:var(--muted)}
+.bp-route .line{flex:1;display:flex;align-items:center;gap:6px;min-width:40px}
+.bp-route .line i{flex:1;border-top:1px dashed #BBA98D}
+.bp-route .line svg{width:22px;height:15px;flex-shrink:0}
+.bp-route .end{text-align:right}
+.bp-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px 14px}
+.bp-grid .span2{grid-column:span 2}
+.bp-grid .k{font-family:var(--caps);font-size:9px;letter-spacing:.18em;color:var(--rose)}
+.bp-grid .v{font-size:18px;font-weight:500;line-height:1.2;overflow-wrap:anywhere}
+.bp-stub{background:var(--olive-deep);color:var(--on-dark);border-left:2px dashed #CDBFA8;padding:18px 18px 16px;display:flex;flex-direction:column;gap:9px;min-width:0}
+.bp-stub .flt{font-family:var(--caps);font-size:11px;letter-spacing:.24em;color:var(--gold)}
+.bp-stub .rt{font-family:var(--caps);font-size:24px;letter-spacing:.06em}
+.bp-stub .k{font-family:var(--caps);font-size:8.5px;letter-spacing:.18em;color:var(--gold)}
+.bp-stub .v{font-size:15px;overflow-wrap:anywhere}
+.bp-stub .bars{margin-top:auto;height:34px;background:repeating-linear-gradient(90deg,var(--on-dark) 0 2px,transparent 2px 4px,var(--on-dark) 4px 5px,transparent 5px 8px,var(--on-dark) 8px 11px,transparent 11px 13px)}
+.bp-stub .bv{font-family:var(--script);font-size:24px;color:var(--gold);line-height:1}
+.bp-stamp{position:absolute;right:214px;bottom:14px;transform:rotate(-12deg);border:3px double var(--burgundy);color:var(--burgundy);font-family:var(--caps);font-size:12px;letter-spacing:.2em;padding:6px 12px;background:rgba(251,247,239,.85);pointer-events:none}
+.bp-stamp.no{border-color:var(--olive);color:var(--olive)}
+@media (max-width:620px){.bp{grid-template-columns:minmax(0,1fr)}.bp-stub{border-left:0;border-top:2px dashed #CDBFA8;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:end}.bp-stub .bars,.bp-stub .bv{grid-column:1/-1}.bp-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.bp-stamp{right:16px;bottom:auto;top:110px}.bp-route .iata{font-size:32px}}
 .send{display:flex;flex-direction:column;gap:12px;margin-top:18px}
 .send .btns{display:flex;gap:10px;flex-wrap:wrap}
 .send p{font-size:16px;color:var(--muted)}
+.sent-ok{font-family:var(--caps);font-size:11.5px;letter-spacing:.18em;color:var(--olive)}
 .hint{font-size:16px;color:var(--muted)}
 
 /* INFO */
@@ -570,32 +583,45 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
       </form>
 
       <div id="result" hidden>
-        <div class="bp" aria-live="polite">
+        <div class="bp" id="bp" aria-live="polite">
           <div class="bp-main">
-            <div class="bp-top"><span><span lang="pt">CARTÃO DE EMBARQUE</span><span lang="fr">CARTE D’EMBARQUEMENT</span></span><em>Linhas Aéreas do Amor</em></div>
+            <div class="bp-top"><b><span lang="pt">CARTÃO DE EMBARQUE</span><span lang="fr">CARTE D’EMBARQUEMENT</span></b><em>Boarding pass · Linhas Aéreas do Amor</em></div>
             <div class="bp-body">
-              <div class="bp-route">LIS <i></i> ∞</div>
-              <div class="full"><div class="k"><span lang="pt">PASSAGEIRO(S)</span><span lang="fr">PASSAGER(S)</span></div><div class="v" id="r-name"></div></div>
-              <div><div class="k"><span lang="pt">VOO</span><span lang="fr">VOL</span></div><div class="v">GM 1709</div></div>
-              <div><div class="k">DATA · DATE</div><div class="v">17 SET 2027</div></div>
-              <div><div class="k"><span lang="pt">PORTA</span><span lang="fr">PORTE</span></div><div class="v"><span lang="pt">Altar</span><span lang="fr">L’autel</span></div></div>
-              <div><div class="k"><span lang="pt">LUGARES</span><span lang="fr">PLACES</span></div><div class="v" id="r-n"></div></div>
+              <div class="bp-route">
+                <div><div class="iata">LIS</div><small>Lisboa</small></div>
+                <div class="line" aria-hidden="true"><i></i><svg viewBox="0 0 24 16"><path fill="#5A1F2C" d="M23 7.2 L14 6 L9 0.5 H7 L9.5 6 L4 6.4 L2 3.5 H0.5 L1.6 8 L0.5 12.5 H2 L4 9.6 L9.5 10 L7 15.5 H9 L14 10 L23 8.8 Z"/></svg><i></i></div>
+                <div class="end"><div class="iata">∞</div><small><span lang="pt">Para sempre · Forever</span><span lang="fr">Pour toujours · Forever</span></small></div>
+              </div>
+              <div class="bp-grid">
+                <div class="span2"><div class="k"><span lang="pt">PASSAGEIRO(S) · PASSENGER</span><span lang="fr">PASSAGER(S) · PASSENGER</span></div><div class="v" id="r-name"></div></div>
+                <div><div class="k"><span lang="pt">VOO · FLIGHT</span><span lang="fr">VOL · FLIGHT</span></div><div class="v">GM 1709</div></div>
+                <div><div class="k">DATA · DATE</div><div class="v"><span lang="pt">17 SET 2027</span><span lang="fr">17 SEPT 2027</span></div></div>
+                <div><div class="k"><span lang="pt">EMBARQUE · BOARDING</span><span lang="fr">EMBARQUEMENT</span></div><div class="v">15:00</div></div>
+                <div><div class="k"><span lang="pt">PORTA · GATE</span><span lang="fr">PORTE · GATE</span></div><div class="v"><span lang="pt">Altar</span><span lang="fr">L’autel</span></div></div>
+                <div><div class="k"><span lang="pt">LUGARES · SEATS</span><span lang="fr">PLACES · SEATS</span></div><div class="v" id="r-n"></div></div>
+                <div><div class="k"><span lang="pt">CLASSE · CLASS</span><span lang="fr">CLASSE · CLASS</span></div><div class="v"><span lang="pt">Primeira</span><span lang="fr">Première</span></div></div>
+              </div>
             </div>
           </div>
           <div class="bp-stub">
-            <div><div class="k">STATUS</div><div class="status" id="r-status"></div></div>
+            <div class="flt">GM 1709</div>
+            <div class="rt">LIS → ∞</div>
+            <div><div class="k"><span lang="pt">PASSAGEIRO(S)</span><span lang="fr">PASSAGER(S)</span></div><div class="v" id="r-name2"></div></div>
             <div><div class="k"><span lang="pt">LUGAR</span><span lang="fr">SIÈGE</span></div><div class="v"><span lang="pt">Ao nosso lado</span><span lang="fr">À nos côtés</span></div></div>
-            <div><div class="k"><span lang="pt">CLASSE</span><span lang="fr">CLASSE</span></div><div class="v"><span lang="pt">Primeira</span><span lang="fr">Première</span></div></div>
+            <div class="bars" aria-hidden="true"></div>
+            <div class="bv"><span lang="pt">Boa viagem!</span><span lang="fr">Bon voyage !</span></div>
           </div>
+          <div class="bp-stamp" id="r-status"></div>
         </div>
         <div class="send">
-          <p><span lang="pt">Último passo: enviem o cartão aos noivos. O botão abre o WhatsApp com a mensagem já escrita.</span><span lang="fr">Dernière étape : envoyez la carte aux mariés. Le bouton ouvre WhatsApp avec le message déjà rédigé.</span></p>
+          <p class="sent-ok" id="sent-ok" hidden></p>
           <div class="btns">
+            <button class="btn dark" type="button" id="save-bp"><span lang="pt">Guardar cartão</span><span lang="fr">Enregistrer la carte</span></button>
             <a class="btn olive" id="wa" href="#" target="_blank" rel="noopener"><span lang="pt">Enviar por WhatsApp</span><span lang="fr">Envoyer par WhatsApp</span></a>
-            <button class="btn line" type="button" id="copy-msg"><span lang="pt">Copiar mensagem</span><span lang="fr">Copier le message</span></button>
             <button class="btn line" type="button" id="edit"><span lang="pt">Editar</span><span lang="fr">Modifier</span></button>
           </div>
           <p class="hint" id="copy-note" aria-live="polite"></p>
+          <button class="btn line" type="button" id="copy-msg" hidden><span lang="pt">Copiar mensagem</span><span lang="fr">Copier le message</span></button>
           <textarea id="msg-preview" readonly aria-label="Mensagem" hidden></textarea>
         </div>
       </div>
@@ -708,57 +734,152 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
   }
   tick(); setInterval(tick,30000);
 
-  // RSVP → boarding pass → WhatsApp
+  // RSVP → cartão de embarque → registo das respostas (Google Sheets) + WhatsApp
+  var RSVP_ENDPOINT=''; // URL da aplicação web do Google Apps Script (ver README do repositório)
   var form=document.getElementById('rsvp'), result=document.getElementById('result');
   var yesFields=document.getElementById('yes-fields'), songField=document.getElementById('song-field');
   function att(){return form.querySelector('input[name=att]:checked').value}
   function syncAtt(){var y=att()==='yes'; yesFields.hidden=!y; songField.hidden=!y;}
   form.querySelectorAll('input[name=att]').forEach(function(r){r.addEventListener('change',syncAtt)});
   var WA='351939422969';
-  var msg='';
+  var msg='', data={};
+  function isFr(){return root.getAttribute('data-lang')==='fr'}
+  function collect(){
+    data={
+      nome:document.getElementById('f-name').value.trim(),
+      presenca:att()==='yes'?'Sim':'Não',
+      lugares:att()==='yes'?Math.max(1,parseInt(document.getElementById('f-n').value,10)||1):0,
+      restricoes:att()==='yes'?document.getElementById('f-diet').value.trim():'',
+      musica:att()==='yes'?document.getElementById('f-song').value.trim():'',
+      mensagem:document.getElementById('f-msg').value.trim(),
+      idioma:isFr()?'FR':'PT'
+    };
+    return data;
+  }
   function buildMessage(){
-    var fr=root.getAttribute('data-lang')==='fr';
-    var name=document.getElementById('f-name').value.trim();
-    var yes=att()==='yes';
-    var n=Math.max(1,parseInt(document.getElementById('f-n').value,10)||1);
-    var diet=document.getElementById('f-diet').value.trim();
-    var song=document.getElementById('f-song').value.trim();
-    var note=document.getElementById('f-msg').value.trim();
-    var L=[];
+    var fr=isFr(), d=collect(), yes=d.presenca==='Sim', L=[];
     L.push(fr?'✈ Enregistrement · Vol GM 1709 · 17/09/2027':'✈ Check-in · Voo GM 1709 · 17/09/2027');
-    L.push((fr?'Passager(s) : ':'Passageiro(s): ')+name);
+    L.push((fr?'Passager(s) : ':'Passageiro(s): ')+d.nome);
     if(yes){
       L.push(fr?'Présence : oui, avec joie !':'Presença: sim, com todo o gosto!');
-      L.push((fr?'Places : ':'Lugares: ')+n);
-      if(diet) L.push((fr?'Régime / allergies : ':'Restrições: ')+diet);
-      if(song) L.push((fr?'Demande musicale : ':'Pedido musical: ')+song);
+      L.push((fr?'Places : ':'Lugares: ')+d.lugares);
+      if(d.restricoes) L.push((fr?'Régime / allergies : ':'Restrições: ')+d.restricoes);
+      if(d.musica) L.push((fr?'Demande musicale : ':'Pedido musical: ')+d.musica);
     } else {
       L.push(fr?'Présence : malheureusement, je ne pourrai pas venir.':'Presença: infelizmente não poderei ir.');
     }
-    if(note) L.push((fr?'Message : ':'Mensagem: ')+note);
+    if(d.mensagem) L.push((fr?'Message : ':'Mensagem: ')+d.mensagem);
     msg=L.join('\n');
-    document.getElementById('r-name').textContent=name;
-    document.getElementById('r-n').textContent=yes?n:'—';
-    document.getElementById('r-status').textContent=yes?(fr?'CONFIRMÉ':'CONFIRMADO'):(fr?'ABSENT':'AUSENTE');
+    document.getElementById('r-name').textContent=d.nome;
+    document.getElementById('r-name2').textContent=d.nome;
+    document.getElementById('r-n').textContent=yes?d.lugares:'—';
+    var st=document.getElementById('r-status');
+    st.textContent=yes?(fr?'CONFIRMÉ':'CONFIRMADO'):(fr?'AVEC NOSTALGIE':'COM SAUDADE');
+    st.className='bp-stamp'+(yes?'':' no');
     document.getElementById('wa').href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
     document.getElementById('msg-preview').value=msg;
   }
+  function sendRsvp(){
+    var ok=document.getElementById('sent-ok'), fr=isFr();
+    if(!RSVP_ENDPOINT){ ok.hidden=true; return; }
+    var body=new URLSearchParams(); Object.keys(data).forEach(function(k){body.append(k,data[k])});
+    fetch(RSVP_ENDPOINT,{method:'POST',mode:'no-cors',body:body}).then(function(){
+      ok.hidden=false; ok.textContent=fr?'✓ Enregistrement reçu par la tour de contrôle':'✓ Check-in recebido pela torre de controle';
+    }).catch(function(){
+      ok.hidden=false; ok.textContent=fr?'Connexion impossible. Envoyez votre réponse par WhatsApp.':'Não foi possível registar. Envie a resposta por WhatsApp.';
+    });
+  }
   form.addEventListener('submit',function(e){
     e.preventDefault();
-    var fr=root.getAttribute('data-lang')==='fr';
     var err=document.getElementById('f-err');
     if(!document.getElementById('f-name').value.trim()){
-      err.textContent=fr?'Indiquez au moins un nom pour émettre la carte.':'Indique pelo menos um nome para emitir o cartão.';
+      err.textContent=isFr()?'Indiquez au moins un nom pour émettre la carte.':'Indique pelo menos um nome para emitir o cartão.';
       document.getElementById('f-name').focus(); return;
     }
     err.textContent='';
     buildMessage();
     form.hidden=true; result.hidden=false;
     document.getElementById('copy-note').textContent='';
+    sendRsvp();
     result.scrollIntoView({block:'nearest'});
-    document.getElementById('wa').focus({preventScroll:true});
+    document.getElementById('save-bp').focus({preventScroll:true});
   });
   document.getElementById('edit').addEventListener('click',function(){result.hidden=true;form.hidden=false;document.getElementById('f-name').focus()});
+
+  // desenhar o cartão numa imagem para guardar/partilhar
+  function drawPass(){
+    var fr=isFr(), d=data, yes=d.presenca==='Sim', S=2, W=760, H=300;
+    var c=document.createElement('canvas'); c.width=W*S; c.height=H*S;
+    var x=c.getContext('2d'); x.scale(S,S);
+    var C={paper:'#FBF7EF',bur:'#5A1F2C',gold:'#C8A465',ink:'#2B2320',muted:'#6A5D55',rose:'#A8505A',olive:'#3E4729',on:'#F7EDE6',soft:'#E2CFC6',line:'#BBA98D'};
+    var CAPS="'Cinzel', Georgia, serif", DISP="'Cormorant Garamond', Georgia, serif", SCRIPT="'Pinyon Script', cursive";
+    function sp(px){ try{ x.letterSpacing=px+'px'; }catch(e){} }
+    function txt(t,X,Y,font,color,align,ls){ x.font=font; x.fillStyle=color; x.textAlign=align||'left'; sp(ls||0); x.fillText(t,X,Y); sp(0); }
+    function fit(t,X,Y,maxW,size,weight,family,color){ var s=size; x.font=weight+' '+s+'px '+family; while(x.measureText(t).width>maxW&&s>11){s--;x.font=weight+' '+s+'px '+family;} x.fillStyle=color; x.textAlign='left'; x.fillText(t,X,Y); }
+    function wrap(t,X,Y,maxW,lh,font,color,maxLines){ x.font=font; x.fillStyle=color; x.textAlign='left'; var w=t.split(' '),line='',n=0; for(var i=0;i<w.length;i++){ var test=line?line+' '+w[i]:w[i]; if(x.measureText(test).width>maxW&&line){ if(n===maxLines-1){ while(x.measureText(line+'…').width>maxW&&line.length) line=line.slice(0,-1); x.fillText(line+'…',X,Y+n*lh); return;} x.fillText(line,X,Y+n*lh); n++; line=w[i]; } else line=test; } x.fillText(line,X,Y+n*lh); }
+    function rr(X,Y,w,h,r){ x.beginPath(); x.moveTo(X+r,Y); x.arcTo(X+w,Y,X+w,Y+h,r); x.arcTo(X+w,Y+h,X,Y+h,r); x.arcTo(X,Y+h,X,Y,r); x.arcTo(X,Y,X+w,Y,r); x.closePath(); }
+    rr(0,0,W,H,14); x.save(); x.clip();
+    x.fillStyle=C.paper; x.fillRect(0,0,W,H);
+    x.fillStyle=C.bur; x.fillRect(0,0,564,50);
+    txt(fr?'CARTE D’EMBARQUEMENT':'CARTÃO DE EMBARQUE',22,31,'500 13px '+CAPS,C.gold,'left',3.2);
+    txt('Boarding pass · Linhas Aéreas do Amor',544,31,'italic 15px '+DISP,C.soft,'right');
+    txt('LIS',22,106,'400 42px '+CAPS,C.ink);
+    txt('Lisboa',22,126,'italic 15px '+DISP,C.muted);
+    txt('∞',544,106,'400 42px '+CAPS,C.ink,'right');
+    txt(fr?'Pour toujours · Forever':'Para sempre · Forever',544,126,'italic 15px '+DISP,C.muted,'right');
+    x.strokeStyle=C.line; x.lineWidth=1; x.setLineDash([4,4]); x.beginPath(); x.moveTo(120,90); x.lineTo(306,90); x.moveTo(342,90); x.lineTo(476,90); x.stroke(); x.setLineDash([]);
+    x.save(); x.translate(312,82); x.fillStyle=C.bur; x.fill(new Path2D('M23 7.2 L14 6 L9 0.5 H7 L9.5 6 L4 6.4 L2 3.5 H0.5 L1.6 8 L0.5 12.5 H2 L4 9.6 L9.5 10 L7 15.5 H9 L14 10 L23 8.8 Z')); x.restore();
+    var cols=[22,152,283,413];
+    function field(k,v,X,Y,maxW){ txt(k,X,Y,'500 9px '+CAPS,C.rose,'left',1.6); fit(String(v),X,Y+22,maxW||120,19,'500',DISP,C.ink); }
+    field(fr?'PASSAGER(S) · PASSENGER':'PASSAGEIRO(S) · PASSENGER',d.nome,cols[0],156,250);
+    field(fr?'VOL · FLIGHT':'VOO · FLIGHT','GM 1709',cols[2],156);
+    field('DATA · DATE',fr?'17 SEPT 2027':'17 SET 2027',cols[3],156);
+    field(fr?'EMBARQUEMENT':'EMBARQUE','15:00',cols[0],214);
+    field(fr?'PORTE · GATE':'PORTA · GATE',fr?'L’autel':'Altar',cols[1],214);
+    field(fr?'PLACES · SEATS':'LUGARES · SEATS',yes?d.lugares:'—',cols[2],214);
+    field(fr?'CLASSE · CLASS':'CLASSE · CLASS',fr?'Première':'Primeira',cols[3],214);
+    txt(fr?'Gabriel & Maeva · Couvent de Mafra & Casa de Reguengos':'Gabriel & Maeva · Convento de Mafra & Casa de Reguengos',22,280,'italic 14px '+DISP,C.muted);
+    // stamp
+    x.save(); x.translate(470,262); x.rotate(-0.21); var stampTxt=yes?(fr?'CONFIRMÉ':'CONFIRMADO'):(fr?'AVEC NOSTALGIE':'COM SAUDADE');
+    x.font='500 12px '+CAPS; sp(2.4); var sw=x.measureText(stampTxt).width+24; sp(0); var col=yes?C.bur:'#5E6B3E';
+    x.fillStyle='rgba(251,247,239,.9)'; x.fillRect(-sw/2,-15,sw,30); x.strokeStyle=col; x.lineWidth=1.4; x.strokeRect(-sw/2,-15,sw,30); x.strokeRect(-sw/2+3,-12,sw-6,24);
+    txt(stampTxt,0,5,'500 12px '+CAPS,col,'center',2.4); x.restore();
+    // stub
+    x.fillStyle=C.olive; x.fillRect(566,0,194,H);
+    x.strokeStyle='#CDBFA8'; x.lineWidth=2; x.setLineDash([6,5]); x.beginPath(); x.moveTo(565,0); x.lineTo(565,H); x.stroke(); x.setLineDash([]);
+    txt('GM 1709',584,34,'500 11px '+CAPS,C.gold,'left',2.6);
+    txt('LIS → ∞',584,66,'400 24px '+CAPS,C.on,'left',1);
+    txt(fr?'PASSAGER(S)':'PASSAGEIRO(S)',584,96,'500 8.5px '+CAPS,C.gold,'left',1.5);
+    wrap(d.nome,584,116,160,18,'500 16px '+DISP,C.on,2);
+    txt(fr?'SIÈGE':'LUGAR',584,160,'500 8.5px '+CAPS,C.gold,'left',1.5);
+    txt(fr?'À nos côtés':'Ao nosso lado',584,179,'500 16px '+DISP,C.on);
+    x.fillStyle=C.on; var bx=584, pat=[2,1,3,1,2,1,1,3,2,1,3,1,1,2,3,1,2,1,1,3,2,2,1,3,1,2,1,3,2,1,1,2,3,1,2,1,3,1,2,2];
+    for(var i=0;bx<738;i++){ var p=pat[i%pat.length]; if(i%2===0) x.fillRect(bx,198,p,34); bx+=p+1; }
+    txt(fr?'Bon voyage !':'Boa viagem!',584,272,'400 26px '+SCRIPT,C.gold);
+    x.restore();
+    return c;
+  }
+  document.getElementById('save-bp').addEventListener('click',function(){
+    var fr=isFr(), note=document.getElementById('copy-note');
+    var fonts=["500 13px 'Cinzel'","400 42px 'Cinzel'","italic 15px 'Cormorant Garamond'","500 19px 'Cormorant Garamond'","400 26px 'Pinyon Script'"];
+    var ready=(document.fonts&&document.fonts.load)?Promise.all(fonts.map(function(f){return document.fonts.load(f,'Áa∞→')})):Promise.resolve();
+    ready.catch(function(){}).then(function(){
+      var c=drawPass(); var fname='cartao-embarque-GM1709-'+(data.nome||'passageiro').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')+'.png';
+      c.toBlob(function(blob){
+        if(!blob){ note.textContent=fr?'Impossible de créer l’image. Faites une capture d’écran.':'Não foi possível criar a imagem. Faça uma captura de ecrã.'; return; }
+        var file=null; try{ file=new File([blob],fname,{type:'image/png'}); }catch(e){}
+        if(file&&navigator.canShare&&navigator.canShare({files:[file]})){
+          navigator.share({files:[file],title:'GM 1709 · Gabriel & Maeva'}).catch(function(){});
+          return;
+        }
+        try{
+          var url=URL.createObjectURL(blob), a=document.createElement('a'); a.href=url; a.download=fname; document.body.appendChild(a); a.click(); a.remove();
+          setTimeout(function(){URL.revokeObjectURL(url)},4000);
+          note.textContent=fr?'La carte est téléchargée. Si rien ne se passe, faites une capture d’écran.':'O cartão está a ser transferido. Se nada acontecer, faça uma captura de ecrã.';
+        }catch(e){ note.textContent=fr?'Faites une capture d’écran de votre carte.':'Faça uma captura de ecrã do seu cartão.'; }
+      },'image/png');
+    });
+  });
 
   function copyText(text, onOk, onFail){
     try{
