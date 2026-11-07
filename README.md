@@ -12,6 +12,6 @@ O site inteiro está em `index.html` e é publicado com GitHub Pages.
    - Executar como: **Eu**
    - Quem tem acesso: **Qualquer pessoa**
 4. Clique em **Implementar**, autorize o acesso e copie o **URL da aplicação Web** (termina em `/exec`).
-5. Em `index.html`, cole esse URL em `var RSVP_ENDPOINT='';`.
+5. Em `index.html`, cole esse URL em `var RSVP_ENDPOINT` (já está configurado).
 
 Cada check-in aparece numa linha da aba **Check-in**. Se a mesma pessoa voltar a fazer o check-in, a linha dela é atualizada.
