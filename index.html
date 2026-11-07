@@ -783,10 +783,13 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
     var ok=document.getElementById('sent-ok'), fr=isFr();
     if(!RSVP_ENDPOINT){ ok.hidden=true; return; }
     var body=new URLSearchParams(); Object.keys(data).forEach(function(k){body.append(k,data[k])});
-    fetch(RSVP_ENDPOINT,{method:'POST',mode:'no-cors',body:body}).then(function(){
-      ok.hidden=false; ok.textContent=fr?'✓ Enregistrement reçu par la tour de contrôle':'✓ Check-in recebido pela torre de controle';
+    var good=fr?'✓ Enregistrement reçu par la tour de contrôle':'✓ Check-in recebido pela torre de controle';
+    var bad=fr?'Votre enregistrement n’a pas pu être confirmé. Envoyez aussi votre réponse par WhatsApp.':'Não conseguimos confirmar o registo. Envie também a resposta por WhatsApp.';
+    ok.hidden=false; ok.textContent=fr?'Envoi à la tour de contrôle…':'A enviar para a torre de controle…';
+    fetch(RSVP_ENDPOINT,{method:'POST',body:body}).then(function(r){return r.json()}).then(function(j){
+      ok.textContent=(j&&j.ok)?good:bad;
     }).catch(function(){
-      ok.hidden=false; ok.textContent=fr?'Connexion impossible. Envoyez votre réponse par WhatsApp.':'Não foi possível registar. Envie a resposta por WhatsApp.';
+      fetch(RSVP_ENDPOINT,{method:'POST',mode:'no-cors',body:body}).then(function(){ok.textContent=fr?'Enregistrement envoyé. Pour être sûr, envoyez aussi votre réponse par WhatsApp.':'Check-in enviado. Para ter a certeza, envie também a resposta por WhatsApp.';}).catch(function(){ok.textContent=bad;});
     });
   }
   form.addEventListener('submit',function(e){

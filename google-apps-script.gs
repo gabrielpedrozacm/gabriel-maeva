@@ -4,6 +4,22 @@
  * Se a mesma pessoa (mesmo nome) fizer o check-in outra vez, a linha é atualizada.
  */
 const SHEET_NAME = 'Check-in';
+// Opcional: cole aqui o ID da folha (a parte do link entre /d/ e /edit).
+// Só é preciso se o script tiver sido criado fora da folha, em script.google.com.
+const SHEET_ID = '';
+
+function getBook_() {
+  if (SHEET_ID) return SpreadsheetApp.openById(SHEET_ID);
+  const active = SpreadsheetApp.getActiveSpreadsheet();
+  if (active) return active;
+  // Script sem folha associada: cria uma no seu Google Drive e lembra-se dela.
+  const props = PropertiesService.getScriptProperties();
+  const saved = props.getProperty('BOOK_ID');
+  if (saved) return SpreadsheetApp.openById(saved);
+  const book = SpreadsheetApp.create('Check-in GM 1709 · Gabriel & Maeva');
+  props.setProperty('BOOK_ID', book.getId());
+  return book;
+}
 const HEADERS = ['Data/hora', 'Nome(s)', 'Presença', 'Lugares', 'Restrições alimentares', 'Pedido musical', 'Mensagem', 'Idioma'];
 
 function clean_(v) {
@@ -15,7 +31,7 @@ function doPost(e) {
   const lock = LockService.getScriptLock();
   lock.waitLock(10000);
   try {
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const ss = getBook_();
     const sh = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
     if (sh.getLastRow() === 0) {
       sh.appendRow(HEADERS);
@@ -34,7 +50,10 @@ function doPost(e) {
     }
     if (target) sh.getRange(target, 1, 1, row.length).setValues([row]);
     else sh.appendRow(row);
-    return ContentService.createTextOutput(JSON.stringify({ ok: true })).setMimeType(ContentService.MimeType.JSON);
+    return ContentService.createTextOutput(JSON.stringify({ ok: true, sheet: ss.getUrl() })).setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    console.error(err);
+    return ContentService.createTextOutput(JSON.stringify({ ok: false, error: String(err) })).setMimeType(ContentService.MimeType.JSON);
   } finally {
     lock.releaseLock();
   }
@@ -42,4 +61,10 @@ function doPost(e) {
 
 function doGet() {
   return ContentService.createTextOutput('Torre de controle GM 1709: online ✈');
+}
+
+// Para testar dentro do Apps Script: escolha "testeCheckIn" no menu e clique em Executar.
+function testeCheckIn() {
+  const out = doPost({ parameter: { nome: 'Teste torre', presenca: 'Sim', lugares: '1', idioma: 'PT' } });
+  console.log(out.getContent());
 }
