@@ -154,9 +154,13 @@ html[data-lang="fr"] [lang="pt"]{display:none!important}
 .groups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:40px}
 .ghead{font-family:var(--caps);font-size:12.5px;letter-spacing:.22em;color:var(--burgundy);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--linen)}
 .swatches.s3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.swatches.s2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.swatches.s4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.groups{grid-template-columns:minmax(0,1fr) minmax(0,2fr)!important}
 .chip{overflow:hidden}
 .chip .no{position:absolute;inset:0;background:linear-gradient(to top right,transparent calc(50% - .75px),rgba(168,80,90,.85) calc(50% - .75px),rgba(168,80,90,.85) calc(50% + .75px),transparent calc(50% + .75px));pointer-events:none}
-@media (max-width:860px){.groups{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:860px){.groups{grid-template-columns:minmax(0,1fr)!important}}
+@media (max-width:560px){.swatches.s4{grid-template-columns:repeat(2,minmax(0,1fr))}.swatches.s2 .chip{aspect-ratio:4/3}}
 @media (max-width:720px){.swatches.s3{grid-template-columns:repeat(3,minmax(0,1fr))}.swatches.s3 .sw:last-child{grid-column:auto}.swatches.s3 .sw:last-child .chip{aspect-ratio:3/4}}
 .dress{margin-top:48px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;border-top:1px solid var(--linen);padding-top:36px}
 .dress h3{font-family:var(--caps);font-size:13px;letter-spacing:.22em;color:var(--olive);margin-bottom:8px}
@@ -495,16 +499,16 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
     <div class="sec-head">
       <div class="eyebrow">Dress code</div>
       <h2 class="h2"><span lang="pt">Cores reservadas</span><span lang="fr">Couleurs réservées</span></h2>
-      <p class="lead"><span lang="pt">Tal como as fardas da tripulação de bordo, algumas cores já têm dono neste voo. Pedimos aos passageiros que deixem estes tons para a noiva e para os padrinhos e madrinhas. Todas as outras cores são bem-vindas.</span><span lang="fr">Comme les uniformes de l’équipage, certaines couleurs ont déjà leur propriétaire sur ce vol. Nous demandons aux passagers de les laisser à la mariée et aux témoins. Toutes les autres couleurs sont les bienvenues.</span></p>
+      <p class="lead"><span lang="pt">Neste voo há dois comandantes, Gabriel e Maeva, e uma tripulação de padrinhos e madrinhas. Tal como as fardas de bordo, algumas cores já têm dono: pedimos aos passageiros que deixem estes tons para a cabine de comando e para a tripulação. Todas as outras cores são bem-vindas.</span><span lang="fr">Sur ce vol, il y a deux commandants de bord, Gabriel et Maeva, et un équipage de témoins. Comme les uniformes de bord, certaines couleurs ont déjà leur propriétaire : nous demandons aux passagers de les laisser au cockpit et à l’équipage. Toutes les autres couleurs sont les bienvenues.</span></p>
     </div>
     <div class="groups">
       <div class="group">
-        <h3 class="ghead"><span lang="pt">Comandante · reservado à noiva</span><span lang="fr">Commandante · réservé à la mariée</span></h3>
-        <div class="swatches s3"><div class="sw"><div class="chip" style="background:#FFFFFF;color:#45161F;outline:1px solid #E1D3B4;outline-offset:-1px"><span>WHITE</span><i class="no" aria-hidden="true"></i></div><p><b><span lang="pt">Branco</span><span lang="fr">Blanc</span></b><span lang="pt">e todos os brancos</span><span lang="fr">et tous les blancs</span></p></div><div class="sw"><div class="chip" style="background:#F3E8C8;color:#45161F;outline:1px solid #E1D3B4;outline-offset:-1px"><span>IVORY</span><i class="no" aria-hidden="true"></i></div><p><b><span lang="pt">Marfim</span><span lang="fr">Ivoire</span></b><span lang="pt">off-white</span><span lang="fr">off-white</span></p></div><div class="sw"><div class="chip" style="background:#EBDDBF;color:#45161F;outline:1px solid #E1D3B4;outline-offset:-1px"><span>CREAM</span><i class="no" aria-hidden="true"></i></div><p><b><span lang="pt">Creme</span><span lang="fr">Crème</span></b><span lang="pt">e bege-claro</span><span lang="fr">et beige clair</span></p></div></div>
+        <h3 class="ghead"><span lang="pt">Cabine de comando · reservado à noiva</span><span lang="fr">Cockpit · réservé à la mariée</span></h3>
+        <div class="swatches s2"><div class="sw"><div class="chip" style="background:#FFFFFF;color:#45161F;outline:1px solid #E1D3B4;outline-offset:-1px"><span>WHITE</span><i class="no" aria-hidden="true"></i></div><p><b><span lang="pt">Branco</span><span lang="fr">Blanc</span></b><span lang="pt">e todos os brancos</span><span lang="fr">et tous les blancs</span></p></div><div class="sw"><div class="chip" style="background:#F3E8C8;color:#45161F;outline:1px solid #E1D3B4;outline-offset:-1px"><span>IVORY</span><i class="no" aria-hidden="true"></i></div><p><b><span lang="pt">Marfim</span><span lang="fr">Ivoire</span></b><span lang="pt">off-white</span><span lang="fr">off-white</span></p></div></div>
       </div>
       <div class="group">
         <h3 class="ghead"><span lang="pt">Tripulação · padrinhos e madrinhas</span><span lang="fr">Équipage · témoins</span></h3>
-        <div class="swatches s3"><div class="sw"><div class="chip" style="background:#6B7448;color:#F7EDE6"><span>18-0316 TCX</span><i class="no" aria-hidden="true"></i></div><p><b><span lang="pt">Verde-oliva</span><span lang="fr">Vert olive</span></b><span lang="pt">olivine</span><span lang="fr">olivine</span></p></div><div class="sw"><div class="chip" style="background:#4B5530;color:#F7EDE6"><span>MOSS</span><i class="no" aria-hidden="true"></i></div><p><b><span lang="pt">Verde-musgo</span><span lang="fr">Vert mousse</span></b><span lang="pt">e verdes escuros</span><span lang="fr">et verts foncés</span></p></div><div class="sw"><div class="chip" style="background:#572932;color:#F7EDE6"><span>PMS 504 C</span><i class="no" aria-hidden="true"></i></div><p><b><span lang="pt">Burgundy / merlot</span><span lang="fr">Bordeaux / merlot</span></b><span lang="pt">e vinhos</span><span lang="fr">et tons vin</span></p></div></div>
+        <div class="swatches s4"><div class="sw"><div class="chip" style="background:#EBDDBF;color:#45161F;outline:1px solid #E1D3B4;outline-offset:-1px"><span>CREAM</span><i class="no" aria-hidden="true"></i></div><p><b><span lang="pt">Creme / bege</span><span lang="fr">Crème / beige</span></b><span lang="pt">e bege</span><span lang="fr">et beige</span></p></div><div class="sw"><div class="chip" style="background:#6B7448;color:#F7EDE6"><span>18-0316 TCX</span><i class="no" aria-hidden="true"></i></div><p><b><span lang="pt">Verde-oliva</span><span lang="fr">Vert olive</span></b><span lang="pt">olivine</span><span lang="fr">olivine</span></p></div><div class="sw"><div class="chip" style="background:#4B5530;color:#F7EDE6"><span>MOSS</span><i class="no" aria-hidden="true"></i></div><p><b><span lang="pt">Verde-musgo</span><span lang="fr">Vert mousse</span></b><span lang="pt">e verdes escuros</span><span lang="fr">et verts foncés</span></p></div><div class="sw"><div class="chip" style="background:#572932;color:#F7EDE6"><span>PMS 504 C</span><i class="no" aria-hidden="true"></i></div><p><b><span lang="pt">Burgundy / merlot</span><span lang="fr">Bordeaux / merlot</span></b><span lang="pt">e vinhos</span><span lang="fr">et tons vin</span></p></div></div>
       </div>
     </div>
     <div class="dress">
@@ -609,7 +613,7 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
       <div class="info-item">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 19 V6"/><path d="M3 14 H21 V19"/><path d="M3 14 V11 H10 V14"/><circle cx="6.5" cy="9" r="1.5"/></svg>
         <h3><span lang="pt">ESTADIA</span><span lang="fr">HÉBERGEMENT</span></h3>
-        <p><span lang="pt">A nossa sugestão é o <b>Dolce CampoReal Lisboa</b>, um resort com golfe e spa no Turcifal, a cerca de 8 km de Mafra. Lisboa e a Ericeira também são boas bases.</span><span lang="fr">Notre suggestion : le <b>Dolce CampoReal Lisboa</b>, un resort avec golf et spa à Turcifal, à environ 8 km de Mafra. Lisbonne et Ericeira sont aussi de bonnes options.</span></p>
+        <p><span lang="pt">A nossa sugestão é o <b>Dolce CampoReal Lisboa</b>, um resort com golfe e spa no Turcifal, a cerca de 8 km de Mafra. Se forem ficar lá, avisem a <a href="#torre">torre de controle</a> para fazermos uma reserva em conjunto. Lisboa e a Ericeira também são boas bases.</span><span lang="fr">Notre suggestion : le <b>Dolce CampoReal Lisboa</b>, un resort avec golf et spa à Turcifal, à environ 8 km de Mafra. Si vous y séjournez, prévenez la <a href="#torre">tour de contrôle</a> pour que nous fassions une réservation groupée. Lisbonne et Ericeira sont aussi de bonnes options.</span></p>
         <a href="https://www.google.com/maps/search/?api=1&amp;query=Dolce+CampoReal+Lisboa" target="_blank" rel="noopener" style="font-family:var(--caps);font-size:11.5px;letter-spacing:.2em"><span lang="pt">VER O HOTEL NO MAPA →</span><span lang="fr">VOIR L’HÔTEL SUR LA CARTE →</span></a>
       </div>
       <div class="info-item">
@@ -653,9 +657,9 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
         <div class="gbox"><div class="k"><span lang="pt">PIX (BRASIL)</span><span lang="fr">PIX (BRÉSIL)</span></div><div class="gv"><span>939422969</span><button class="copy" type="button" data-copy="939422969"><span lang="pt">COPIAR</span><span lang="fr">COPIER</span></button></div></div>
       </div>
     </div>
-    <div class="contacts">
+    <div class="contacts" id="torre">
       <div>
-        <div class="eyebrow"><span lang="pt">Torre de controlo</span><span lang="fr">Tour de contrôle</span></div>
+        <div class="eyebrow"><span lang="pt">Torre de controle</span><span lang="fr">Tour de contrôle</span></div>
         <h3><span lang="pt">Falem conosco</span><span lang="fr">Écrivez-nous</span></h3>
       </div>
       <div class="clist">
