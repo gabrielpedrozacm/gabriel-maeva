@@ -168,7 +168,33 @@ html[data-lang="fr"] [lang="pt"]{display:none!important}
 @media (max-width:720px){.dress{grid-template-columns:minmax(0,1fr)}}
 
 /* DAY / FLIGHT PLAN */
-.day{background:var(--olive-deep);color:var(--on-dark)}
+.day{background:var(--olive-deep);color:var(--on-dark);overflow:hidden}
+/* easter egg 1 · o avião que descola */
+.egg-plane{all:unset;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;margin-left:16px;width:44px;height:44px;color:var(--gold);position:relative;top:-4px}
+.egg-plane svg{width:34px;height:23px;display:block}
+.egg-plane:hover{color:var(--on-dark)}
+.egg-plane:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:4px}
+.egg-plane.shake svg{animation:egg-shake .28s}
+.egg-plane.s3 svg{filter:drop-shadow(-6px 0 0 rgba(200,164,101,.35))}
+.egg-plane.s4 svg{filter:drop-shadow(-6px 0 0 rgba(200,164,101,.45)) drop-shadow(-12px 0 0 rgba(200,164,101,.2))}
+.egg-plane.fly svg{animation:egg-takeoff 1.7s cubic-bezier(.55,0,.8,.2) forwards}
+.egg-plane.back svg{animation:egg-land 1.2s ease-out both}
+@keyframes egg-shake{0%,100%{transform:none}25%{transform:translateX(-2px) rotate(-4deg)}75%{transform:translateX(2px) rotate(4deg)}}
+@keyframes egg-takeoff{0%{transform:none}35%{transform:translateX(90px) rotate(-3deg)}100%{transform:translate(105vw,-160px) rotate(-20deg);opacity:.2}}
+@keyframes egg-land{0%{transform:translateX(-60px);opacity:0}100%{transform:none;opacity:1}}
+.egg{margin-top:36px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:22px 32px;align-items:center;background:var(--paper);color:var(--ink);padding:26px 28px;border-radius:14px;position:relative;box-shadow:0 24px 40px -24px rgba(0,0,0,.6)}
+.egg::before{content:"";position:absolute;inset:8px;border:1px solid var(--gold);border-radius:9px;pointer-events:none;opacity:.7}
+.egg .eyebrow{color:var(--rose)}
+.egg h3{font-family:var(--script);font-weight:400;font-size:40px;color:var(--burgundy);line-height:1.05;margin-top:4px}
+.egg p{font-size:18px;color:var(--muted);margin-top:8px;max-width:52ch}
+.egg-code{display:flex;flex-direction:column;align-items:center;gap:8px;position:relative}
+.egg-code .k{font-family:var(--caps);font-size:9.5px;letter-spacing:.22em;color:var(--olive)}
+.egg-code b{font-family:var(--caps);font-weight:500;font-size:26px;letter-spacing:.24em;color:var(--burgundy);border:1.5px dashed var(--gold);padding:10px 16px 10px 22px;user-select:all}
+.egg-code .copy{color:var(--olive)}
+.egg-close{all:unset;cursor:pointer;position:absolute;top:14px;right:18px;font-family:var(--caps);font-size:10px;letter-spacing:.2em;color:var(--muted);padding:6px}
+.egg-close:focus-visible{outline:2px solid var(--gold)}
+@media (max-width:700px){.egg{grid-template-columns:minmax(0,1fr);padding:48px 22px 24px}.egg-code{align-items:flex-start}}
+@media (prefers-reduced-motion: reduce){.egg-plane.fly svg{animation:none;opacity:.3}}
 .day .h2{color:var(--on-dark)}
 .day .eyebrow{color:var(--gold)}
 .day .lead{color:var(--on-dark-soft)}
@@ -439,7 +465,7 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
   <div class="wrap">
     <div class="sec-head">
       <div class="eyebrow"><span lang="pt">Sexta-feira, 17 de setembro de 2027</span><span lang="fr">Vendredi 17 septembre 2027</span></div>
-      <h2 class="h2"><span lang="pt">Plano de voo</span><span lang="fr">Plan de vol</span></h2>
+      <h2 class="h2"><span lang="pt">Plano de voo</span><span lang="fr">Plan de vol</span><button type="button" class="egg-plane" id="egg-plane" aria-label="Avião · Avion"><svg viewBox="0 0 24 16" aria-hidden="true"><path fill="currentColor" d="M23 7.2 L14 6 L9 0.5 H7 L9.5 6 L4 6.4 L2 3.5 H0.5 L1.6 8 L0.5 12.5 H2 L4 9.6 L9.5 10 L7 15.5 H9 L14 10 L23 8.8 Z"/></svg></button></h2>
       <p class="lead"><span lang="pt">Dois destinos num só dia: o “sim” no Convento de Mafra e a festa na Casa de Reguengos, a poucos minutos de distância.</span><span lang="fr">Deux escales en une journée : le « oui » au Couvent de Mafra, puis la fête à la Casa de Reguengos, à quelques minutes.</span></p>
     </div>
     <div class="venues">
@@ -504,6 +530,19 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
       <div class="tl"><b>∞</b><h4><span lang="pt">Aterragem suave</span><span lang="fr">Atterrissage en douceur</span></h4><p><span lang="pt">Até à última música</span><span lang="fr">Jusqu’à la dernière chanson</span></p></div>
     </div>
     <p class="fine"><span lang="pt">Horários sujeitos a alterações por excesso de felicidade.</span><span lang="fr">Horaires susceptibles de changer pour cause d’excès de bonheur.</span></p>
+    <div class="egg" id="egg-card" hidden role="status" tabindex="-1">
+      <button type="button" class="egg-close" id="egg-close"><span lang="pt">FECHAR ✕</span><span lang="fr">FERMER ✕</span></button>
+      <div>
+        <div class="eyebrow"><span lang="pt">Caixa negra encontrada</span><span lang="fr">Boîte noire trouvée</span></div>
+        <h3><span lang="pt">Bem-vindo à cabine, co-piloto!</span><span lang="fr">Bienvenue au cockpit, copilote !</span></h3>
+        <p><span lang="pt">Descobriste o primeiro segredo do voo GM 1709. Guarda este código e mostra-o à torre de controle no dia do casamento: há uma surpresa à tua espera. Shhh… não contes a ninguém.</span><span lang="fr">Tu as découvert le premier secret du vol GM 1709. Garde ce code et montre-le à la tour de contrôle le jour du mariage : une surprise t’attend. Chut… ne le dis à personne.</span></p>
+      </div>
+      <div class="egg-code">
+        <div class="k"><span lang="pt">CÓDIGO SECRETO</span><span lang="fr">CODE SECRET</span></div>
+        <b id="egg-code">COPILOTO</b>
+        <button class="copy" type="button" data-copy="COPILOTO"><span lang="pt">COPIAR</span><span lang="fr">COPIER</span></button>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -896,12 +935,30 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
   });
   document.querySelectorAll('.copy').forEach(function(b){
     b.addEventListener('click',function(){
-      var span=b.parentElement.querySelector('span');
+      var span=b.parentElement.querySelector('b')||b.parentElement.querySelector('span');
       copyText(b.dataset.copy,function(){var o=b.innerHTML;b.textContent='✓';setTimeout(function(){b.innerHTML=o},1400)},
         function(){var r=document.createRange();r.selectNodeContents(span);var s=getSelection();s.removeAllRanges();s.addRange(r)});
     });
   });
   setLang(saved); syncAtt();
+  // easter egg 1 · cinco toques no avião e ele descola
+  (function(){
+    var plane=document.getElementById('egg-plane'), card=document.getElementById('egg-card'); if(!plane||!card) return;
+    var n=0, busy=false, reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+    plane.addEventListener('click',function(){
+      if(busy) return; n++;
+      plane.classList.remove('shake'); void plane.offsetWidth; plane.classList.add('shake');
+      plane.classList.toggle('s3',n===3); plane.classList.toggle('s4',n===4);
+      if(n<5) return;
+      busy=true; n=0; plane.classList.remove('shake','s3','s4'); plane.classList.add('fly');
+      setTimeout(function(){
+        card.hidden=false; card.scrollIntoView({block:'nearest',behavior:reduce?'auto':'smooth'}); card.focus({preventScroll:true});
+        setTimeout(function(){ plane.classList.remove('fly'); plane.classList.add('back'); setTimeout(function(){plane.classList.remove('back');busy=false;},1300); },900);
+      }, reduce?50:1500);
+    });
+    document.getElementById('egg-close').addEventListener('click',function(){ card.hidden=true; plane.focus(); });
+  })();
+
 })();
 </script>
 <script>
