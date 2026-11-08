@@ -59,7 +59,19 @@ function doPost(e) {
   }
 }
 
-function doGet() {
+function doGet(e) {
+  // ?stats=1 devolve só totais (nunca nomes nem mensagens) para o contador do site
+  if (e && e.parameter && e.parameter.stats) {
+    let respostas = 0, passageiros = 0;
+    const sh = getBook_().getSheetByName(SHEET_NAME);
+    if (sh && sh.getLastRow() > 1) {
+      sh.getRange(2, 3, sh.getLastRow() - 1, 2).getValues().forEach(r => {
+        if (String(r[0]).trim() === 'Sim') { respostas++; passageiros += Number(r[1]) || 0; }
+      });
+    }
+    return ContentService.createTextOutput(JSON.stringify({ ok: true, respostas: respostas, passageiros: passageiros }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
   return ContentService.createTextOutput('Torre de controle GM 1709: online ✈');
 }
 

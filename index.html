@@ -321,6 +321,50 @@ fieldset{border:0;padding:0;margin:0;display:flex;flex-direction:column;gap:10px
 .copy:focus-visible{outline:2px solid var(--gold)}
 @media (max-width:760px){.contacts{grid-template-columns:minmax(0,1fr);padding:24px}.clist{grid-template-columns:minmax(0,1fr)}}
 
+/* AO VIVO · modo dia do voo */
+.live{background:var(--burgundy-deep);color:var(--on-dark);border-top:1px solid rgba(200,164,101,.35)}
+.live .wrap{padding-block:26px 28px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px 32px;align-items:center}
+.live-tag{display:inline-flex;align-items:center;gap:8px;font-family:var(--caps);font-size:11px;letter-spacing:.24em;color:var(--gold)}
+.live-tag i{width:9px;height:9px;border-radius:50%;background:#E0585F;box-shadow:0 0 0 0 rgba(224,88,95,.6);animation:live-pulse 1.8s infinite}
+@keyframes live-pulse{70%{box-shadow:0 0 0 10px rgba(224,88,95,0)}100%{box-shadow:0 0 0 0 rgba(224,88,95,0)}}
+.live h2{font-family:var(--display);font-weight:500;font-size:clamp(26px,3.6vw,36px);line-height:1.15;margin-top:6px}
+.live h2 b{font-family:var(--caps);font-weight:500;font-size:.62em;letter-spacing:.14em;color:var(--gold);margin-right:10px}
+.live .next{font-style:italic;color:var(--on-dark-soft);font-size:18px;margin-top:4px}
+.live-bar{grid-column:1/-1;height:3px;background:rgba(247,237,230,.15);position:relative}
+.live-bar span{position:absolute;inset:0 auto 0 0;background:var(--gold)}
+.live .btns{display:flex;gap:10px;flex-wrap:wrap}
+@media (max-width:760px){.live .wrap{grid-template-columns:minmax(0,1fr)}}
+/* tempo */
+.wx{margin-top:44px;display:grid;grid-template-columns:minmax(0,1.3fr) repeat(3,minmax(0,1fr));gap:0;border:1px solid rgba(200,164,101,.45)}
+.wx > div{padding:18px 20px;min-width:0}
+.wx > div + div{border-left:1px solid rgba(200,164,101,.3)}
+.wx .eyebrow{color:var(--gold)}
+.wx .wx-title{font-size:20px;margin-top:6px;line-height:1.3}
+.wx .wx-src{font-size:14px;color:var(--on-dark-soft);font-style:italic;margin-top:6px}
+.wx .k{font-family:var(--caps);font-size:9.5px;letter-spacing:.2em;color:var(--gold)}
+.wx .num{font-family:var(--display);font-size:38px;font-weight:500;line-height:1.1;font-variant-numeric:tabular-nums}
+.wx .sub{font-size:15px;color:var(--on-dark-soft)}
+.wx.plain{grid-template-columns:minmax(0,1fr)}
+@media (max-width:760px){.wx{grid-template-columns:repeat(3,minmax(0,1fr))}.wx > div:first-child{grid-column:1/-1;border-bottom:1px solid rgba(200,164,101,.3)}.wx > div:nth-child(2){border-left:0}.wx .num{font-size:30px}}
+/* contador */
+.pax{margin-top:18px;display:flex;align-items:center;gap:10px;font-size:19px;color:var(--olive-deep)}
+.pax b{font-family:var(--display);font-weight:600;font-size:26px;color:var(--burgundy);font-variant-numeric:tabular-nums}
+.pax svg{width:22px;height:15px;color:var(--rose)}
+/* álbum */
+.album{background:var(--burgundy);color:var(--on-dark)}
+.album .wrap{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:40px;align-items:center}
+.album .h2{color:var(--on-dark)}
+.album .eyebrow{color:var(--gold)}
+.album .lead{color:var(--on-dark-soft)}
+.album .btn{margin-top:22px}
+.film{display:flex;gap:10px;justify-content:center}
+.film div{width:30%;aspect-ratio:3/4;max-width:100%;background:var(--paper);padding:8px 8px 26px;box-shadow:0 14px 26px -14px rgba(0,0,0,.6)}
+.film div:nth-child(1){transform:rotate(-6deg)}.film div:nth-child(2){transform:translateY(-10px)}.film div:nth-child(3){transform:rotate(5deg)}
+.film span{display:block;height:100%;background:linear-gradient(160deg,#E9C9C6,#9E4A4E 55%,#5E6B3E)}
+.film div:nth-child(2) span{background:linear-gradient(200deg,#F3E8C8,#A3AC82 50%,#45161F)}
+.film div:nth-child(3) span{background:linear-gradient(170deg,#C8A465,#5A1F2C 60%,#2B2320)}
+.album-note{margin-top:18px;font-family:var(--caps);font-size:11.5px;letter-spacing:.2em;color:var(--gold)}
+@media (max-width:760px){.album .wrap{grid-template-columns:minmax(0,1fr)}.film{order:-1}}
 /* FOOTER */
 footer{background:var(--olive-deep);color:var(--on-dark-soft)}
 footer .wrap{padding-block:56px 64px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
@@ -339,6 +383,7 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
       <a href="#paleta"><span lang="pt">DRESS CODE</span><span lang="fr">DRESS CODE</span></a>
       <a href="#check-in">CHECK-IN</a>
       <a href="#informacoes"><span lang="pt">INFORMAÇÕES</span><span lang="fr">INFOS</span></a>
+      <a href="#album"><span lang="pt">ÁLBUM</span><span lang="fr">ALBUM</span></a>
     </div>
     <div class="lang" role="group" aria-label="Língua / Langue">
       <button type="button" id="lang-pt" data-set="pt" aria-pressed="true">PT</button>
@@ -453,6 +498,20 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
     </div>
   </div>
 </header>
+<section class="live" id="agora" hidden aria-live="polite">
+  <div class="wrap">
+    <div>
+      <div class="live-tag"><i aria-hidden="true"></i><span id="live-tag"></span></div>
+      <h2 id="live-now"></h2>
+      <p class="next" id="live-next"></p>
+    </div>
+    <div class="btns">
+      <a class="btn" id="live-map" href="#" target="_blank" rel="noopener"><span lang="pt">Como chegar</span><span lang="fr">Itinéraire</span></a>
+      <a class="btn ghost" id="live-album" href="#album"><span lang="pt">Partilhar fotos</span><span lang="fr">Partager des photos</span></a>
+    </div>
+    <div class="live-bar" aria-hidden="true"><span id="live-bar"></span></div>
+  </div>
+</section>
 
 <section class="welcome band" id="boas-vindas">
   <div class="wrap">
@@ -543,6 +602,10 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
       <div class="tl"><b>∞</b><h4><span lang="pt">Aterragem suave</span><span lang="fr">Atterrissage en douceur</span></h4><p><span lang="pt">Até à última música</span><span lang="fr">Jusqu’à la dernière chanson</span></p></div>
     </div>
     <p class="fine"><span lang="pt">Horários sujeitos a alterações por excesso de felicidade.</span><span lang="fr">Horaires susceptibles de changer pour cause d’excès de bonheur.</span></p>
+    <div class="wx plain" id="wx" aria-live="polite">
+      <div><div class="eyebrow"><span lang="pt">Meteorologia em Mafra</span><span lang="fr">Météo à Mafra</span></div>
+      <p class="wx-title"><span lang="pt">Meados de setembro costuma ser quente de dia e fresco à noite. Tragam um casaco leve.</span><span lang="fr">Mi-septembre, il fait généralement chaud le jour et frais le soir. Prévoyez une petite veste.</span></p></div>
+    </div>
     <div class="egg" id="egg-card" hidden role="status" tabindex="-1">
       <button type="button" class="egg-close" id="egg-close"><span lang="pt">FECHAR ✕</span><span lang="fr">FERMER ✕</span></button>
       <div>
@@ -598,6 +661,7 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
         <li><i>3</i><div><b><span lang="pt">Pedido musical</span><span lang="fr">Demande musicale</span></b><span><span lang="pt">A música que vos leva à pista.</span><span lang="fr">La chanson qui vous fera danser.</span></span></div></li>
       </ol>
       <div class="deadline"><span lang="pt">CHECK-IN ENCERRA A 30 DE JUNHO DE 2027</span><span lang="fr">ENREGISTREMENT JUSQU’AU 30 JUIN 2027</span></div>
+      <p class="pax" id="pax" hidden><svg viewBox="0 0 24 16" aria-hidden="true"><path fill="currentColor" d="M23 7.2 L14 6 L9 0.5 H7 L9.5 6 L4 6.4 L2 3.5 H0.5 L1.6 8 L0.5 12.5 H2 L4 9.6 L9.5 10 L7 15.5 H9 L14 10 L23 8.8 Z"/></svg><span><b id="pax-n"></b> <span lang="pt">passageiros já fizeram check-in</span><span lang="fr">passagers déjà enregistrés</span></span></p>
     </div>
     <div>
       <form id="rsvp" novalidate>
@@ -752,6 +816,19 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
         <div class="cbox"><span>maevapinget1@gmail.com</span><button class="copy" type="button" data-copy="maevapinget1@gmail.com"><span lang="pt">COPIAR</span><span lang="fr">COPIER</span></button></div>
       </div>
     </div>
+  </div>
+</section>
+
+<section class="album band" id="album">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow"><span lang="pt">Diário de bordo</span><span lang="fr">Journal de bord</span></div>
+      <h2 class="h2"><span lang="pt">O álbum do voo</span><span lang="fr">L’album du vol</span></h2>
+      <p class="lead"><span lang="pt">Cada passageiro vê o voo de um lugar diferente. Partilhem conosco as vossas fotos e vídeos do dia, os bonitos, os desfocados e os da pista de dança.</span><span lang="fr">Chaque passager voit le vol depuis une place différente. Partagez avec nous vos photos et vidéos de la journée : les belles, les floues et celles de la piste de danse.</span></p>
+      <a class="btn" id="album-btn" href="#" target="_blank" rel="noopener" hidden><span lang="pt">Abrir o álbum partilhado</span><span lang="fr">Ouvrir l’album partagé</span></a>
+      <p class="album-note" id="album-note"><span lang="pt">O ÁLBUM ABRE NO DIA DO CASAMENTO</span><span lang="fr">L’ALBUM OUVRE LE JOUR DU MARIAGE</span></p>
+    </div>
+    <div class="film" aria-hidden="true"><div><span></span></div><div><span></span></div><div><span></span></div></div>
   </div>
 </section>
 
@@ -971,6 +1048,100 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
     });
   });
   setLang(saved); syncAtt();
+  // ===== Ao vivo, meteorologia, contador e álbum =====
+  var ALBUM_URL=''; // link do álbum partilhado (Google Fotos)
+  var MAPS={mafra:'https://www.google.com/maps/search/?api=1&query=Pal%C3%A1cio+Nacional+de+Mafra',reg:'https://www.google.com/maps/search/?api=1&query=Casa+de+Reguengos+Malveira'};
+  function lisbonNow(){
+    var p={}; new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Lisbon',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(new Date()).forEach(function(x){p[x.type]=x.value});
+    return {date:p.year+'-'+p.month+'-'+p.day, min:(parseInt(p.hour,10)%24)*60+parseInt(p.minute,10)};
+  }
+  var PH=[
+    {t:0,   pt:['Antes do embarque','Encontramo-nos às 15:00 no Convento de Mafra'],fr:['Avant l’embarquement','Rendez-vous à 15h au Couvent de Mafra'],map:'mafra'},
+    {t:900, pt:['Embarque','Chegada ao Convento de Mafra'],fr:['Embarquement','Arrivée au Couvent de Mafra'],map:'mafra'},
+    {t:930, pt:['Decolagem','A cerimónia no Convento de Mafra'],fr:['Décollage','La cérémonie au Couvent de Mafra'],map:'mafra'},
+    {t:1020,pt:['Escala','Cocktail e fotografias na Casa de Reguengos'],fr:['Escale','Cocktail et photos à la Casa de Reguengos'],map:'reg'},
+    {t:1200,pt:['Serviço a bordo','Jantar e brindes'],fr:['Service à bord','Dîner et toasts'],map:'reg'},
+    {t:1350,pt:['Turbulência','A pista de dança está aberta'],fr:['Turbulences','La piste de danse est ouverte'],map:'reg'}
+  ];
+  function hhmm(m){return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0')}
+  function renderLive(){
+    var box=document.getElementById('agora'), fr=isFr(), n=lisbonNow(), preview=location.hash==='#modo-voo';
+    var mode=null, min=n.min;
+    if(n.date==='2027-09-17'||preview) mode='day';
+    else if(n.date==='2027-09-18'&&n.min<360){ mode='day'; min=1440+n.min; }
+    else if(n.date>'2027-09-18'&&n.date<'2027-11-30') mode='after';
+    if(!mode){ box.hidden=true; return; }
+    box.hidden=false;
+    var tag=document.getElementById('live-tag'), now=document.getElementById('live-now'), nx=document.getElementById('live-next'), bar=document.getElementById('live-bar'), map=document.getElementById('live-map');
+    document.getElementById('live-album').hidden=!ALBUM_URL;
+    if(ALBUM_URL) document.getElementById('live-album').href=ALBUM_URL;
+    if(mode==='after'){
+      tag.textContent=fr?'VOL GM 1709 · ATTERRI':'VOO GM 1709 · ATERROU';
+      now.textContent=fr?'Merci d’avoir volé avec nous':'Obrigado por voarem conosco';
+      nx.textContent=fr?'Partagez vos photos du vol dans l’album.':'Partilhem as vossas fotos do voo no álbum.';
+      map.hidden=true; bar.style.width='100%'; return;
+    }
+    var i=0; for(var k=0;k<PH.length;k++) if(min>=PH[k].t) i=k;
+    var cur=PH[i], L=fr?cur.fr:cur.pt, nxt=PH[i+1];
+    tag.textContent=(fr?'EN DIRECT · ':'AO VIVO · ')+hhmm(n.min);
+    now.innerHTML=''; var b=document.createElement('b'); b.textContent=fr?'MAINTENANT':'AGORA'; now.appendChild(b); now.appendChild(document.createTextNode(L[0]+' · '+L[1]));
+    nx.textContent=nxt?((fr?'Ensuite, à ':'A seguir, às ')+hhmm(nxt.t)+': '+(fr?nxt.fr:nxt.pt)[0]):(fr?'Jusqu’à la dernière chanson.':'Até à última música.');
+    map.hidden=false; map.href=MAPS[cur.map];
+    bar.style.width=Math.max(2,Math.min(100,(min-840)/(1560-840)*100))+'%';
+  }
+  renderLive(); setInterval(renderLive,60000); window.addEventListener('hashchange',renderLive);
+  document.querySelectorAll('.lang button').forEach(function(b){b.addEventListener('click',renderLive)});
+
+  (function album(){
+    if(!ALBUM_URL) return;
+    var b=document.getElementById('album-btn'); b.href=ALBUM_URL; b.hidden=false; document.getElementById('album-note').hidden=true;
+  })();
+
+  (function weather(){
+    var box=document.getElementById('wx'), LAT=38.937, LON=-9.328, target=Date.UTC(2027,8,17);
+    var days=Math.ceil((target-Date.now())/864e5);
+    function show(d){
+      var fr=isFr();
+      box.className='wx';
+      box.innerHTML='';
+      function cell(html){var c=document.createElement('div');c.innerHTML=html;box.appendChild(c);return c;}
+      var t=d.forecast
+        ? '<div class="eyebrow">'+(fr?'Prévisions pour le 17 septembre':'Previsão para 17 de setembro')+'</div><p class="wx-title">'+(fr?'Mafra, le jour du vol':'Mafra, no dia do voo')+'</p><p class="wx-src">Open-Meteo</p>'
+        : '<div class="eyebrow">'+(fr?'Météo à Mafra':'Meteorologia em Mafra')+'</div><p class="wx-title">'+(fr?'Comment est la mi-septembre d’habitude':'Como costuma estar a meio de setembro')+'</p><p class="wx-src">'+(fr?'Moyenne du 10 au 24 septembre, ':'Média de 10 a 24 de setembro, ')+d.years+' · Open-Meteo</p>';
+      cell(t);
+      cell('<div class="k">'+(fr?'MAX':'MÁXIMA')+'</div><div class="num">'+Math.round(d.max)+'°</div><div class="sub">'+(fr?'l’après-midi':'à tarde')+'</div>');
+      cell('<div class="k">'+(fr?'MIN':'MÍNIMA')+'</div><div class="num">'+Math.round(d.min)+'°</div><div class="sub">'+(fr?'la nuit, prenez une veste':'à noite, tragam casaco')+'</div>');
+      cell('<div class="k">'+(fr?'PLUIE':'CHUVA')+'</div><div class="num">'+Math.round(d.rain)+'%</div><div class="sub">'+(d.forecast?(fr?'probabilité':'probabilidade'):(fr?'des jours avec pluie':'dos dias com chuva'))+'</div>');
+    }
+    var key='gm-wx-'+(days<=15?'f':'c');
+    try{ var c=JSON.parse(localStorage.getItem(key)||'null'); if(c&&Date.now()-c.at<6*36e5){ show(c.d); document.querySelectorAll('.lang button').forEach(function(b){b.addEventListener('click',function(){show(c.d)})}); return; } }catch(e){}
+    var url = days<=15 && days>=0
+      ? 'https://api.open-meteo.com/v1/forecast?latitude='+LAT+'&longitude='+LON+'&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Europe%2FLisbon&start_date=2027-09-17&end_date=2027-09-17'
+      : 'https://archive-api.open-meteo.com/v1/archive?latitude='+LAT+'&longitude='+LON+'&start_date=2016-09-01&end_date=2025-09-30&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=Europe%2FLisbon';
+    fetch(url).then(function(r){return r.json()}).then(function(j){
+      var D=j&&j.daily; if(!D||!D.time) return; var d;
+      if(days<=15&&days>=0){ d={forecast:true,max:D.temperature_2m_max[0],min:D.temperature_2m_min[0],rain:D.precipitation_probability_max[0]}; }
+      else{
+        var mx=0,mn=0,rn=0,cnt=0,ys={};
+        D.time.forEach(function(t,i){ var m=+t.slice(5,7), dd=+t.slice(8,10); if(m===9&&dd>=10&&dd<=24&&D.temperature_2m_max[i]!=null){ mx+=D.temperature_2m_max[i]; mn+=D.temperature_2m_min[i]; if((D.precipitation_sum[i]||0)>=1) rn++; cnt++; ys[t.slice(0,4)]=1; } });
+        if(!cnt) return; var y=Object.keys(ys).sort();
+        d={forecast:false,max:mx/cnt,min:mn/cnt,rain:rn/cnt*100,years:y[0]+'–'+y[y.length-1]};
+      }
+      if(d.max==null) return;
+      show(d); try{localStorage.setItem(key,JSON.stringify({at:Date.now(),d:d}))}catch(e){}
+      document.querySelectorAll('.lang button').forEach(function(b){b.addEventListener('click',function(){show(d)})});
+    }).catch(function(){});
+  })();
+
+  (function counter(){
+    if(!RSVP_ENDPOINT) return;
+    fetch(RSVP_ENDPOINT+'?stats=1').then(function(r){return r.json()}).then(function(j){
+      if(!j||!j.ok||!(j.passageiros>0)) return;
+      document.getElementById('pax-n').textContent=j.passageiros;
+      document.getElementById('pax').hidden=false;
+    }).catch(function(){});
+  })();
+
   // easter egg 1 · dois toques no avião e ele descola
   (function(){
     var plane=document.getElementById('egg-plane'), card=document.getElementById('egg-card'); if(!plane||!card) return;
