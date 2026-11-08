@@ -315,6 +315,8 @@ fieldset{border:0;padding:0;margin:0;display:flex;flex-direction:column;gap:10px
 .bp.crew .gold-tag{display:none}
 .miles{display:none;transform:rotate(3deg);background:var(--gold);color:var(--burgundy-deep);font-family:var(--caps);font-size:11px;letter-spacing:.16em;padding:7px 12px;box-shadow:0 6px 14px -6px rgba(0,0,0,.35)}
 .bp.crew .miles{display:block}
+.exec-badge{display:none;font-family:var(--caps);font-size:10.5px;letter-spacing:.16em;color:#8A6A2E;border:1px solid #C8A465;background:#FBF3E1;padding:6px 10px;transform:rotate(-2deg)}
+.bp.crew.both .exec-badge{display:block}
 .crew-offer{margin-top:18px;background:var(--olive-deep);color:var(--on-dark);padding:26px 26px 24px;position:relative;border-radius:14px;overflow:hidden}
 .crew-offer::before{content:"";position:absolute;inset:8px;border:1px solid rgba(200,164,101,.55);border-radius:9px;pointer-events:none}
 .crew-offer .eyebrow{color:var(--gold)}
@@ -808,7 +810,7 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
                 <div><div class="k"><span lang="pt">CLASSE · CLASS</span><span lang="fr">CLASSE · CLASS</span></div><div class="v" id="r-class"><span lang="pt">Económica</span><span lang="fr">Économique</span></div></div>
               </div>
             </div>
-            <div class="bp-marks"><div class="miles" id="miles">+100.000 <span lang="pt">MILHAS</span><span lang="fr">MILES</span></div><div class="bp-stamp" id="r-status"></div></div>
+            <div class="bp-marks"><div class="exec-badge"><span lang="pt">+ EXECUTIVA ✦</span><span lang="fr">+ AFFAIRES ✦</span></div><div class="miles" id="miles">+100.000 <span lang="pt">MILHAS</span><span lang="fr">MILES</span></div><div class="bp-stamp" id="r-status"></div></div>
           </div>
           <div class="bp-stub">
             <div class="flt">GM 1709</div>
@@ -1031,8 +1033,9 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
     document.getElementById('miles').innerHTML=crewAccepted?(fr?'100 000 MILES ÉCHANGÉS ✦':'100.000 MILHAS TROCADAS ✦'):'+100.000 <span lang="pt">MILHAS</span><span lang="fr">MILES</span>';
     document.getElementById('crew-offer').hidden=!d.crew;
     document.getElementById('crew-ask').hidden=crewAccepted; document.getElementById('crew-done').hidden=!crewAccepted;
-    document.getElementById('bp').classList.toggle('exec',!!d.exec);
-    document.getElementById('exec-note').hidden=!d.exec||!!d.crew;
+    document.getElementById('bp').classList.toggle('exec',!!d.exec&&!d.crew);
+    document.getElementById('bp').classList.toggle('both',!!d.exec&&!!d.crew);
+    document.getElementById('exec-note').hidden=!d.exec;
     document.getElementById('r-class').innerHTML=(d.crew&&crewAccepted)?'<span lang="pt">Tripulação ✦</span><span lang="fr">Équipage ✦</span>':d.crew?'<span lang="pt">VIP</span><span lang="fr">VIP</span>':d.exec?'<span lang="pt">Executiva ✦</span><span lang="fr">Affaires ✦</span>':'<span lang="pt">Económica</span><span lang="fr">Économique</span>';
     document.querySelectorAll('#r-seat').forEach(function(el){ el.innerHTML=(d.crew&&crewAccepted)?'<span lang="pt">Ao lado dos comandantes</span><span lang="fr">Aux côtés des commandants</span>':d.exec?'<span lang="pt">Lounge executivo</span><span lang="fr">Salon affaires</span>':'<span lang="pt">Ao nosso lado</span><span lang="fr">À nos côtés</span>'; });
     document.getElementById('wa').href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
@@ -1097,22 +1100,23 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
     var dpr=Math.min(2,window.devicePixelRatio||1), W=innerWidth, H=innerHeight; c.width=W*dpr; c.height=H*dpr;
     var x=c.getContext('2d'); x.scale(dpr,dpr);
     var plane=new Path2D('M23 7.2 L14 6 L9 0.5 H7 L9.5 6 L4 6.4 L2 3.5 H0.5 L1.6 8 L0.5 12.5 H2 L4 9.6 L9.5 10 L7 15.5 H9 L14 10 L23 8.8 Z');
-    var S=Math.min(W,H), cx=W/2, cy=H*0.46, hs=S/40;
-    function heart(t){ var sn=Math.sin(t); return {x:cx+16*sn*sn*sn*hs, y:cy-(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t))*hs}; }
+    var S=Math.min(W,H), cx=W/2;
     function lerp(a,b,k){return {x:a.x+(b.x-a.x)*k,y:a.y+(b.y-a.y)*k}}
     function ease(k){return k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2}
-    var tip=heart(Math.PI), start={x:cx,y:H+60};
-    var J=[
-      {col:'#9E4A4E', at:function(k){ if(k<.22) return lerp(start,tip,ease(k/.22)); var u=(k-.22)/.78; return heart(Math.PI-u*Math.PI); }, end:.78, after:{dx:1,dy:-.6}},
-      {col:'#C8A465', at:function(k){ if(k<.22) return lerp(start,tip,ease(k/.22)); var u=(k-.22)/.78; return heart(Math.PI+u*Math.PI); }, end:.78, after:{dx:-1,dy:-.6}}
-    ];
-    [['#E9C9C6',0],['#8A9566',38],['#F3E8C8',-38]].forEach(function(f,i){
-      var off=f[1], d0=.12+i*.05;
-      J.push({col:f[0], delay:d0, at:function(k){ var p0={x:-80,y:H*.86+off}, p1={x:W*.5,y:H*.18+off*.6}, p2={x:W+120,y:-60+off};
-        var a=lerp(p0,p1,k), b2=lerp(p1,p2,k); return lerp(a,b2,k); }});
+    var cols=['#5A1F2C','#9E4A4E','#E9C9C6','#C8A465','#F3E8C8','#A3AC82','#5E6B3E'];
+    var angs=[-78,-52,-26,0,26,52,78], J=[];
+    angs.forEach(function(deg,i){
+      var th=deg*Math.PI/180, off=(i-3)*7, split=H*0.56;
+      var p0={x:cx+off,y:H+70}, p1={x:cx+off,y:split};
+      var ctrl={x:cx+off+Math.sin(th)*W*0.12,y:split-H*0.30};
+      var end={x:cx+Math.sin(th)*W*0.75,y:split-Math.cos(th)*H*0.95+Math.abs(Math.sin(th))*H*0.35};
+      J.push({col:cols[i], delay:Math.abs(i-3)*0.025, at:function(k){
+        if(k<.34) return lerp(p0,p1,ease(k/.34));
+        var u=(k-.34)/.66, a=lerp(p1,ctrl,u), b=lerp(ctrl,end,u); return lerp(a,b,u);
+      }});
     });
     J.forEach(function(j){ j.trail=[]; j.prev=null; });
-    var T=4200, FADE=1300, t0=performance.now();
+    var T=3800, FADE=1400, t0=performance.now();
     function drawPlane(p,ang,col){ x.save(); x.translate(p.x,p.y); x.rotate(ang); x.scale(1.5,1.5); x.translate(-12,-8);
       x.shadowColor='rgba(0,0,0,.25)'; x.shadowBlur=6; x.fillStyle='#2B2320'; x.fill(plane); x.shadowBlur=0; x.strokeStyle=col; x.lineWidth=.8; x.stroke(plane); x.restore(); }
     (function f(now){
@@ -1190,7 +1194,8 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
     field(fr?'PORTE · GATE':'PORTA · GATE',fr?'L’autel':'Altar',cols[1],214);
     field(fr?'PLACES · SEATS':'LUGARES · SEATS',yes?d.lugares:'—',cols[2],214);
     field(fr?'CLASSE · CLASS':'CLASSE · CLASS',(crewOn&&crewAccepted)?(fr?'Équipage ✦':'Tripulação ✦'):crewOn?'VIP':d.exec?(fr?'Affaires ✦':'Executiva ✦'):(fr?'Économique':'Económica'),cols[3],214);
-    txt(fr?'Gabriel & Maeva · Couvent de Mafra & Casa de Reguengos':'Gabriel & Maeva · Convento de Mafra & Casa de Reguengos',22,280,'italic 14px '+DISP,C.muted);
+    if(!(crewOn&&d.exec)) txt(fr?'Gabriel & Maeva · Couvent de Mafra & Casa de Reguengos':'Gabriel & Maeva · Convento de Mafra & Casa de Reguengos',22,280,'italic 14px '+DISP,C.muted);
+    if(crewOn&&d.exec){ x.save(); x.translate(96,268); x.rotate(-0.04); var bt=fr?'+ AFFAIRES ✦':'+ EXECUTIVA ✦'; x.font='500 10.5px '+CAPS; sp(1.6); var bw=x.measureText(bt).width+20; sp(0); x.fillStyle='#FBF3E1'; x.fillRect(-bw/2,-12,bw,24); x.strokeStyle='#C8A465'; x.lineWidth=1; x.strokeRect(-bw/2,-12,bw,24); txt(bt,0,4,'500 10.5px '+CAPS,'#8A6A2E','center',1.6); x.restore(); }
     // stamp
     x.save(); x.translate(470,262); x.rotate(-0.21); var stampTxt=crewOn?(crewAccepted?(fr?'ÉQUIPAGE ✦':'TRIPULAÇÃO ✦'):(fr?'+100 000 MILES':'+100.000 MILHAS')):d.exec?(fr?'SURCLASSEMENT ✦':'UPGRADE ✦'):yes?(fr?'CONFIRMÉ':'CONFIRMADO'):(fr?'AVEC NOSTALGIE':'COM SAUDADE');
     x.font='500 12px '+CAPS; sp(2.4); var sw=x.measureText(stampTxt).width+24; sp(0); var col=crewOn?'#5E6B3E':d.exec?'#8A6A2E':yes?C.bur:'#5E6B3E';
