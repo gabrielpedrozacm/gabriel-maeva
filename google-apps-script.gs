@@ -31,6 +31,14 @@ function doPost(e) {
   const lock = LockService.getScriptLock();
   lock.waitLock(10000);
   try {
+    const p0 = (e && e.parameter) || {};
+    if (p0.tipo === 'aviao') {
+      const props = PropertiesService.getScriptProperties();
+      const n = Math.max(1, Math.min(20, Number(p0.n) || 1));
+      const total = (Number(props.getProperty('AVIOES')) || 0) + n;
+      props.setProperty('AVIOES', String(total));
+      return ContentService.createTextOutput(JSON.stringify({ ok: true, avioes: total })).setMimeType(ContentService.MimeType.JSON);
+    }
     const ss = getBook_();
     const sh = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
     if (sh.getLastRow() === 0) {
@@ -69,7 +77,8 @@ function doGet(e) {
         if (String(r[0]).trim() === 'Sim') { respostas++; passageiros += Number(r[1]) || 0; }
       });
     }
-    return ContentService.createTextOutput(JSON.stringify({ ok: true, respostas: respostas, passageiros: passageiros }))
+    const avioes = Number(PropertiesService.getScriptProperties().getProperty('AVIOES')) || 0;
+    return ContentService.createTextOutput(JSON.stringify({ ok: true, respostas: respostas, passageiros: passageiros, avioes: avioes }))
       .setMimeType(ContentService.MimeType.JSON);
   }
   return ContentService.createTextOutput('Torre de controle GM 1709: online ✈');

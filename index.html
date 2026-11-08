@@ -441,6 +441,14 @@ footer .wrap{padding-block:56px 64px;display:flex;flex-direction:column;align-it
 footer .script{font-size:52px;color:var(--gold);line-height:1}
 footer .caps{font-family:var(--caps);font-size:12px;letter-spacing:.3em}
 footer p{font-style:italic;font-size:18px;max-width:46ch}
+.send-plane{margin-top:22px;display:flex;flex-direction:column;align-items:center;gap:10px;padding-top:26px;border-top:1px solid rgba(200,164,101,.3);width:min(420px,100%)}
+.send-plane .btn{background:transparent;color:var(--gold);border-color:var(--gold);user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.send-plane .btn:hover{background:rgba(200,164,101,.14);color:var(--on-dark)}
+.send-plane .btn:active{transform:scale(.97)}
+.send-plane .btn svg{width:20px;height:14px}
+.plane-count{font-family:var(--caps);font-size:11.5px;letter-spacing:.2em;color:var(--on-dark-soft);min-height:1.4em}
+.plane-count b{font-family:var(--display);font-weight:600;font-size:20px;letter-spacing:0;color:var(--on-dark);font-variant-numeric:tabular-nums}
+#sky{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:49}
 .sprig{display:block;margin:0 auto}
 </style>
 
@@ -949,6 +957,10 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
     <div class="script">Gabriel &amp; Maeva</div>
     <div class="caps">17 · 09 · 2027 · LISBOA</div>
     <p><span lang="pt">Lugares diferentes, o mesmo amor.</span><span lang="fr">Des lieux différents, le même amour.</span></p>
+    <div class="send-plane">
+      <button class="btn" type="button" id="send-plane"><svg viewBox="0 0 24 16" aria-hidden="true"><path fill="currentColor" d="M23 7.2 L14 6 L9 0.5 H7 L9.5 6 L4 6.4 L2 3.5 H0.5 L1.6 8 L0.5 12.5 H2 L4 9.6 L9.5 10 L7 15.5 H9 L14 10 L23 8.8 Z"/></svg><span lang="pt">Mandar um avião aos noivos</span><span lang="fr">Envoyer un avion aux mariés</span></button>
+      <p class="plane-count" id="plane-count" aria-live="polite"></p>
+    </div>
   </div>
 </footer>
 
@@ -1339,6 +1351,71 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
       show(d); try{localStorage.setItem(key,JSON.stringify({at:Date.now(),d:d}))}catch(e){}
       document.querySelectorAll('.lang button').forEach(function(b){b.addEventListener('click',function(){show(d)})});
     }).catch(function(){});
+  })();
+
+
+  // ===== 8 · mandar aviões aos noivos =====
+  var sky=null, flights=[], skyRun=false, planeP=new Path2D('M23 7.2 L14 6 L9 0.5 H7 L9.5 6 L4 6.4 L2 3.5 H0.5 L1.6 8 L0.5 12.5 H2 L4 9.6 L9.5 10 L7 15.5 H9 L14 10 L23 8.8 Z');
+  function skyCtx(){
+    if(!sky){ sky=document.createElement('canvas'); sky.id='sky'; document.body.appendChild(sky); }
+    var dpr=Math.min(2,window.devicePixelRatio||1); if(sky.width!==innerWidth*dpr||sky.height!==innerHeight*dpr){ sky.width=innerWidth*dpr; sky.height=innerHeight*dpr; }
+    var x=sky.getContext('2d'); x.setTransform(dpr,0,0,dpr,0,0); return x;
+  }
+  function launch(fromX,fromY){
+    if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var cols=['#9E4A4E','#C8A465','#E9C9C6','#A3AC82','#5A1F2C','#F3E8C8'], W=innerWidth, H=innerHeight;
+    var side=Math.random()<.5?-1:1, endX=fromX+side*(W*(.25+Math.random()*.5)), endY=-60-Math.random()*80;
+    var ctrl={x:fromX+side*(30+Math.random()*120),y:fromY-H*(.35+Math.random()*.25)};
+    flights.push({p0:{x:fromX,y:fromY},c:ctrl,p1:{x:endX,y:endY},t0:performance.now(),dur:1500+Math.random()*700,col:cols[Math.floor(Math.random()*cols.length)],trail:[]});
+    if(!skyRun){ skyRun=true; requestAnimationFrame(skyLoop); }
+  }
+  function skyLoop(now){
+    var x=skyCtx(); x.clearRect(0,0,innerWidth,innerHeight);
+    flights=flights.filter(function(f){ return now-f.t0<f.dur+900; });
+    flights.forEach(function(f){
+      var k=Math.min(1,(now-f.t0)/f.dur), u=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
+      var a={x:f.p0.x+(f.c.x-f.p0.x)*u,y:f.p0.y+(f.c.y-f.p0.y)*u}, b={x:f.c.x+(f.p1.x-f.c.x)*u,y:f.c.y+(f.p1.y-f.c.y)*u}, p={x:a.x+(b.x-a.x)*u,y:a.y+(b.y-a.y)*u};
+      if(k<1){ var last=f.trail[f.trail.length-1]; if(!last||Math.hypot(p.x-last.x,p.y-last.y)>1.5) f.trail.push(p); f.ang=last?Math.atan2(p.y-last.y,p.x-last.x):-Math.PI/2; f.pos=p; }
+      var fade=k<1?1:Math.max(0,1-(now-f.t0-f.dur)/900);
+      if(f.trail.length>1){ x.save(); x.globalAlpha=.55*fade; x.strokeStyle=f.col; x.lineCap='round'; x.lineJoin='round'; x.shadowColor=f.col; x.shadowBlur=14; x.lineWidth=7;
+        x.beginPath(); x.moveTo(f.trail[0].x,f.trail[0].y); for(var i=1;i<f.trail.length;i++) x.lineTo(f.trail[i].x,f.trail[i].y); x.stroke(); x.restore(); }
+      if(k<1&&f.pos){ x.save(); x.translate(f.pos.x,f.pos.y); x.rotate(f.ang); x.scale(1.3,1.3); x.translate(-12,-8); x.fillStyle='#2B2320'; x.fill(planeP); x.strokeStyle=f.col; x.lineWidth=.8; x.stroke(planeP); x.restore(); }
+    });
+    if(flights.length) requestAnimationFrame(skyLoop); else { skyRun=false; x.clearRect(0,0,innerWidth,innerHeight); }
+  }
+  (function sendPlanes(){
+    var btn=document.getElementById('send-plane'), out=document.getElementById('plane-count'); if(!btn) return;
+    var total=null, mine=0, pending=0, timer=null;
+    function fmt(n){ return n.toLocaleString(isFr()?'fr-FR':'pt-PT'); }
+    function render(){
+      var fr=isFr();
+      if(total!=null) out.innerHTML='<b>'+fmt(total)+'</b> '+(fr?(total===1?'avion envoyé aux mariés':'avions envoyés aux mariés'):(total===1?'avião enviado aos noivos':'aviões enviados aos noivos'));
+      else if(mine) out.innerHTML=fr?'<b>'+mine+'</b> '+(mine===1?'avion envoyé':'avions envoyés')+' ✈':'<b>'+mine+'</b> '+(mine===1?'avião enviado':'aviões enviados')+' ✈';
+    }
+    function flush(){
+      timer=null; if(!pending||!RSVP_ENDPOINT){ pending=0; return; }
+      var n=Math.min(20,pending); pending-=n;
+      var body=new URLSearchParams(); body.append('tipo','aviao'); body.append('n',n);
+      fetch(RSVP_ENDPOINT,{method:'POST',body:body}).then(function(r){return r.json()}).then(function(j){ if(j&&j.ok&&typeof j.avioes==='number'){ total=Math.max(j.avioes,total||0); render(); } }).catch(function(){});
+      if(pending) timer=setTimeout(flush,2500);
+    }
+    btn.addEventListener('click',function(){
+      var r=btn.getBoundingClientRect(); launch(r.left+r.width/2,r.top);
+      mine++; pending++; if(total!=null) total++; render();
+      if(!timer) timer=setTimeout(flush,1800);
+    });
+    document.querySelectorAll('.lang button').forEach(function(b){b.addEventListener('click',render)});
+    if(RSVP_ENDPOINT) fetch(RSVP_ENDPOINT+'?stats=1').then(function(r){return r.json()}).then(function(j){ if(j&&j.ok&&typeof j.avioes==='number'){ total=j.avioes+pending; render(); } }).catch(function(){});
+  })();
+
+  // ===== 9 · três toques no G & M =====
+  (function(){
+    var mono=document.querySelector('.mono'); if(!mono) return; var taps=[];
+    mono.addEventListener('click',function(e){
+      var now=Date.now(); taps=taps.filter(function(t){return now-t<1500}); taps.push(now);
+      if(taps.length>=2) e.preventDefault();
+      if(taps.length>=3){ taps=[]; burst(); }
+    });
   })();
 
   (function counter(){
