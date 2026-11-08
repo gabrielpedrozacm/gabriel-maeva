@@ -1178,16 +1178,20 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
     function lerp(a,b,k){return {x:a.x+(b.x-a.x)*k,y:a.y+(b.y-a.y)*k}}
     function ease(k){return k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2}
     var cols=['#E6D3B3','#FFFFFF','#E6D3B3','#FFFFFF','#E6D3B3','#FFFFFF','#E6D3B3'];
-    var angs=[-78,-52,-26,0,26,52,78], J=[];
-    angs.forEach(function(deg,i){
-      var th=deg*Math.PI/180, off=(i-3)*7, split=H*0.56;
-      var p0={x:cx+off,y:H+70}, p1={x:cx+off,y:split};
-      var ctrl={x:cx+off+Math.sin(th)*W*0.12,y:split-H*0.30};
-      var end={x:cx+Math.sin(th)*W*0.75,y:split-Math.cos(th)*H*0.95+Math.abs(Math.sin(th))*H*0.35};
-      J.push({col:cols[i], delay:Math.abs(i-3)*0.025, at:function(k){
-        if(k<.34) return lerp(p0,p1,ease(k/.34));
-        var u=(k-.34)/.66, a=lerp(p1,ctrl,u), b=lerp(ctrl,end,u); return lerp(a,b,u);
-      }});
+    // duas cascatas, uma de cada lado, a abrir para fora (o centro fica livre)
+    var arch=Math.min(600,W-32), leftX=Math.max(W*0.07,(W-arch)/2-Math.min(150,W*0.09)), rightX=W-leftX, J=[];
+    [[leftX,[-84,-62,-40,-18]],[rightX,[18,40,62,84]]].forEach(function(side,si){
+      var ox=side[0];
+      side[1].forEach(function(deg,i){
+        var th=deg*Math.PI/180, off=(si?i:-i)*6, split=H*0.62;
+        var p0={x:ox+off,y:H+70}, p1={x:ox+off,y:split};
+        var ctrl={x:ox+off+Math.sin(th)*W*0.08,y:split-H*0.28};
+        var end={x:ox+Math.sin(th)*W*0.55,y:split-Math.cos(th)*H*0.9+Math.abs(Math.sin(th))*H*0.25};
+        J.push({col:cols[(i+si)%cols.length], delay:i*0.03, at:function(k){
+          if(k<.34) return lerp(p0,p1,ease(k/.34));
+          var u=(k-.34)/.66, a=lerp(p1,ctrl,u), b=lerp(ctrl,end,u); return lerp(a,b,u);
+        }});
+      });
     });
     J.forEach(function(j){ j.trail=[]; j.prev=null; });
     var T=3800, FADE=1400, t0=performance.now();
