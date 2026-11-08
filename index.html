@@ -309,14 +309,16 @@ fieldset{border:0;padding:0;margin:0;display:flex;flex-direction:column;gap:10px
 .opt{font-family:var(--display);font-size:13px;letter-spacing:0;text-transform:none;color:var(--muted)}
 .gold-tag{display:none}
 .bp.exec .gold-tag{display:inline}
-.bp.crew{background:linear-gradient(135deg,#FBF7EF,#EEF0E2 60%,#FBF7EF);box-shadow:0 20px 40px -20px rgba(62,71,41,.55),0 0 0 1px #A3AC82}
-.bp.crew .bp-top{background:linear-gradient(90deg,#3E4729,#5E6B3E 50%,#3E4729)}
-.bp.crew .bp-top b{color:var(--gold)}
+.bp.crew{background:linear-gradient(135deg,#FBF3E1,#F3E3BE 55%,#FBF3E1);box-shadow:0 20px 40px -20px rgba(122,92,44,.55),0 0 0 1px #D9B978}
+.bp.crew .bp-top{background:linear-gradient(90deg,#B8924F,#E2C98F 50%,#B8924F)}
+.bp.crew .bp-top b{color:var(--burgundy-deep)}
+.bp.crew .bp-top em{color:#45161F}
 .bp.crew .bp-stub{background:var(--burgundy-deep)}
-.bp.crew .bp-grid .k{color:var(--olive)}
-.bp.crew #r-class,.bp.crew .bp-grid #r-seat{color:var(--olive-deep)}
+.bp.crew .bp-grid .k{color:#8A6A2E}
+.bp.crew #r-class,.bp.crew .bp-grid #r-seat{color:#8A6A2E}
 .bp.crew .bp-stub #r-seat{color:var(--gold)}
-.bp.crew .bp-stamp{border-color:var(--olive);color:var(--olive);background:rgba(251,247,239,.92)}
+.bp.crew .bp-stamp{border-color:#B8924F;color:#8A6A2E;background:rgba(251,243,225,.92)}
+.bp.crew .miles{background:var(--burgundy-deep);color:var(--gold)}
 .crew-tag{display:none}
 .bp.crew .crew-tag{display:inline}
 .bp.crew .gold-tag{display:none}
@@ -801,7 +803,7 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
           <label for="f-code"><span lang="pt">N.º de passageiro frequente</span><span lang="fr">N° de passager fréquent</span> <small class="opt"><span lang="pt">(opcional)</span><span lang="fr">(facultatif)</span></small></label>
           <input type="text" id="f-code" name="code" autocomplete="off" inputmode="numeric" spellcheck="false" placeholder="—">
         </div>
-        <div class="prio" id="prio" hidden><span class="prio-tag">✦ <span lang="pt">CHECK-IN PRIORITÁRIO</span><span lang="fr">CHECK-IN PRIORITAIRE</span></span><span><span lang="pt">Passageiros especiais identificados. Esta fila é só vossa.</span><span lang="fr">Passagers spéciaux identifiés. Cette file est rien que pour vous.</span></span></div>
+        <div class="prio" id="prio" hidden><span class="prio-tag">✦ <span lang="pt">CHECK-IN PRIORITÁRIO</span><span lang="fr">CHECK-IN PRIORITAIRE</span></span><span id="prio-txt"></span></div>
         <p class="err" id="f-err" role="alert"></p>
         <button class="btn dark" type="submit" id="f-submit"><span class="std"><span lang="pt">Emitir cartão de embarque</span><span lang="fr">Émettre la carte d’embarquement</span></span><span class="pri"><span lang="pt">✦ Fazer check-in prioritário</span><span lang="fr">✦ Enregistrement prioritaire</span></span></button>
       </form>
@@ -842,20 +844,20 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
           <div class="sys" id="crew-sys" aria-live="polite"></div>
           <div id="crew-ask">
             <div class="eyebrow"><span lang="pt">Bónus de passageiro muito especial</span><span lang="fr">Bonus de passager très spécial</span></div>
-            <h3><span lang="pt">Para vocês, o pedido é mesmo especial.</span><span lang="fr">Pour vous, la demande est vraiment spéciale.</span></h3>
-            <p class="won"><span lang="pt">Acabaram de ganhar <b>100.000 milhas</b>.</span><span lang="fr">Vous venez de gagner <b>100 000 miles</b>.</span></p>
-            <p><span lang="pt">Estas milhas não servem para viajar para nenhum destino. Servem para uma coisa que não se compra: <b>um lugar na nossa tripulação.</b> Se quiserem, troquem-nas e aceitem ser os nossos <b>padrinhos e testemunhas</b> no dia 17 de setembro de 2027.</span><span lang="fr">Ces miles ne permettent de voyager vers aucune destination. Ils servent à quelque chose qui ne s’achète pas : <b>une place dans notre équipage.</b> Si vous le souhaitez, échangez-les et acceptez d’être nos <b>témoins</b> le 17 septembre 2027.</span></p>
+            <h3 id="c-h3"></h3>
+            <p class="won" id="c-won"></p>
+            <p id="c-body"></p>
             <div class="bal"><span class="k"><span lang="pt">SALDO</span><span lang="fr">SOLDE</span></span><b>100.000 <span lang="pt">MILHAS</span><span lang="fr">MILES</span></b></div>
             <div class="btns">
-              <button class="btn" type="button" id="crew-yes"><span lang="pt">Trocar milhas · Aceitamos ser padrinhos</span><span lang="fr">Échanger les miles · Nous acceptons</span></button>
+              <button class="btn" type="button" id="crew-yes"><span id="c-yes"></span></button>
               <button class="btn ghost" type="button" id="crew-later"><span lang="pt">Guardar as milhas por agora</span><span lang="fr">Garder les miles pour l’instant</span></button>
             </div>
-            <p class="later" id="crew-later-note" hidden><span lang="pt">As milhas ficam na vossa conta. Podem voltar aqui e trocá-las quando quiserem.</span><span lang="fr">Les miles restent sur votre compte. Vous pouvez revenir les échanger quand vous voulez.</span></p>
+            <p class="later" id="crew-later-note" hidden><span id="c-later"></span></p>
           </div>
           <div id="crew-done" hidden>
             <div class="eyebrow"><span lang="pt">Troca confirmada · 100.000 milhas</span><span lang="fr">Échange confirmé · 100 000 miles</span></div>
-            <h3><span lang="pt">Bem-vindos à tripulação!</span><span lang="fr">Bienvenue dans l’équipage !</span></h3>
-            <p><span lang="pt">Não podíamos ter escolhido melhor. Obrigado por aceitarem estar ao nosso lado no dia mais bonito da nossa história. O vosso lugar é ao lado dos comandantes.</span><span lang="fr">Nous n’aurions pas pu mieux choisir. Merci d’accepter d’être à nos côtés le plus beau jour de notre histoire. Votre place est aux côtés des commandants.</span></p>
+            <h3 id="c-done-h"></h3>
+            <p id="c-done-p"></p>
             <p><span lang="pt">Com todo o amor,</span><span lang="fr">Avec tout notre amour,</span> <b>Gabriel &amp; Maeva</b></p>
           </div>
         </div>
@@ -1004,13 +1006,44 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
   function att(){return form.querySelector('input[name=att]:checked').value}
   function syncAtt(){var y=att()==='yes'; yesFields.hidden=!y; songField.hidden=!y;}
   form.querySelectorAll('input[name=att]').forEach(function(r){r.addEventListener('change',syncAtt)});
-  function syncPrio(){ var on=att()==='yes'&&isCrew(document.getElementById('f-name').value); document.getElementById('prio').hidden=!on; form.classList.toggle('is-prio',on); }
+  function syncPrio(){ var nm=document.getElementById('f-name').value, on=att()==='yes'&&isCrew(nm); if(on) document.getElementById('prio-txt').textContent=crewTxt(nm).prio; document.getElementById('prio').hidden=!on; form.classList.toggle('is-prio',on); }
   document.getElementById('f-name').addEventListener('input',syncPrio);
+  document.querySelectorAll('.lang button').forEach(function(b){b.addEventListener('click',syncPrio)});
   form.querySelectorAll('input[name=att]').forEach(function(r){r.addEventListener('change',syncPrio)});
   var WA='351939422969';
   var msg='', data={};
   function isFr(){return root.getAttribute('data-lang')==='fr'}
-  function isCrew(v){ var n=' '+String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z]+/g,' ')+' '; return /\skill?ian\s/.test(n)&&/\sines\s/.test(n); }
+  function normName(v){ return ' '+String(v||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z]+/g,' ')+' '; }
+  // padrinhos / testemunhas: Kilian & Inês (juntos), Bárbara, Thobias
+  function crewProfile(v){
+    var n=normName(v), ki=/\skill?ian\s/.test(n)&&/\sines\s/.test(n), ba=/\sbarbara\s/.test(n), th=/\sth?obias\s/.test(n);
+    if(ki){ var mv=/\smaria\s/.test(n)&&/\svi(c)?tori/.test(n);
+      return {g:'pl',caps:'KILIAN · INÊS'+(mv?' · MARIA VICTORIA':''),lines:mv?['Kilian & Inês','& Maria Victoria']:['Kilian & Inês']}; }
+    if(ba&&th) return {g:'pl',caps:'BÁRBARA · THOBIAS',lines:['Bárbara & Thobias']};
+    if(ba) return {g:'f',caps:'BÁRBARA',lines:['Bárbara']};
+    if(th) return {g:'m',caps:'THOBIAS',lines:['Thobias']};
+    return null;
+  }
+  function isCrew(v){ return !!crewProfile(v); }
+  var CREW_TXT={
+    pt:{
+      pl:{h3:'Para vocês, o pedido é mesmo especial.',won:'Acabaram de ganhar <b>100.000 milhas</b>.',body:'Estas milhas não servem para viajar para nenhum destino. Servem para uma coisa que não se compra: <b>um lugar na nossa tripulação.</b> Se quiserem, troquem-nas e aceitem ser os nossos <b>padrinhos e testemunhas</b> no dia 17 de setembro de 2027.',yes:'Trocar milhas · Aceitamos ser padrinhos',later:'As milhas ficam na vossa conta. Podem voltar aqui e trocá-las quando quiserem.',doneH:'Bem-vindos à tripulação!',doneP:'Não podíamos ter escolhido melhor. Obrigado por aceitarem estar ao nosso lado no dia mais bonito da nossa história. O vosso lugar é ao lado dos comandantes.',prio:'Passageiros especiais identificados. Esta fila é só vossa.',sys:'PASSAGEIROS IDENTIFICADOS',wa:'Trocamos as 100.000 milhas: aceitamos ser vossos padrinhos!'},
+      f:{h3:'Para ti, o pedido é mesmo especial.',won:'Acabaste de ganhar <b>100.000 milhas</b>.',body:'Estas milhas não servem para viajar para nenhum destino. Servem para uma coisa que não se compra: <b>um lugar na nossa tripulação.</b> Se quiseres, troca-as e aceita ser a nossa <b>madrinha e testemunha</b> no dia 17 de setembro de 2027.',yes:'Trocar milhas · Aceito ser madrinha',later:'As milhas ficam na tua conta. Podes voltar aqui e trocá-las quando quiseres.',doneH:'Bem-vinda à tripulação!',doneP:'Não podíamos ter escolhido melhor. Obrigado por aceitares estar ao nosso lado no dia mais bonito da nossa história. O teu lugar é ao lado dos comandantes.',prio:'Passageira especial identificada. Esta fila é só tua.',sys:'PASSAGEIRA IDENTIFICADA',wa:'Troquei as 100.000 milhas: aceito ser vossa madrinha!'},
+      m:{h3:'Para ti, o pedido é mesmo especial.',won:'Acabaste de ganhar <b>100.000 milhas</b>.',body:'Estas milhas não servem para viajar para nenhum destino. Servem para uma coisa que não se compra: <b>um lugar na nossa tripulação.</b> Se quiseres, troca-as e aceita ser o nosso <b>padrinho e testemunha</b> no dia 17 de setembro de 2027.',yes:'Trocar milhas · Aceito ser padrinho',later:'As milhas ficam na tua conta. Podes voltar aqui e trocá-las quando quiseres.',doneH:'Bem-vindo à tripulação!',doneP:'Não podíamos ter escolhido melhor. Obrigado por aceitares estar ao nosso lado no dia mais bonito da nossa história. O teu lugar é ao lado dos comandantes.',prio:'Passageiro especial identificado. Esta fila é só tua.',sys:'PASSAGEIRO IDENTIFICADO',wa:'Troquei as 100.000 milhas: aceito ser vosso padrinho!'}
+    },
+    fr:{
+      pl:{h3:'Pour vous, la demande est vraiment spéciale.',won:'Vous venez de gagner <b>100 000 miles</b>.',body:'Ces miles ne permettent de voyager vers aucune destination. Ils servent à quelque chose qui ne s’achète pas : <b>une place dans notre équipage.</b> Si vous le souhaitez, échangez-les et acceptez d’être nos <b>témoins</b> le 17 septembre 2027.',yes:'Échanger les miles · Nous acceptons',later:'Les miles restent sur votre compte. Vous pouvez revenir les échanger quand vous voulez.',doneH:'Bienvenue dans l’équipage !',doneP:'Nous n’aurions pas pu mieux choisir. Merci d’accepter d’être à nos côtés le plus beau jour de notre histoire. Votre place est aux côtés des commandants.',prio:'Passagers spéciaux identifiés. Cette file est rien que pour vous.',sys:'PASSAGERS IDENTIFIÉS',wa:'Nous échangeons nos 100 000 miles : nous acceptons d’être vos témoins !'},
+      f:{h3:'Pour toi, la demande est vraiment spéciale.',won:'Tu viens de gagner <b>100 000 miles</b>.',body:'Ces miles ne permettent de voyager vers aucune destination. Ils servent à quelque chose qui ne s’achète pas : <b>une place dans notre équipage.</b> Si tu le souhaites, échange-les et accepte d’être notre <b>témoin</b> le 17 septembre 2027.',yes:'Échanger les miles · J’accepte',later:'Les miles restent sur ton compte. Tu peux revenir les échanger quand tu veux.',doneH:'Bienvenue dans l’équipage !',doneP:'Nous n’aurions pas pu mieux choisir. Merci d’accepter d’être à nos côtés le plus beau jour de notre histoire. Ta place est aux côtés des commandants.',prio:'Passagère spéciale identifiée. Cette file est rien que pour toi.',sys:'PASSAGÈRE IDENTIFIÉE',wa:'J’échange mes 100 000 miles : j’accepte d’être votre témoin !'},
+      m:{h3:'Pour toi, la demande est vraiment spéciale.',won:'Tu viens de gagner <b>100 000 miles</b>.',body:'Ces miles ne permettent de voyager vers aucune destination. Ils servent à quelque chose qui ne s’achète pas : <b>une place dans notre équipage.</b> Si tu le souhaites, échange-les et accepte d’être notre <b>témoin</b> le 17 septembre 2027.',yes:'Échanger les miles · J’accepte',later:'Les miles restent sur ton compte. Tu peux revenir les échanger quand tu veux.',doneH:'Bienvenue dans l’équipage !',doneP:'Nous n’aurions pas pu mieux choisir. Merci d’accepter d’être à nos côtés le plus beau jour de notre histoire. Ta place est aux côtés des commandants.',prio:'Passager spécial identifié. Cette file est rien que pour toi.',sys:'PASSAGER IDENTIFIÉ',wa:'J’échange mes 100 000 miles : j’accepte d’être votre témoin !'}
+    }
+  };
+  function crewTxt(v){ var p=crewProfile(v); return p?CREW_TXT[isFr()?'fr':'pt'][p.g]:null; }
+  function renderCrewCopy(){
+    var T=crewTxt(data.nome); if(!T) return;
+    document.getElementById('c-h3').textContent=T.h3; document.getElementById('c-won').innerHTML=T.won; document.getElementById('c-body').innerHTML=T.body;
+    document.getElementById('c-yes').textContent=T.yes; document.getElementById('c-later').textContent=T.later;
+    document.getElementById('c-done-h').textContent=T.doneH; document.getElementById('c-done-p').textContent=T.doneP;
+  }
   var crewAccepted=false;
   function isUpgrade(v){ return String(v||'').replace(/\D/g,'')==='140826'; }
   function collect(){
@@ -1039,7 +1072,7 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
     } else {
       L.push(fr?'Présence : malheureusement, je ne pourrai pas venir.':'Presença: infelizmente não poderei ir.');
     }
-    if(d.crew) L.push(crewAccepted?(fr?'✦ Nous échangeons nos 100 000 miles : nous acceptons d’être vos témoins ! 🥂':'✦ Trocamos as 100.000 milhas: aceitamos ser vossos padrinhos! 🥂'):(fr?'✦ Bonus : 100 000 miles reçus':'✦ Bónus: 100.000 milhas recebidas'));
+    if(d.crew) L.push(crewAccepted?'✦ '+crewTxt(d.nome).wa+' 🥂':(fr?'✦ Bonus : 100 000 miles reçus':'✦ Bónus: 100.000 milhas recebidas'));
     if(d.exec) L.push(fr?'✦ Passager fréquent n° 140826 (Classe Affaires)':'✦ Passageiro frequente n.º 140826 (Classe Executiva)');
     if(d.mensagem) L.push((fr?'Message : ':'Mensagem: ')+d.mensagem);
     msg=L.join('\n');
@@ -1054,7 +1087,7 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
     document.getElementById('bp').classList.toggle('crew',!!d.crew);
     document.getElementById('crew-tag').textContent=crewAccepted?(fr?' · ÉQUIPAGE':' · TRIPULAÇÃO'):(fr?' · PRIORITAIRE':' · PRIORITÁRIO');
     document.getElementById('miles').innerHTML=crewAccepted?(fr?'100 000 MILES ÉCHANGÉS ✦':'100.000 MILHAS TROCADAS ✦'):'+100.000 <span lang="pt">MILHAS</span><span lang="fr">MILES</span>';
-    document.getElementById('crew-offer').hidden=!d.crew;
+    document.getElementById('crew-offer').hidden=!d.crew; if(d.crew) renderCrewCopy();
     document.getElementById('crew-ask').hidden=crewAccepted; document.getElementById('crew-done').hidden=!crewAccepted;
     document.getElementById('bp').classList.toggle('exec',!!d.exec&&!d.crew);
     document.getElementById('bp').classList.toggle('both',!!d.exec&&!!d.crew);
@@ -1079,12 +1112,7 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
       fetch(RSVP_ENDPOINT,{method:'POST',mode:'no-cors',body:body}).then(function(){ok.textContent=fr?'Enregistrement envoyé. Pour être sûr, envoyez aussi votre réponse par WhatsApp.':'Check-in enviado. Para ter a certeza, envie também a resposta por WhatsApp.';}).catch(function(){ok.textContent=bad;});
     });
   }
-  function crewNames(v){
-    var n=' '+String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z]+/g,' ')+' ', out=[];
-    if(/\skill?ian\s/.test(n)) out.push('KILIAN'); if(/\sines\s/.test(n)) out.push('INÊS');
-    if(/\smaria\s/.test(n)&&/\svi(c)?tori/.test(n)) out.push('MARIA VICTORIA');
-    return out.join(' · ');
-  }
+  function crewNames(v){ var p=crewProfile(v); return p?p.caps:''; }
   var seqTimers=[];
   function crewSequence(){
     var sys=document.getElementById('crew-sys'), ask=document.getElementById('crew-ask'), fr=isFr();
@@ -1093,14 +1121,14 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
     var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches, step=reduce?0:850;
     var L=fr?[
       ['›','LECTURE DES PASSEPORTS…',true],
-      ['✓','PASSAGERS IDENTIFIÉS : <b>'+crewNames(data.nome)+'</b>'],
+      ['✓',crewTxt(data.nome).sys+' : <b>'+crewNames(data.nome)+'</b>'],
       ['✓','CHECK-IN PRIORITAIRE ACTIVÉ'],
       ['✓','VISA DIFFÉRENCIÉ ÉMIS · CATÉGORIE ÉQUIPAGE'],
       ['✓','ÉMISSION DE MILES : <b>+100 000</b> CRÉDITÉS'],
       ['✦','INVITATION SPÉCIALE DÉBLOQUÉE']
     ]:[
       ['›','A LER OS PASSAPORTES…',true],
-      ['✓','PASSAGEIROS IDENTIFICADOS: <b>'+crewNames(data.nome)+'</b>'],
+      ['✓',crewTxt(data.nome).sys+': <b>'+crewNames(data.nome)+'</b>'],
       ['✓','CHECK-IN PRIORITÁRIO ATIVADO'],
       ['✓','VISTO DIFERENCIADO EMITIDO · CATEGORIA TRIPULAÇÃO'],
       ['✓','EMISSÃO DE MILHAS: <b>+100.000</b> CREDITADAS'],
@@ -1161,12 +1189,7 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
     };
     if(document.fonts&&document.fonts.load) document.fonts.load("400 60px 'Pinyon Script'").then(go,go); else go();
   }
-  function crewDisplayNames(v){
-    var n=' '+String(v||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z]+/g,' ')+' ';
-    var a=[]; if(/\skill?ian\s/.test(n)) a.push('Kilian'); if(/\sines\s/.test(n)) a.push('Inês');
-    var lines=[a.join(' & ')]; if(/\smaria\s/.test(n)&&/\svi(c)?tori/.test(n)) lines.push('& Maria Victoria');
-    return lines;
-  }
+  function crewDisplayNames(v){ var p=crewProfile(v); return p?p.lines:[]; }
   function burst(){
     if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     var old=document.getElementById('burst'); if(old) old.remove();
@@ -1247,15 +1270,15 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
     rr(0,0,W,H,14); x.save(); x.clip();
     x.fillStyle=C.paper; x.fillRect(0,0,W,H);
     var crewOn=!!d.crew;
-    if(crewOn){ var gc=x.createLinearGradient(0,0,W,H); gc.addColorStop(0,'#FBF7EF'); gc.addColorStop(.6,'#EEF0E2'); gc.addColorStop(1,'#FBF7EF'); x.fillStyle=gc; x.fillRect(0,0,W,H);
-      var hc=x.createLinearGradient(0,0,564,0); hc.addColorStop(0,'#3E4729'); hc.addColorStop(.5,'#5E6B3E'); hc.addColorStop(1,'#3E4729'); x.fillStyle=hc; C.rose='#5E6B3E'; }
+    if(crewOn){ var gc=x.createLinearGradient(0,0,W,H); gc.addColorStop(0,'#FBF3E1'); gc.addColorStop(.55,'#F3E3BE'); gc.addColorStop(1,'#FBF3E1'); x.fillStyle=gc; x.fillRect(0,0,W,H);
+      var hc=x.createLinearGradient(0,0,564,0); hc.addColorStop(0,'#B8924F'); hc.addColorStop(.5,'#E2C98F'); hc.addColorStop(1,'#B8924F'); x.fillStyle=hc; C.rose='#8A6A2E'; }
     else if(d.exec){ var gp=x.createLinearGradient(0,0,W,H); gp.addColorStop(0,'#FBF3E1'); gp.addColorStop(.55,'#F3E3BE'); gp.addColorStop(1,'#FBF3E1'); x.fillStyle=gp; x.fillRect(0,0,W,H);
       var gh=x.createLinearGradient(0,0,564,0); gh.addColorStop(0,'#B8924F'); gh.addColorStop(.5,'#E2C98F'); gh.addColorStop(1,'#B8924F'); x.fillStyle=gh; C.rose='#8A6A2E'; }
     else x.fillStyle=C.bur;
-    if(crewOn){ var hc2=x.createLinearGradient(0,0,564,0); hc2.addColorStop(0,'#3E4729'); hc2.addColorStop(.5,'#5E6B3E'); hc2.addColorStop(1,'#3E4729'); x.fillStyle=hc2; }
+    if(crewOn){ var hc2=x.createLinearGradient(0,0,564,0); hc2.addColorStop(0,'#B8924F'); hc2.addColorStop(.5,'#E2C98F'); hc2.addColorStop(1,'#B8924F'); x.fillStyle=hc2; }
     x.fillRect(0,0,564,50);
-    txt((fr?'CARTE D’EMBARQUEMENT':'CARTÃO DE EMBARQUE')+(crewOn?(crewAccepted?(fr?' · ÉQUIPAGE':' · TRIPULAÇÃO'):(fr?' · PRIORITAIRE':' · PRIORITÁRIO')):d.exec?' · GOLD':''),22,31,'500 13px '+CAPS,(d.exec&&!crewOn)?'#45161F':C.gold,'left',3.2);
-    txt((d.exec||crewOn)?'Linhas Aéreas do Amor':'Boarding pass · Linhas Aéreas do Amor',544,31,'italic 15px '+DISP,(d.exec&&!crewOn)?'#45161F':C.soft,'right');
+    txt((fr?'CARTE D’EMBARQUEMENT':'CARTÃO DE EMBARQUE')+(crewOn?(crewAccepted?(fr?' · ÉQUIPAGE':' · TRIPULAÇÃO'):(fr?' · PRIORITAIRE':' · PRIORITÁRIO')):d.exec?' · GOLD':''),22,31,'500 13px '+CAPS,(d.exec||crewOn)?'#45161F':C.gold,'left',3.2);
+    txt((d.exec||crewOn)?'Linhas Aéreas do Amor':'Boarding pass · Linhas Aéreas do Amor',544,31,'italic 15px '+DISP,(d.exec||crewOn)?'#45161F':C.soft,'right');
     txt('LIS',22,106,'400 42px '+CAPS,C.ink);
     txt('Lisboa',22,126,'italic 15px '+DISP,C.muted);
     txt('∞',544,106,'400 42px '+CAPS,C.ink,'right');
@@ -1275,7 +1298,7 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
     if(crewOn&&d.exec){ x.save(); x.translate(96,268); x.rotate(-0.04); var bt=fr?'+ AFFAIRES ✦':'+ EXECUTIVA ✦'; x.font='500 10.5px '+CAPS; sp(1.6); var bw=x.measureText(bt).width+20; sp(0); x.fillStyle='#FBF3E1'; x.fillRect(-bw/2,-12,bw,24); x.strokeStyle='#C8A465'; x.lineWidth=1; x.strokeRect(-bw/2,-12,bw,24); txt(bt,0,4,'500 10.5px '+CAPS,'#8A6A2E','center',1.6); x.restore(); }
     // stamp
     x.save(); x.translate(470,262); x.rotate(-0.21); var stampTxt=crewOn?(crewAccepted?(fr?'ÉQUIPAGE ✦':'TRIPULAÇÃO ✦'):(fr?'PRIORITAIRE ✦':'PRIORITÁRIO ✦')):d.exec?(fr?'SURCLASSEMENT ✦':'UPGRADE ✦'):yes?(fr?'CONFIRMÉ':'CONFIRMADO'):(fr?'AVEC NOSTALGIE':'COM SAUDADE');
-    x.font='500 12px '+CAPS; sp(2.4); var sw=x.measureText(stampTxt).width+24; sp(0); var col=crewOn?'#5E6B3E':d.exec?'#8A6A2E':yes?C.bur:'#5E6B3E';
+    x.font='500 12px '+CAPS; sp(2.4); var sw=x.measureText(stampTxt).width+24; sp(0); var col=crewOn?'#8A6A2E':d.exec?'#8A6A2E':yes?C.bur:'#5E6B3E';
     x.fillStyle='rgba(251,247,239,.9)'; x.fillRect(-sw/2,-15,sw,30); x.strokeStyle=col; x.lineWidth=1.4; x.strokeRect(-sw/2,-15,sw,30); x.strokeRect(-sw/2+3,-12,sw-6,24);
     txt(stampTxt,0,5,'500 12px '+CAPS,col,'center',2.4); x.restore();
     // stub
