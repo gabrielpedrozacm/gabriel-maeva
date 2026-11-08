@@ -269,6 +269,18 @@ fieldset{border:0;padding:0;margin:0;display:flex;flex-direction:column;gap:10px
 .bp-stub .bars{margin-top:auto;height:34px;background:repeating-linear-gradient(90deg,var(--on-dark) 0 2px,transparent 2px 4px,var(--on-dark) 4px 5px,transparent 5px 8px,var(--on-dark) 8px 11px,transparent 11px 13px)}
 .bp-stub .bv{font-family:var(--script);font-size:24px;color:var(--gold);line-height:1}
 .bp-stamp{position:absolute;right:214px;bottom:14px;transform:rotate(-12deg);border:3px double var(--burgundy);color:var(--burgundy);font-family:var(--caps);font-size:12px;letter-spacing:.2em;padding:6px 12px;background:rgba(251,247,239,.85);pointer-events:none}
+.opt{font-family:var(--display);font-size:13px;letter-spacing:0;text-transform:none;color:var(--muted)}
+.gold-tag{display:none}
+.bp.exec .gold-tag{display:inline}
+.bp.exec{background:linear-gradient(135deg,#FBF3E1,#F3E3BE 55%,#FBF3E1);box-shadow:0 20px 40px -20px rgba(122,92,44,.55),0 0 0 1px #D9B978}
+.bp.exec .bp-top{background:linear-gradient(90deg,#B8924F,#E2C98F 50%,#B8924F)}
+.bp.exec .bp-top b{color:var(--burgundy-deep)}
+.bp.exec .bp-top em{color:#45161F}
+.bp.exec .bp-stub{background:var(--burgundy-deep)}
+.bp.exec .bp-grid .k{color:#8A6A2E}
+.bp.exec #r-class,.bp.exec #r-seat{color:#8A6A2E}
+.bp.exec .bp-stub #r-seat{color:var(--gold)}
+.bp.exec .bp-stamp{border-color:#B8924F;color:#8A6A2E;background:rgba(251,243,225,.9)}
 .bp-stamp.no{border-color:var(--olive);color:var(--olive)}
 @media (max-width:620px){.bp{grid-template-columns:minmax(0,1fr)}.bp-stub{border-left:0;border-top:2px dashed #CDBFA8;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:end}.bp-stub .bars,.bp-stub .bv{grid-column:1/-1}.bp-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.bp-stamp{right:16px;bottom:auto;top:110px}.bp-route .iata{font-size:32px}}
 .send{display:flex;flex-direction:column;gap:12px;margin-top:18px}
@@ -535,7 +547,7 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
       <div>
         <div class="eyebrow"><span lang="pt">Caixa negra encontrada</span><span lang="fr">Boîte noire trouvée</span></div>
         <h3><span lang="pt">Bem-vindo à cabine, co-piloto!</span><span lang="fr">Bienvenue au cockpit, copilote !</span></h3>
-        <p><span lang="pt">Descobriste o primeiro segredo do voo GM 1709. Guarda este código e mostra-o à torre de controle no dia do casamento: há uma surpresa à tua espera. Shhh… não contes a ninguém.</span><span lang="fr">Tu as découvert le premier secret du vol GM 1709. Garde ce code et montre-le à la tour de contrôle le jour du mariage : une surprise t’attend. Chut… ne le dis à personne.</span></p>
+        <p><span lang="pt">Descobriste o primeiro segredo do voo GM 1709. Usa este código no check-in, no campo do passageiro frequente, e vê o que acontece ao teu cartão de embarque. No dia do casamento, mostra-o à torre de controle: há uma surpresa à tua espera. Shhh… não contes a ninguém.</span><span lang="fr">Tu as découvert le premier secret du vol GM 1709. Utilise ce code lors de l’enregistrement, dans le champ du passager fréquent, et regarde ce qui arrive à ta carte d’embarquement. Le jour du mariage, montre-le à la tour de contrôle : une surprise t’attend. Chut… ne le dis à personne.</span></p>
       </div>
       <div class="egg-code">
         <div class="k"><span lang="pt">CÓDIGO SECRETO</span><span lang="fr">CODE SECRET</span></div>
@@ -617,6 +629,10 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
           <label for="f-msg"><span lang="pt">Mensagem para os noivos</span><span lang="fr">Un mot pour les mariés</span></label>
           <textarea id="f-msg" name="msg"></textarea>
         </div>
+        <div class="field">
+          <label for="f-code"><span lang="pt">N.º de passageiro frequente</span><span lang="fr">N° de passager fréquent</span> <small class="opt"><span lang="pt">(opcional)</span><span lang="fr">(facultatif)</span></small></label>
+          <input type="text" id="f-code" name="code" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="—">
+        </div>
         <p class="err" id="f-err" role="alert"></p>
         <button class="btn dark" type="submit" id="f-submit"><span lang="pt">Emitir cartão de embarque</span><span lang="fr">Émettre la carte d’embarquement</span></button>
       </form>
@@ -624,7 +640,7 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
       <div id="result" hidden>
         <div class="bp" id="bp" aria-live="polite">
           <div class="bp-main">
-            <div class="bp-top"><b><span lang="pt">CARTÃO DE EMBARQUE</span><span lang="fr">CARTE D’EMBARQUEMENT</span></b><em>Boarding pass · Linhas Aéreas do Amor</em></div>
+            <div class="bp-top"><b><span lang="pt">CARTÃO DE EMBARQUE</span><span lang="fr">CARTE D’EMBARQUEMENT</span><span class="gold-tag"> · GOLD</span></b><em>Boarding pass · Linhas Aéreas do Amor</em></div>
             <div class="bp-body">
               <div class="bp-route">
                 <div><div class="iata">LIS</div><small>Lisboa</small></div>
@@ -638,7 +654,7 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
                 <div><div class="k"><span lang="pt">EMBARQUE · BOARDING</span><span lang="fr">EMBARQUEMENT</span></div><div class="v">15:00</div></div>
                 <div><div class="k"><span lang="pt">PORTA · GATE</span><span lang="fr">PORTE · GATE</span></div><div class="v"><span lang="pt">Altar</span><span lang="fr">L’autel</span></div></div>
                 <div><div class="k"><span lang="pt">LUGARES · SEATS</span><span lang="fr">PLACES · SEATS</span></div><div class="v" id="r-n"></div></div>
-                <div><div class="k"><span lang="pt">CLASSE · CLASS</span><span lang="fr">CLASSE · CLASS</span></div><div class="v"><span lang="pt">Primeira</span><span lang="fr">Première</span></div></div>
+                <div><div class="k"><span lang="pt">CLASSE · CLASS</span><span lang="fr">CLASSE · CLASS</span></div><div class="v" id="r-class"><span lang="pt">Primeira</span><span lang="fr">Première</span></div></div>
               </div>
             </div>
           </div>
@@ -646,7 +662,7 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
             <div class="flt">GM 1709</div>
             <div class="rt">LIS → ∞</div>
             <div><div class="k"><span lang="pt">PASSAGEIRO(S)</span><span lang="fr">PASSAGER(S)</span></div><div class="v" id="r-name2"></div></div>
-            <div><div class="k"><span lang="pt">LUGAR</span><span lang="fr">SIÈGE</span></div><div class="v"><span lang="pt">Ao nosso lado</span><span lang="fr">À nos côtés</span></div></div>
+            <div><div class="k"><span lang="pt">LUGAR</span><span lang="fr">SIÈGE</span></div><div class="v" id="r-seat"><span lang="pt">Ao nosso lado</span><span lang="fr">À nos côtés</span></div></div>
             <div class="bars" aria-hidden="true"></div>
             <div class="bv"><span lang="pt">Boa viagem!</span><span lang="fr">Bon voyage !</span></div>
           </div>
@@ -783,6 +799,7 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
   var WA='351939422969';
   var msg='', data={};
   function isFr(){return root.getAttribute('data-lang')==='fr'}
+  function isUpgrade(v){ return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z]/gi,'').toUpperCase()==='COPILOTO'; }
   function collect(){
     data={
       nome:document.getElementById('f-name').value.trim(),
@@ -791,6 +808,7 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
       restricoes:att()==='yes'?document.getElementById('f-diet').value.trim():'',
       musica:att()==='yes'?document.getElementById('f-song').value.trim():'',
       mensagem:document.getElementById('f-msg').value.trim(),
+      exec:isUpgrade(document.getElementById('f-code').value),
       idioma:isFr()?'FR':'PT'
     };
     return data;
@@ -807,6 +825,7 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
     } else {
       L.push(fr?'Présence : malheureusement, je ne pourrai pas venir.':'Presença: infelizmente não poderei ir.');
     }
+    if(d.exec) L.push(fr?'✦ Code passager fréquent : COPILOTO (surclassement cockpit)':'✦ Passageiro frequente: COPILOTO (upgrade para a cabine de comando)');
     if(d.mensagem) L.push((fr?'Message : ':'Mensagem: ')+d.mensagem);
     msg=L.join('\n');
     document.getElementById('r-name').textContent=d.nome;
@@ -815,13 +834,18 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
     var st=document.getElementById('r-status');
     st.textContent=yes?(fr?'CONFIRMÉ':'CONFIRMADO'):(fr?'AVEC NOSTALGIE':'COM SAUDADE');
     st.className='bp-stamp'+(yes?'':' no');
+    if(d.exec){ st.textContent=fr?'SURCLASSEMENT ✦':'UPGRADE ✦'; }
+    document.getElementById('bp').classList.toggle('exec',!!d.exec);
+    document.getElementById('r-class').innerHTML=d.exec?'<span lang="pt">Co-piloto ✦</span><span lang="fr">Copilote ✦</span>':'<span lang="pt">Primeira</span><span lang="fr">Première</span>';
+    document.querySelectorAll('#r-seat').forEach(function(el){ el.innerHTML=d.exec?'<span lang="pt">Cabine de comando</span><span lang="fr">Cockpit</span>':'<span lang="pt">Ao nosso lado</span><span lang="fr">À nos côtés</span>'; });
     document.getElementById('wa').href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
     document.getElementById('msg-preview').value=msg;
   }
   function sendRsvp(){
     var ok=document.getElementById('sent-ok'), fr=isFr();
     if(!RSVP_ENDPOINT){ ok.hidden=true; return; }
-    var body=new URLSearchParams(); Object.keys(data).forEach(function(k){body.append(k,data[k])});
+    var body=new URLSearchParams(); Object.keys(data).forEach(function(k){ if(k!=='exec') body.append(k,data[k]); });
+    if(data.exec) body.set('mensagem','[COPILOTO ✦] '+(data.mensagem||''));
     var good=fr?'✓ Enregistrement reçu par la tour de contrôle':'✓ Check-in recebido pela torre de controle';
     var bad=fr?'Votre enregistrement n’a pas pu être confirmé. Envoyez aussi votre réponse par WhatsApp.':'Não conseguimos confirmar o registo. Envie também a resposta por WhatsApp.';
     ok.hidden=false; ok.textContent=fr?'Envoi à la tour de contrôle…':'A enviar para a torre de controle…';
@@ -862,9 +886,12 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
     function rr(X,Y,w,h,r){ x.beginPath(); x.moveTo(X+r,Y); x.arcTo(X+w,Y,X+w,Y+h,r); x.arcTo(X+w,Y+h,X,Y+h,r); x.arcTo(X,Y+h,X,Y,r); x.arcTo(X,Y,X+w,Y,r); x.closePath(); }
     rr(0,0,W,H,14); x.save(); x.clip();
     x.fillStyle=C.paper; x.fillRect(0,0,W,H);
-    x.fillStyle=C.bur; x.fillRect(0,0,564,50);
-    txt(fr?'CARTE D’EMBARQUEMENT':'CARTÃO DE EMBARQUE',22,31,'500 13px '+CAPS,C.gold,'left',3.2);
-    txt('Boarding pass · Linhas Aéreas do Amor',544,31,'italic 15px '+DISP,C.soft,'right');
+    if(d.exec){ var gp=x.createLinearGradient(0,0,W,H); gp.addColorStop(0,'#FBF3E1'); gp.addColorStop(.55,'#F3E3BE'); gp.addColorStop(1,'#FBF3E1'); x.fillStyle=gp; x.fillRect(0,0,W,H);
+      var gh=x.createLinearGradient(0,0,564,0); gh.addColorStop(0,'#B8924F'); gh.addColorStop(.5,'#E2C98F'); gh.addColorStop(1,'#B8924F'); x.fillStyle=gh; C.rose='#8A6A2E'; }
+    else x.fillStyle=C.bur;
+    x.fillRect(0,0,564,50);
+    txt((fr?'CARTE D’EMBARQUEMENT':'CARTÃO DE EMBARQUE')+(d.exec?' · GOLD':''),22,31,'500 13px '+CAPS,d.exec?'#45161F':C.gold,'left',3.2);
+    txt(d.exec?'Linhas Aéreas do Amor':'Boarding pass · Linhas Aéreas do Amor',544,31,'italic 15px '+DISP,d.exec?'#45161F':C.soft,'right');
     txt('LIS',22,106,'400 42px '+CAPS,C.ink);
     txt('Lisboa',22,126,'italic 15px '+DISP,C.muted);
     txt('∞',544,106,'400 42px '+CAPS,C.ink,'right');
@@ -879,22 +906,22 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
     field(fr?'EMBARQUEMENT':'EMBARQUE','15:00',cols[0],214);
     field(fr?'PORTE · GATE':'PORTA · GATE',fr?'L’autel':'Altar',cols[1],214);
     field(fr?'PLACES · SEATS':'LUGARES · SEATS',yes?d.lugares:'—',cols[2],214);
-    field(fr?'CLASSE · CLASS':'CLASSE · CLASS',fr?'Première':'Primeira',cols[3],214);
+    field(fr?'CLASSE · CLASS':'CLASSE · CLASS',d.exec?(fr?'Copilote ✦':'Co-piloto ✦'):(fr?'Première':'Primeira'),cols[3],214);
     txt(fr?'Gabriel & Maeva · Couvent de Mafra & Casa de Reguengos':'Gabriel & Maeva · Convento de Mafra & Casa de Reguengos',22,280,'italic 14px '+DISP,C.muted);
     // stamp
-    x.save(); x.translate(470,262); x.rotate(-0.21); var stampTxt=yes?(fr?'CONFIRMÉ':'CONFIRMADO'):(fr?'AVEC NOSTALGIE':'COM SAUDADE');
-    x.font='500 12px '+CAPS; sp(2.4); var sw=x.measureText(stampTxt).width+24; sp(0); var col=yes?C.bur:'#5E6B3E';
+    x.save(); x.translate(470,262); x.rotate(-0.21); var stampTxt=d.exec?(fr?'SURCLASSEMENT ✦':'UPGRADE ✦'):yes?(fr?'CONFIRMÉ':'CONFIRMADO'):(fr?'AVEC NOSTALGIE':'COM SAUDADE');
+    x.font='500 12px '+CAPS; sp(2.4); var sw=x.measureText(stampTxt).width+24; sp(0); var col=d.exec?'#8A6A2E':yes?C.bur:'#5E6B3E';
     x.fillStyle='rgba(251,247,239,.9)'; x.fillRect(-sw/2,-15,sw,30); x.strokeStyle=col; x.lineWidth=1.4; x.strokeRect(-sw/2,-15,sw,30); x.strokeRect(-sw/2+3,-12,sw-6,24);
     txt(stampTxt,0,5,'500 12px '+CAPS,col,'center',2.4); x.restore();
     // stub
-    x.fillStyle=C.olive; x.fillRect(566,0,194,H);
+    x.fillStyle=d.exec?'#45161F':C.olive; x.fillRect(566,0,194,H);
     x.strokeStyle='#CDBFA8'; x.lineWidth=2; x.setLineDash([6,5]); x.beginPath(); x.moveTo(565,0); x.lineTo(565,H); x.stroke(); x.setLineDash([]);
     txt('GM 1709',584,34,'500 11px '+CAPS,C.gold,'left',2.6);
     txt('LIS → ∞',584,66,'400 24px '+CAPS,C.on,'left',1);
     txt(fr?'PASSAGER(S)':'PASSAGEIRO(S)',584,96,'500 8.5px '+CAPS,C.gold,'left',1.5);
     wrap(d.nome,584,116,160,18,'500 16px '+DISP,C.on,2);
     txt(fr?'SIÈGE':'LUGAR',584,160,'500 8.5px '+CAPS,C.gold,'left',1.5);
-    txt(fr?'À nos côtés':'Ao nosso lado',584,179,'500 16px '+DISP,C.on);
+    txt(d.exec?(fr?'Cockpit':'Cabine de comando'):(fr?'À nos côtés':'Ao nosso lado'),584,179,'500 16px '+DISP,d.exec?C.gold:C.on);
     x.fillStyle=C.on; var bx=584, pat=[2,1,3,1,2,1,1,3,2,1,3,1,1,2,3,1,2,1,1,3,2,2,1,3,1,2,1,3,2,1,1,2,3,1,2,1,3,1,2,2];
     for(var i=0;bx<738;i++){ var p=pat[i%pat.length]; if(i%2===0) x.fillRect(bx,198,p,34); bx+=p+1; }
     txt(fr?'Bon voyage !':'Boa viagem!',584,272,'400 26px '+SCRIPT,C.gold);
@@ -941,16 +968,16 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
     });
   });
   setLang(saved); syncAtt();
-  // easter egg 1 · cinco toques no avião e ele descola
+  // easter egg 1 · dois toques no avião e ele descola
   (function(){
     var plane=document.getElementById('egg-plane'), card=document.getElementById('egg-card'); if(!plane||!card) return;
     var n=0, busy=false, reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
     plane.addEventListener('click',function(){
       if(busy) return; n++;
       plane.classList.remove('shake'); void plane.offsetWidth; plane.classList.add('shake');
-      plane.classList.toggle('s3',n===3); plane.classList.toggle('s4',n===4);
-      if(n<5) return;
-      busy=true; n=0; plane.classList.remove('shake','s3','s4'); plane.classList.add('fly');
+      plane.classList.toggle('s4',n===1);
+      if(n<2) return;
+      busy=true; n=0; plane.classList.remove('shake','s4'); plane.classList.add('fly');
       setTimeout(function(){
         card.hidden=false; card.scrollIntoView({block:'nearest',behavior:reduce?'auto':'smooth'}); card.focus({preventScroll:true});
         setTimeout(function(){ plane.classList.remove('fly'); plane.classList.add('back'); setTimeout(function(){plane.classList.remove('back');busy=false;},1300); },900);
