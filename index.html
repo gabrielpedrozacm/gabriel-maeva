@@ -548,12 +548,12 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
       <div>
         <div class="eyebrow"><span lang="pt">Caixa negra encontrada</span><span lang="fr">Boîte noire trouvée</span></div>
         <h3><span lang="pt">Upgrade à vista!</span><span lang="fr">Surclassement en vue !</span></h3>
-        <p><span lang="pt">Descobriste o primeiro segredo do voo GM 1709. Usa este código no check-in, no campo do passageiro frequente, e o teu cartão de embarque passa para a Classe Executiva. Guarda-o no telemóvel e, no dia do casamento, fica atento aos anúncios da torre de controle. Shhh… não contes a ninguém.</span><span lang="fr">Tu as découvert le premier secret du vol GM 1709. Utilise ce code lors de l’enregistrement, dans le champ du passager fréquent, et ta carte d’embarquement passe en Classe Affaires. Garde-la dans ton téléphone et, le jour du mariage, sois attentif aux annonces de la tour de contrôle. Chut… ne le dis à personne.</span></p>
+        <p><span lang="pt">Descobriste o primeiro segredo do voo GM 1709. Usa este número no check-in, no campo do passageiro frequente, e o teu cartão de embarque passa para a Classe Executiva. Guarda-o no telemóvel e, no dia do casamento, fica atento aos anúncios da torre de controle. Shhh… não contes a ninguém.</span><span lang="fr">Tu as découvert le premier secret du vol GM 1709. Utilise ce numéro lors de l’enregistrement, dans le champ du passager fréquent, et ta carte d’embarquement passe en Classe Affaires. Garde-la dans ton téléphone et, le jour du mariage, sois attentif aux annonces de la tour de contrôle. Chut… ne le dis à personne.</span></p>
       </div>
       <div class="egg-code">
-        <div class="k"><span lang="pt">CÓDIGO SECRETO</span><span lang="fr">CODE SECRET</span></div>
-        <b id="egg-code">UPGRADE</b>
-        <button class="copy" type="button" data-copy="UPGRADE"><span lang="pt">COPIAR</span><span lang="fr">COPIER</span></button>
+        <div class="k"><span lang="pt">N.º DE PASSAGEIRO FREQUENTE</span><span lang="fr">N° DE PASSAGER FRÉQUENT</span></div>
+        <b id="egg-code">140826</b>
+        <button class="copy" type="button" data-copy="140826"><span lang="pt">COPIAR</span><span lang="fr">COPIER</span></button>
       </div>
     </div>
   </div>
@@ -632,7 +632,7 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
         </div>
         <div class="field">
           <label for="f-code"><span lang="pt">N.º de passageiro frequente</span><span lang="fr">N° de passager fréquent</span> <small class="opt"><span lang="pt">(opcional)</span><span lang="fr">(facultatif)</span></small></label>
-          <input type="text" id="f-code" name="code" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="—">
+          <input type="text" id="f-code" name="code" autocomplete="off" inputmode="numeric" spellcheck="false" placeholder="—">
         </div>
         <p class="err" id="f-err" role="alert"></p>
         <button class="btn dark" type="submit" id="f-submit"><span lang="pt">Emitir cartão de embarque</span><span lang="fr">Émettre la carte d’embarquement</span></button>
@@ -801,7 +801,7 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
   var WA='351939422969';
   var msg='', data={};
   function isFr(){return root.getAttribute('data-lang')==='fr'}
-  function isUpgrade(v){ return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z]/gi,'').toUpperCase()==='UPGRADE'; }
+  function isUpgrade(v){ return String(v||'').replace(/\D/g,'')==='140826'; }
   function collect(){
     data={
       nome:document.getElementById('f-name').value.trim(),
@@ -827,7 +827,7 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
     } else {
       L.push(fr?'Présence : malheureusement, je ne pourrai pas venir.':'Presença: infelizmente não poderei ir.');
     }
-    if(d.exec) L.push(fr?'✦ Code passager fréquent : UPGRADE (Classe Affaires)':'✦ Passageiro frequente: UPGRADE (Classe Executiva)');
+    if(d.exec) L.push(fr?'✦ Passager fréquent n° 140826 (Classe Affaires)':'✦ Passageiro frequente n.º 140826 (Classe Executiva)');
     if(d.mensagem) L.push((fr?'Message : ':'Mensagem: ')+d.mensagem);
     msg=L.join('\n');
     document.getElementById('r-name').textContent=d.nome;
