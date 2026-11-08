@@ -298,6 +298,13 @@ fieldset{border:0;padding:0;margin:0;display:flex;flex-direction:column;gap:10px
 .bp-stub .bv{font-family:var(--script);font-size:24px;color:var(--gold);line-height:1}
 .bp-marks{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:0 20px 18px;margin-top:-4px}
 .bp-stamp{position:relative;transform:rotate(-6deg);margin-left:auto;border:3px double var(--burgundy);color:var(--burgundy);font-family:var(--caps);font-size:12px;letter-spacing:.2em;padding:6px 12px;background:rgba(251,247,239,.85);pointer-events:none}
+.prio{display:flex;flex-direction:column;gap:4px;background:linear-gradient(90deg,#3E4729,#5E6B3E);color:var(--on-dark);padding:12px 14px;border-left:3px solid var(--gold);animation:sys-in .4s ease forwards}
+.prio-tag{font-family:var(--caps);font-size:11.5px;letter-spacing:.22em;color:var(--gold)}
+.prio > span:last-child{font-size:16.5px;font-style:italic;color:var(--on-dark-soft)}
+#f-submit .pri{display:none}
+#rsvp.is-prio #f-submit{background:var(--gold);border-color:var(--gold);color:var(--burgundy-deep)}
+#rsvp.is-prio #f-submit .std{display:none}
+#rsvp.is-prio #f-submit .pri{display:inline}
 .exec-note{font-size:18px;font-style:italic;color:#8A6A2E;border-left:2px solid #C8A465;padding:4px 0 4px 14px}
 .opt{font-family:var(--display);font-size:13px;letter-spacing:0;text-transform:none;color:var(--muted)}
 .gold-tag{display:none}
@@ -794,8 +801,9 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
           <label for="f-code"><span lang="pt">N.º de passageiro frequente</span><span lang="fr">N° de passager fréquent</span> <small class="opt"><span lang="pt">(opcional)</span><span lang="fr">(facultatif)</span></small></label>
           <input type="text" id="f-code" name="code" autocomplete="off" inputmode="numeric" spellcheck="false" placeholder="—">
         </div>
+        <div class="prio" id="prio" hidden><span class="prio-tag">✦ <span lang="pt">CHECK-IN PRIORITÁRIO</span><span lang="fr">CHECK-IN PRIORITAIRE</span></span><span><span lang="pt">Passageiros especiais identificados. Esta fila é só vossa.</span><span lang="fr">Passagers spéciaux identifiés. Cette file est rien que pour vous.</span></span></div>
         <p class="err" id="f-err" role="alert"></p>
-        <button class="btn dark" type="submit" id="f-submit"><span lang="pt">Emitir cartão de embarque</span><span lang="fr">Émettre la carte d’embarquement</span></button>
+        <button class="btn dark" type="submit" id="f-submit"><span class="std"><span lang="pt">Emitir cartão de embarque</span><span lang="fr">Émettre la carte d’embarquement</span></span><span class="pri"><span lang="pt">✦ Fazer check-in prioritário</span><span lang="fr">✦ Enregistrement prioritaire</span></span></button>
       </form>
 
       <div id="result" hidden>
@@ -996,6 +1004,9 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
   function att(){return form.querySelector('input[name=att]:checked').value}
   function syncAtt(){var y=att()==='yes'; yesFields.hidden=!y; songField.hidden=!y;}
   form.querySelectorAll('input[name=att]').forEach(function(r){r.addEventListener('change',syncAtt)});
+  function syncPrio(){ var on=att()==='yes'&&isCrew(document.getElementById('f-name').value); document.getElementById('prio').hidden=!on; form.classList.toggle('is-prio',on); }
+  document.getElementById('f-name').addEventListener('input',syncPrio);
+  form.querySelectorAll('input[name=att]').forEach(function(r){r.addEventListener('change',syncPrio)});
   var WA='351939422969';
   var msg='', data={};
   function isFr(){return root.getAttribute('data-lang')==='fr'}
@@ -1039,16 +1050,16 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
     st.textContent=yes?(fr?'CONFIRMÉ':'CONFIRMADO'):(fr?'AVEC NOSTALGIE':'COM SAUDADE');
     st.className='bp-stamp'+(yes?'':' no');
     if(d.exec){ st.textContent=fr?'SURCLASSEMENT ✦':'UPGRADE ✦'; }
-    if(d.crew){ st.textContent=crewAccepted?(fr?'ÉQUIPAGE ✦':'TRIPULAÇÃO ✦'):(fr?'PASSAGER VIP':'PASSAGEIRO VIP'); }
+    if(d.crew){ st.textContent=crewAccepted?(fr?'ÉQUIPAGE ✦':'TRIPULAÇÃO ✦'):(fr?'CHECK-IN PRIORITAIRE':'CHECK-IN PRIORITÁRIO'); }
     document.getElementById('bp').classList.toggle('crew',!!d.crew);
-    document.getElementById('crew-tag').textContent=crewAccepted?(fr?' · ÉQUIPAGE':' · TRIPULAÇÃO'):' · VIP';
+    document.getElementById('crew-tag').textContent=crewAccepted?(fr?' · ÉQUIPAGE':' · TRIPULAÇÃO'):(fr?' · PRIORITAIRE':' · PRIORITÁRIO');
     document.getElementById('miles').innerHTML=crewAccepted?(fr?'100 000 MILES ÉCHANGÉS ✦':'100.000 MILHAS TROCADAS ✦'):'+100.000 <span lang="pt">MILHAS</span><span lang="fr">MILES</span>';
     document.getElementById('crew-offer').hidden=!d.crew;
     document.getElementById('crew-ask').hidden=crewAccepted; document.getElementById('crew-done').hidden=!crewAccepted;
     document.getElementById('bp').classList.toggle('exec',!!d.exec&&!d.crew);
     document.getElementById('bp').classList.toggle('both',!!d.exec&&!!d.crew);
     document.getElementById('exec-note').hidden=!d.exec;
-    document.getElementById('r-class').innerHTML=(d.crew&&crewAccepted)?'<span lang="pt">Tripulação ✦</span><span lang="fr">Équipage ✦</span>':d.crew?'<span lang="pt">VIP</span><span lang="fr">VIP</span>':d.exec?'<span lang="pt">Executiva ✦</span><span lang="fr">Affaires ✦</span>':'<span lang="pt">Económica</span><span lang="fr">Économique</span>';
+    document.getElementById('r-class').innerHTML=(d.crew&&crewAccepted)?'<span lang="pt">Tripulação ✦</span><span lang="fr">Équipage ✦</span>':d.crew?'<span lang="pt">Prioritária</span><span lang="fr">Prioritaire</span>':d.exec?'<span lang="pt">Executiva ✦</span><span lang="fr">Affaires ✦</span>':'<span lang="pt">Económica</span><span lang="fr">Économique</span>';
     document.querySelectorAll('#r-seat').forEach(function(el){ el.innerHTML=(d.crew&&crewAccepted)?'<span lang="pt">Ao lado dos comandantes</span><span lang="fr">Aux côtés des commandants</span>':d.exec?'<span lang="pt">Lounge executivo</span><span lang="fr">Salon affaires</span>':'<span lang="pt">Ao nosso lado</span><span lang="fr">À nos côtés</span>'; });
     document.getElementById('wa').href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
     document.getElementById('msg-preview').value=msg;
@@ -1083,12 +1094,14 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
     var L=fr?[
       ['›','LECTURE DES PASSEPORTS…',true],
       ['✓','PASSAGERS IDENTIFIÉS : <b>'+crewNames(data.nome)+'</b>'],
+      ['✓','CHECK-IN PRIORITAIRE ACTIVÉ'],
       ['✓','VISA DIFFÉRENCIÉ ÉMIS · CATÉGORIE ÉQUIPAGE'],
       ['✓','ÉMISSION DE MILES : <b>+100 000</b> CRÉDITÉS'],
       ['✦','INVITATION SPÉCIALE DÉBLOQUÉE']
     ]:[
       ['›','A LER OS PASSAPORTES…',true],
       ['✓','PASSAGEIROS IDENTIFICADOS: <b>'+crewNames(data.nome)+'</b>'],
+      ['✓','CHECK-IN PRIORITÁRIO ATIVADO'],
       ['✓','VISTO DIFERENCIADO EMITIDO · CATEGORIA TRIPULAÇÃO'],
       ['✓','EMISSÃO DE MILHAS: <b>+100.000</b> CREDITADAS'],
       ['✦','CONVITE ESPECIAL DESBLOQUEADO']
@@ -1101,10 +1114,59 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
     seqTimers.push(setTimeout(function(){ ask.classList.remove('wait'); }, L.length*step+200));
   }
   document.getElementById('crew-yes').addEventListener('click',function(){
-    crewAccepted=true; buildMessage(); sendRsvp(); burst();
+    crewAccepted=true; buildMessage(); sendRsvp(); skywrite(crewDisplayNames(data.nome));
     var done=document.getElementById('crew-done'); done.scrollIntoView({block:'nearest',behavior:'smooth'});
   });
   document.getElementById('crew-later').addEventListener('click',function(){ document.getElementById('crew-later-note').hidden=false; });
+  // fumo bege/branco com uma sombra suave para se ver em fundos claros
+  function smoke(x,col,w,fade,text){
+    x.save(); x.globalAlpha=.30*fade; x.strokeStyle='rgba(74,52,44,.55)'; x.shadowColor='rgba(74,52,44,.55)'; x.shadowBlur=w*1.6; x.lineWidth=w*1.25;
+    if(text) x.strokeText(text.t,text.x,text.y); else x.stroke(); x.restore();
+    x.save(); x.globalAlpha=.85*fade; x.strokeStyle=col; x.shadowColor=col; x.shadowBlur=w*1.4; x.lineWidth=w;
+    if(text) x.strokeText(text.t,text.x,text.y); else x.stroke();
+    x.globalAlpha=.95*fade; x.shadowBlur=0; x.lineWidth=Math.max(1.5,w*.22); x.strokeStyle='#FFFFFF';
+    if(text) x.strokeText(text.t,text.x,text.y); else x.stroke(); x.restore();
+  }
+  // padrinhos: os aviões escrevem os nomes com fumo
+  function skywrite(lines){
+    if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var go=function(){
+      var old=document.getElementById('burst'); if(old) old.remove();
+      var c=document.createElement('canvas'); c.id='burst'; document.body.appendChild(c);
+      var dpr=Math.min(2,window.devicePixelRatio||1), W=innerWidth, H=innerHeight; c.width=W*dpr; c.height=H*dpr;
+      var x=c.getContext('2d'); x.scale(dpr,dpr);
+      var plane=new Path2D('M23 7.2 L14 6 L9 0.5 H7 L9.5 6 L4 6.4 L2 3.5 H0.5 L1.6 8 L0.5 12.5 H2 L4 9.6 L9.5 10 L7 15.5 H9 L14 10 L23 8.8 Z');
+      var size=Math.min(W*0.14,H*0.16,120), font="400 "+size+"px 'Pinyon Script', 'Snell Roundhand', cursive";
+      x.font=font;
+      var L=lines.map(function(t,i){ var w=x.measureText(t).width; if(w>W*0.92){ var k=W*0.92/w; } return {t:t,w:w,col:i%2?'#E6D3B3':'#FFFFFF'}; });
+      var maxW=Math.max.apply(null,L.map(function(l){return l.w})), scale=Math.min(1,(W*0.92)/maxW);
+      var lh=size*scale*1.15, top=H*0.42-(L.length-1)*lh/2;
+      L.forEach(function(l,i){ l.x=(W-l.w*scale)/2; l.y=top+i*lh; l.delay=i*700; l.dur=Math.max(1700,l.w*scale*3.2); });
+      var HOLD=1600, FADE=1400, t0=performance.now(), endAll=Math.max.apply(null,L.map(function(l){return l.delay+l.dur}));
+      (function f(now){
+        var t=now-t0; x.clearRect(0,0,W,H);
+        var fade=t>endAll+HOLD?Math.max(0,1-(t-endAll-HOLD)/FADE):1, drift=t>endAll+HOLD?(t-endAll-HOLD)/FADE*-18:0;
+        L.forEach(function(l){
+          var k=Math.max(0,Math.min(1,(t-l.delay)/l.dur)), px=l.x-40+(l.w*scale+80)*k, py=l.y-size*scale*.32+Math.sin(k*Math.PI*6)*size*scale*.12;
+          if(k>0){
+            x.save(); x.beginPath(); x.rect(0,0,Math.min(W,px),H); x.clip();
+            x.translate(l.x,l.y+drift); x.scale(scale,scale); x.font=font; x.lineJoin='round'; x.lineCap='round';
+            smoke(x,l.col,Math.max(3.5,size/16),fade,{t:l.t,x:0,y:0}); x.restore();
+          }
+          if(k>0&&(t-l.delay)<l.dur+900){ var kk=(t-l.delay)/l.dur, ex=kk>1?px+(kk-1)*l.dur*0.6:px;
+            x.save(); x.translate(ex,py); x.scale(1.6,1.6); x.translate(-12,-8); x.shadowColor='rgba(0,0,0,.25)'; x.shadowBlur=6; x.fillStyle='#2B2320'; x.fill(plane); x.restore(); }
+        });
+        if(t<endAll+HOLD+FADE) requestAnimationFrame(f); else c.remove();
+      })(t0);
+    };
+    if(document.fonts&&document.fonts.load) document.fonts.load("400 60px 'Pinyon Script'").then(go,go); else go();
+  }
+  function crewDisplayNames(v){
+    var n=' '+String(v||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z]+/g,' ')+' ';
+    var a=[]; if(/\skill?ian\s/.test(n)) a.push('Kilian'); if(/\sines\s/.test(n)) a.push('Inês');
+    var lines=[a.join(' & ')]; if(/\smaria\s/.test(n)&&/\svi(c)?tori/.test(n)) lines.push('& Maria Victoria');
+    return lines;
+  }
   function burst(){
     if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     var old=document.getElementById('burst'); if(old) old.remove();
@@ -1115,7 +1177,7 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
     var S=Math.min(W,H), cx=W/2;
     function lerp(a,b,k){return {x:a.x+(b.x-a.x)*k,y:a.y+(b.y-a.y)*k}}
     function ease(k){return k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2}
-    var cols=['#5A1F2C','#9E4A4E','#E9C9C6','#C8A465','#F3E8C8','#A3AC82','#5E6B3E'];
+    var cols=['#E6D3B3','#FFFFFF','#E6D3B3','#FFFFFF','#E6D3B3','#FFFFFF','#E6D3B3'];
     var angs=[-78,-52,-26,0,26,52,78], J=[];
     angs.forEach(function(deg,i){
       var th=deg*Math.PI/180, off=(i-3)*7, split=H*0.56;
@@ -1139,10 +1201,9 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
         if(k>0&&k<=1.0001){ var p=j.at(Math.min(1,k)); if(!j.prev||Math.hypot(p.x-j.prev.x,p.y-j.prev.y)>1.5){ j.trail.push(p); } j.ang=j.prev?Math.atan2(p.y-j.prev.y,p.x-j.prev.x):-Math.PI/2; j.prev=p; j.pos=p; }
         else if(k>1&&j.after){ j.pos={x:j.pos.x+j.after.dx*9,y:j.pos.y+j.after.dy*9}; j.ang=Math.atan2(j.after.dy,j.after.dx); }
         if(j.trail.length>1){
-          x.save(); x.globalAlpha=.62*fade; x.strokeStyle=j.col; x.lineCap='round'; x.lineJoin='round';
-          x.shadowColor=j.col; x.shadowBlur=18; x.lineWidth=Math.max(8,S/70);
-          x.beginPath(); x.moveTo(j.trail[0].x,j.trail[0].y); for(var i=1;i<j.trail.length;i++) x.lineTo(j.trail[i].x,j.trail[i].y); x.stroke();
-          x.globalAlpha=.9*fade; x.shadowBlur=0; x.lineWidth=2; x.strokeStyle='rgba(255,255,255,.55)'; x.stroke(); x.restore();
+          x.save(); x.lineCap='round'; x.lineJoin='round';
+          x.beginPath(); x.moveTo(j.trail[0].x,j.trail[0].y); for(var i=1;i<j.trail.length;i++) x.lineTo(j.trail[i].x,j.trail[i].y);
+          smoke(x,j.col,Math.max(9,S/62),fade); x.restore();
         }
         if(j.pos&&fade>0&&k>0) { x.globalAlpha=fade; drawPlane(j.pos,j.ang,j.col); x.globalAlpha=1; }
       });
@@ -1189,7 +1250,7 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
     else x.fillStyle=C.bur;
     if(crewOn){ var hc2=x.createLinearGradient(0,0,564,0); hc2.addColorStop(0,'#3E4729'); hc2.addColorStop(.5,'#5E6B3E'); hc2.addColorStop(1,'#3E4729'); x.fillStyle=hc2; }
     x.fillRect(0,0,564,50);
-    txt((fr?'CARTE D’EMBARQUEMENT':'CARTÃO DE EMBARQUE')+(crewOn?(crewAccepted?(fr?' · ÉQUIPAGE':' · TRIPULAÇÃO'):' · VIP'):d.exec?' · GOLD':''),22,31,'500 13px '+CAPS,(d.exec&&!crewOn)?'#45161F':C.gold,'left',3.2);
+    txt((fr?'CARTE D’EMBARQUEMENT':'CARTÃO DE EMBARQUE')+(crewOn?(crewAccepted?(fr?' · ÉQUIPAGE':' · TRIPULAÇÃO'):(fr?' · PRIORITAIRE':' · PRIORITÁRIO')):d.exec?' · GOLD':''),22,31,'500 13px '+CAPS,(d.exec&&!crewOn)?'#45161F':C.gold,'left',3.2);
     txt((d.exec||crewOn)?'Linhas Aéreas do Amor':'Boarding pass · Linhas Aéreas do Amor',544,31,'italic 15px '+DISP,(d.exec&&!crewOn)?'#45161F':C.soft,'right');
     txt('LIS',22,106,'400 42px '+CAPS,C.ink);
     txt('Lisboa',22,126,'italic 15px '+DISP,C.muted);
@@ -1205,11 +1266,11 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
     field(fr?'EMBARQUEMENT':'EMBARQUE','15:00',cols[0],214);
     field(fr?'PORTE · GATE':'PORTA · GATE',fr?'L’autel':'Altar',cols[1],214);
     field(fr?'PLACES · SEATS':'LUGARES · SEATS',yes?d.lugares:'—',cols[2],214);
-    field(fr?'CLASSE · CLASS':'CLASSE · CLASS',(crewOn&&crewAccepted)?(fr?'Équipage ✦':'Tripulação ✦'):crewOn?'VIP':d.exec?(fr?'Affaires ✦':'Executiva ✦'):(fr?'Économique':'Económica'),cols[3],214);
+    field(fr?'CLASSE · CLASS':'CLASSE · CLASS',(crewOn&&crewAccepted)?(fr?'Équipage ✦':'Tripulação ✦'):crewOn?(fr?'Prioritaire':'Prioritária'):d.exec?(fr?'Affaires ✦':'Executiva ✦'):(fr?'Économique':'Económica'),cols[3],214);
     if(!(crewOn&&d.exec)) txt(fr?'Gabriel & Maeva · Couvent de Mafra & Casa de Reguengos':'Gabriel & Maeva · Convento de Mafra & Casa de Reguengos',22,280,'italic 14px '+DISP,C.muted);
     if(crewOn&&d.exec){ x.save(); x.translate(96,268); x.rotate(-0.04); var bt=fr?'+ AFFAIRES ✦':'+ EXECUTIVA ✦'; x.font='500 10.5px '+CAPS; sp(1.6); var bw=x.measureText(bt).width+20; sp(0); x.fillStyle='#FBF3E1'; x.fillRect(-bw/2,-12,bw,24); x.strokeStyle='#C8A465'; x.lineWidth=1; x.strokeRect(-bw/2,-12,bw,24); txt(bt,0,4,'500 10.5px '+CAPS,'#8A6A2E','center',1.6); x.restore(); }
     // stamp
-    x.save(); x.translate(470,262); x.rotate(-0.21); var stampTxt=crewOn?(crewAccepted?(fr?'ÉQUIPAGE ✦':'TRIPULAÇÃO ✦'):(fr?'+100 000 MILES':'+100.000 MILHAS')):d.exec?(fr?'SURCLASSEMENT ✦':'UPGRADE ✦'):yes?(fr?'CONFIRMÉ':'CONFIRMADO'):(fr?'AVEC NOSTALGIE':'COM SAUDADE');
+    x.save(); x.translate(470,262); x.rotate(-0.21); var stampTxt=crewOn?(crewAccepted?(fr?'ÉQUIPAGE ✦':'TRIPULAÇÃO ✦'):(fr?'PRIORITAIRE ✦':'PRIORITÁRIO ✦')):d.exec?(fr?'SURCLASSEMENT ✦':'UPGRADE ✦'):yes?(fr?'CONFIRMÉ':'CONFIRMADO'):(fr?'AVEC NOSTALGIE':'COM SAUDADE');
     x.font='500 12px '+CAPS; sp(2.4); var sw=x.measureText(stampTxt).width+24; sp(0); var col=crewOn?'#5E6B3E':d.exec?'#8A6A2E':yes?C.bur:'#5E6B3E';
     x.fillStyle='rgba(251,247,239,.9)'; x.fillRect(-sw/2,-15,sw,30); x.strokeStyle=col; x.lineWidth=1.4; x.strokeRect(-sw/2,-15,sw,30); x.strokeRect(-sw/2+3,-12,sw-6,24);
     txt(stampTxt,0,5,'500 12px '+CAPS,col,'center',2.4); x.restore();
@@ -1363,7 +1424,7 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
   }
   function launch(fromX,fromY){
     if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    var cols=['#9E4A4E','#C8A465','#E9C9C6','#A3AC82','#5A1F2C','#F3E8C8'], W=innerWidth, H=innerHeight;
+    var cols=['#E6D3B3','#FFFFFF'], W=innerWidth, H=innerHeight;
     var side=Math.random()<.5?-1:1, endX=fromX+side*(W*(.25+Math.random()*.5)), endY=-60-Math.random()*80;
     var ctrl={x:fromX+side*(30+Math.random()*120),y:fromY-H*(.35+Math.random()*.25)};
     flights.push({p0:{x:fromX,y:fromY},c:ctrl,p1:{x:endX,y:endY},t0:performance.now(),dur:1500+Math.random()*700,col:cols[Math.floor(Math.random()*cols.length)],trail:[]});
@@ -1377,8 +1438,8 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
       var a={x:f.p0.x+(f.c.x-f.p0.x)*u,y:f.p0.y+(f.c.y-f.p0.y)*u}, b={x:f.c.x+(f.p1.x-f.c.x)*u,y:f.c.y+(f.p1.y-f.c.y)*u}, p={x:a.x+(b.x-a.x)*u,y:a.y+(b.y-a.y)*u};
       if(k<1){ var last=f.trail[f.trail.length-1]; if(!last||Math.hypot(p.x-last.x,p.y-last.y)>1.5) f.trail.push(p); f.ang=last?Math.atan2(p.y-last.y,p.x-last.x):-Math.PI/2; f.pos=p; }
       var fade=k<1?1:Math.max(0,1-(now-f.t0-f.dur)/900);
-      if(f.trail.length>1){ x.save(); x.globalAlpha=.55*fade; x.strokeStyle=f.col; x.lineCap='round'; x.lineJoin='round'; x.shadowColor=f.col; x.shadowBlur=14; x.lineWidth=7;
-        x.beginPath(); x.moveTo(f.trail[0].x,f.trail[0].y); for(var i=1;i<f.trail.length;i++) x.lineTo(f.trail[i].x,f.trail[i].y); x.stroke(); x.restore(); }
+      if(f.trail.length>1){ x.save(); x.lineCap='round'; x.lineJoin='round';
+        x.beginPath(); x.moveTo(f.trail[0].x,f.trail[0].y); for(var i=1;i<f.trail.length;i++) x.lineTo(f.trail[i].x,f.trail[i].y); smoke(x,f.col,8,fade); x.restore(); }
       if(k<1&&f.pos){ x.save(); x.translate(f.pos.x,f.pos.y); x.rotate(f.ang); x.scale(1.3,1.3); x.translate(-12,-8); x.fillStyle='#2B2320'; x.fill(planeP); x.strokeStyle=f.col; x.lineWidth=.8; x.stroke(planeP); x.restore(); }
     });
     if(flights.length) requestAnimationFrame(skyLoop); else { skyRun=false; x.clearRect(0,0,innerWidth,innerHeight); }
