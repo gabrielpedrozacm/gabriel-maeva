@@ -319,6 +319,18 @@ fieldset{border:0;padding:0;margin:0;display:flex;flex-direction:column;gap:10px
 .crew-offer::before{content:"";position:absolute;inset:8px;border:1px solid rgba(200,164,101,.55);border-radius:9px;pointer-events:none}
 .crew-offer .eyebrow{color:var(--gold)}
 .crew-offer h3{font-family:var(--script);font-weight:400;font-size:clamp(34px,4.4vw,46px);color:var(--gold);line-height:1.05;margin-top:6px}
+.sys{font-family:'Courier New',ui-monospace,monospace;font-size:13px;letter-spacing:.06em;color:#CFE0B4;display:flex;flex-direction:column;gap:6px;margin-bottom:18px;position:relative}
+.sys div{display:flex;gap:10px;align-items:baseline;opacity:0;transform:translateY(4px);animation:sys-in .35s ease forwards}
+.sys div i{font-style:normal;color:var(--gold);flex-shrink:0}
+.sys div.scan i{animation:sys-blink .5s steps(2) infinite}
+.sys div b{color:var(--on-dark);font-weight:600}
+@keyframes sys-in{to{opacity:1;transform:none}}
+@keyframes sys-blink{50%{opacity:.2}}
+#crew-ask.wait{opacity:0;transform:translateY(8px)}
+#crew-ask{transition:opacity .6s ease,transform .6s ease}
+#crew-offer p.won{font-size:22px;color:var(--on-dark);margin-top:6px}
+#crew-offer p.won b{color:var(--gold)}
+@media (prefers-reduced-motion: reduce){.sys div{animation:none;opacity:1;transform:none}#crew-ask.wait{opacity:1;transform:none}}
 #crew-offer p{font-size:18.5px;line-height:1.5;color:var(--on-dark-soft);margin-top:10px;max-width:58ch}
 .crew-offer p b{color:var(--on-dark);font-weight:600}
 .crew-offer .bal{display:flex;align-items:baseline;gap:12px;margin-top:16px;padding-top:14px;border-top:1px dashed rgba(200,164,101,.5);flex-wrap:wrap}
@@ -809,9 +821,11 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
         </div>
         <div class="send">
         <div class="crew-offer" id="crew-offer" hidden>
+          <div class="sys" id="crew-sys" aria-live="polite"></div>
           <div id="crew-ask">
             <div class="eyebrow"><span lang="pt">Bónus de passageiro muito especial</span><span lang="fr">Bonus de passager très spécial</span></div>
-            <h3><span lang="pt">Acabaram de ganhar 100.000 milhas!</span><span lang="fr">Vous venez de gagner 100 000 miles !</span></h3>
+            <h3><span lang="pt">Para vocês, o pedido é mesmo especial.</span><span lang="fr">Pour vous, la demande est vraiment spéciale.</span></h3>
+            <p class="won"><span lang="pt">Acabaram de ganhar <b>100.000 milhas</b>.</span><span lang="fr">Vous venez de gagner <b>100 000 miles</b>.</span></p>
             <p><span lang="pt">Estas milhas não servem para viajar para nenhum destino. Servem para uma coisa que não se compra: <b>um lugar na nossa tripulação.</b> Se quiserem, troquem-nas e aceitem ser os nossos <b>padrinhos e testemunhas</b> no dia 17 de setembro de 2027.</span><span lang="fr">Ces miles ne permettent de voyager vers aucune destination. Ils servent à quelque chose qui ne s’achète pas : <b>une place dans notre équipage.</b> Si vous le souhaitez, échangez-les et acceptez d’être nos <b>témoins</b> le 17 septembre 2027.</span></p>
             <div class="bal"><span class="k"><span lang="pt">SALDO</span><span lang="fr">SOLDE</span></span><b>100.000 <span lang="pt">MILHAS</span><span lang="fr">MILES</span></b></div>
             <div class="btns">
@@ -1039,6 +1053,38 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
       fetch(RSVP_ENDPOINT,{method:'POST',mode:'no-cors',body:body}).then(function(){ok.textContent=fr?'Enregistrement envoyé. Pour être sûr, envoyez aussi votre réponse par WhatsApp.':'Check-in enviado. Para ter a certeza, envie também a resposta por WhatsApp.';}).catch(function(){ok.textContent=bad;});
     });
   }
+  function crewNames(v){
+    var n=' '+String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z]+/g,' ')+' ', out=[];
+    if(/\skill?ian\s/.test(n)) out.push('KILIAN'); if(/\sines\s/.test(n)) out.push('INÊS');
+    if(/\smaria\s/.test(n)&&/\svi(c)?tori/.test(n)) out.push('MARIA VICTORIA');
+    return out.join(' · ');
+  }
+  var seqTimers=[];
+  function crewSequence(){
+    var sys=document.getElementById('crew-sys'), ask=document.getElementById('crew-ask'), fr=isFr();
+    seqTimers.forEach(clearTimeout); seqTimers=[]; sys.innerHTML='';
+    if(crewAccepted){ sys.hidden=true; return; } sys.hidden=false;
+    var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches, step=reduce?0:850;
+    var L=fr?[
+      ['›','LECTURE DES PASSEPORTS…',true],
+      ['✓','PASSAGERS IDENTIFIÉS : <b>'+crewNames(data.nome)+'</b>'],
+      ['✓','VISA DIFFÉRENCIÉ ÉMIS · CATÉGORIE ÉQUIPAGE'],
+      ['✓','ÉMISSION DE MILES : <b>+100 000</b> CRÉDITÉS'],
+      ['✦','INVITATION SPÉCIALE DÉBLOQUÉE']
+    ]:[
+      ['›','A LER OS PASSAPORTES…',true],
+      ['✓','PASSAGEIROS IDENTIFICADOS: <b>'+crewNames(data.nome)+'</b>'],
+      ['✓','VISTO DIFERENCIADO EMITIDO · CATEGORIA TRIPULAÇÃO'],
+      ['✓','EMISSÃO DE MILHAS: <b>+100.000</b> CREDITADAS'],
+      ['✦','CONVITE ESPECIAL DESBLOQUEADO']
+    ];
+    ask.classList.add('wait');
+    L.forEach(function(l,i){ seqTimers.push(setTimeout(function(){
+      var d=document.createElement('div'); if(l[2]) d.className='scan'; d.innerHTML='<i>'+l[0]+'</i><span>'+l[1]+'</span>'; sys.appendChild(d);
+      if(i>0){ var prev=sys.children[0]; if(prev) prev.className=''; }
+    }, i*step)); });
+    seqTimers.push(setTimeout(function(){ ask.classList.remove('wait'); }, L.length*step+200));
+  }
   document.getElementById('crew-yes').addEventListener('click',function(){
     crewAccepted=true; buildMessage(); sendRsvp(); burst();
     var done=document.getElementById('crew-done'); done.scrollIntoView({block:'nearest',behavior:'smooth'});
@@ -1046,13 +1092,46 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
   document.getElementById('crew-later').addEventListener('click',function(){ document.getElementById('crew-later-note').hidden=false; });
   function burst(){
     if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var old=document.getElementById('burst'); if(old) old.remove();
     var c=document.createElement('canvas'); c.id='burst'; document.body.appendChild(c);
-    var W=c.width=innerWidth, H=c.height=innerHeight, x=c.getContext('2d'), P=[], cols=['#C8A465','#E9C9C6','#B25C5F','#A3AC82','#F7EDE6','#5A1F2C'];
-    for(var i=0;i<140;i++) P.push({x:W/2+(Math.random()-.5)*W*.3,y:H*.55,vx:(Math.random()-.5)*12,vy:-6-Math.random()*12,r:3+Math.random()*5,a:Math.random()*6,va:(Math.random()-.5)*.3,c:cols[i%cols.length]});
-    var t0=performance.now();
-    (function f(t){ var k=(t-t0)/2600; x.clearRect(0,0,W,H);
-      P.forEach(function(p){ p.vy+=.28; p.vx*=.99; p.x+=p.vx; p.y+=p.vy; p.a+=p.va; x.save(); x.globalAlpha=Math.max(0,1-k); x.translate(p.x,p.y); x.rotate(p.a); x.fillStyle=p.c; x.beginPath(); x.ellipse(0,0,p.r,p.r*.55,0,0,6.283); x.fill(); x.restore(); });
-      if(k<1) requestAnimationFrame(f); else c.remove(); })(t0);
+    var dpr=Math.min(2,window.devicePixelRatio||1), W=innerWidth, H=innerHeight; c.width=W*dpr; c.height=H*dpr;
+    var x=c.getContext('2d'); x.scale(dpr,dpr);
+    var plane=new Path2D('M23 7.2 L14 6 L9 0.5 H7 L9.5 6 L4 6.4 L2 3.5 H0.5 L1.6 8 L0.5 12.5 H2 L4 9.6 L9.5 10 L7 15.5 H9 L14 10 L23 8.8 Z');
+    var S=Math.min(W,H), cx=W/2, cy=H*0.46, hs=S/40;
+    function heart(t){ var sn=Math.sin(t); return {x:cx+16*sn*sn*sn*hs, y:cy-(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t))*hs}; }
+    function lerp(a,b,k){return {x:a.x+(b.x-a.x)*k,y:a.y+(b.y-a.y)*k}}
+    function ease(k){return k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2}
+    var tip=heart(Math.PI), start={x:cx,y:H+60};
+    var J=[
+      {col:'#9E4A4E', at:function(k){ if(k<.22) return lerp(start,tip,ease(k/.22)); var u=(k-.22)/.78; return heart(Math.PI-u*Math.PI); }, end:.78, after:{dx:1,dy:-.6}},
+      {col:'#C8A465', at:function(k){ if(k<.22) return lerp(start,tip,ease(k/.22)); var u=(k-.22)/.78; return heart(Math.PI+u*Math.PI); }, end:.78, after:{dx:-1,dy:-.6}}
+    ];
+    [['#E9C9C6',0],['#8A9566',38],['#F3E8C8',-38]].forEach(function(f,i){
+      var off=f[1], d0=.12+i*.05;
+      J.push({col:f[0], delay:d0, at:function(k){ var p0={x:-80,y:H*.86+off}, p1={x:W*.5,y:H*.18+off*.6}, p2={x:W+120,y:-60+off};
+        var a=lerp(p0,p1,k), b2=lerp(p1,p2,k); return lerp(a,b2,k); }});
+    });
+    J.forEach(function(j){ j.trail=[]; j.prev=null; });
+    var T=4200, FADE=1300, t0=performance.now();
+    function drawPlane(p,ang,col){ x.save(); x.translate(p.x,p.y); x.rotate(ang); x.scale(1.5,1.5); x.translate(-12,-8);
+      x.shadowColor='rgba(0,0,0,.25)'; x.shadowBlur=6; x.fillStyle='#2B2320'; x.fill(plane); x.shadowBlur=0; x.strokeStyle=col; x.lineWidth=.8; x.stroke(plane); x.restore(); }
+    (function f(now){
+      var t=now-t0, fade=t>T?Math.max(0,1-(t-T)/FADE):1;
+      x.clearRect(0,0,W,H);
+      J.forEach(function(j){
+        var k=(t/T)-(j.delay||0); k=k/(1-(j.delay||0));
+        if(k>0&&k<=1.0001){ var p=j.at(Math.min(1,k)); if(!j.prev||Math.hypot(p.x-j.prev.x,p.y-j.prev.y)>1.5){ j.trail.push(p); } j.ang=j.prev?Math.atan2(p.y-j.prev.y,p.x-j.prev.x):-Math.PI/2; j.prev=p; j.pos=p; }
+        else if(k>1&&j.after){ j.pos={x:j.pos.x+j.after.dx*9,y:j.pos.y+j.after.dy*9}; j.ang=Math.atan2(j.after.dy,j.after.dx); }
+        if(j.trail.length>1){
+          x.save(); x.globalAlpha=.62*fade; x.strokeStyle=j.col; x.lineCap='round'; x.lineJoin='round';
+          x.shadowColor=j.col; x.shadowBlur=18; x.lineWidth=Math.max(8,S/70);
+          x.beginPath(); x.moveTo(j.trail[0].x,j.trail[0].y); for(var i=1;i<j.trail.length;i++) x.lineTo(j.trail[i].x,j.trail[i].y); x.stroke();
+          x.globalAlpha=.9*fade; x.shadowBlur=0; x.lineWidth=2; x.strokeStyle='rgba(255,255,255,.55)'; x.stroke(); x.restore();
+        }
+        if(j.pos&&fade>0&&k>0) { x.globalAlpha=fade; drawPlane(j.pos,j.ang,j.col); x.globalAlpha=1; }
+      });
+      if(t<T+FADE) requestAnimationFrame(f); else c.remove();
+    })(t0);
   }
   form.addEventListener('submit',function(e){
     e.preventDefault();
@@ -1066,6 +1145,7 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
     form.hidden=true; result.hidden=false;
     document.getElementById('copy-note').textContent='';
     sendRsvp();
+    if(data.crew) crewSequence();
     result.scrollIntoView({block:'nearest'});
     document.getElementById('save-bp').focus({preventScroll:true});
   });
