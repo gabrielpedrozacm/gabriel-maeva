@@ -22,6 +22,41 @@ function getBook_() {
 }
 const HEADERS = ['Data/hora', 'Nome(s)', 'Presença', 'Lugares', 'Restrições alimentares', 'Pedido musical', 'Mensagem', 'Idioma'];
 
+function key_(v) {
+  return String(v == null ? '' : v).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
+// Aba "Playlist": Música | Votos | Ocultar. Marque "Ocultar" para tirar uma música do site.
+function playlistSheet_(ss) {
+  let sh = ss.getSheetByName('Playlist');
+  if (sh) return sh;
+  sh = ss.insertSheet('Playlist');
+  sh.appendRow(['Música', 'Votos', 'Ocultar']);
+  sh.setFrozenRows(1);
+  sh.getRange(1, 1, 1, 3).setFontWeight('bold').setBackground('#5A1F2C').setFontColor('#F7EDE6');
+  sh.getRange('C2:C1000').insertCheckboxes();
+  const ci = ss.getSheetByName(SHEET_NAME);
+  if (ci && ci.getLastRow() > 1) {
+    ci.getRange(2, 6, ci.getLastRow() - 1, 1).getValues().forEach(r => addSong_(sh, r[0]));
+  }
+  return sh;
+}
+
+function findSong_(sh, k) {
+  const last = sh.getLastRow();
+  if (last < 2) return 0;
+  const vals = sh.getRange(2, 1, last - 1, 1).getValues();
+  for (let i = 0; i < vals.length; i++) if (key_(vals[i][0]) === k) return i + 2;
+  return 0;
+}
+
+function addSong_(sh, song) {
+  song = clean_(song);
+  const k = key_(song);
+  if (!k || findSong_(sh, k)) return;
+  sh.appendRow([song, 0, false]);
+}
+
 function clean_(v) {
   v = String(v == null ? '' : v).trim().slice(0, 1000);
   return /^[=+\-@]/.test(v) ? "'" + v : v; // evita fórmulas injetadas
@@ -38,6 +73,14 @@ function doPost(e) {
       const total = (Number(props.getProperty('AVIOES')) || 0) + n;
       props.setProperty('AVIOES', String(total));
       return ContentService.createTextOutput(JSON.stringify({ ok: true, avioes: total })).setMimeType(ContentService.MimeType.JSON);
+    }
+    if (p0.tipo === 'voto') {
+      const pl = playlistSheet_(getBook_());
+      const r = findSong_(pl, key_(p0.musica));
+      if (!r) return ContentService.createTextOutput(JSON.stringify({ ok: false })).setMimeType(ContentService.MimeType.JSON);
+      const v = (Number(pl.getRange(r, 2).getValue()) || 0) + 1;
+      pl.getRange(r, 2).setValue(v);
+      return ContentService.createTextOutput(JSON.stringify({ ok: true, votos: v })).setMimeType(ContentService.MimeType.JSON);
     }
     const ss = getBook_();
     const sh = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
@@ -58,6 +101,7 @@ function doPost(e) {
     }
     if (target) sh.getRange(target, 1, 1, row.length).setValues([row]);
     else sh.appendRow(row);
+    if (p.musica) addSong_(playlistSheet_(ss), p.musica);
     return ContentService.createTextOutput(JSON.stringify({ ok: true, sheet: ss.getUrl() })).setMimeType(ContentService.MimeType.JSON);
   } catch (err) {
     console.error(err);
@@ -68,6 +112,19 @@ function doPost(e) {
 }
 
 function doGet(e) {
+  // ?playlist=1 devolve só as músicas e os votos (sem nomes), sem as marcadas como "Ocultar"
+  if (e && e.parameter && e.parameter.playlist) {
+    const pl = playlistSheet_(getBook_());
+    let list = [];
+    if (pl.getLastRow() > 1) {
+      list = pl.getRange(2, 1, pl.getLastRow() - 1, 3).getValues()
+        .filter(r => String(r[0]).trim() && r[2] !== true)
+        .map(r => ({ m: String(r[0]).replace(/^'/, ''), v: Number(r[1]) || 0 }))
+        .sort((a, b) => b.v - a.v)
+        .slice(0, 60);
+    }
+    return ContentService.createTextOutput(JSON.stringify({ ok: true, musicas: list })).setMimeType(ContentService.MimeType.JSON);
+  }
   // ?stats=1 devolve só totais (nunca nomes nem mensagens) para o contador do site
   if (e && e.parameter && e.parameter.stats) {
     let respostas = 0, passageiros = 0;

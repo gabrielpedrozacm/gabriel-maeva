@@ -369,6 +369,34 @@ fieldset{border:0;padding:0;margin:0;display:flex;flex-direction:column;gap:10px
 .sent-ok{font-family:var(--caps);font-size:11.5px;letter-spacing:.18em;color:var(--olive)}
 .hint{font-size:16px;color:var(--muted)}
 
+/* PLAYLIST */
+.playlist{background:var(--olive-deep);color:var(--on-dark)}
+.playlist .h2{color:var(--on-dark)}
+.playlist .eyebrow{color:var(--gold)}
+.playlist .lead{color:var(--on-dark-soft)}
+.pl-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:44px;align-items:start}
+.pl-list{list-style:none;margin:0;padding:0;border-top:1px solid rgba(200,164,101,.35);counter-reset:pl}
+.pl-list li{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 4px;border-bottom:1px solid rgba(200,164,101,.2)}
+.pl-list .n{font-family:var(--caps);font-size:13px;color:var(--gold);font-variant-numeric:tabular-nums}
+.pl-list .m{font-size:19px;line-height:1.3;overflow-wrap:anywhere}
+.pl-list li:nth-child(-n+3) .m{font-weight:600}
+.heart{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 12px;border:1px solid rgba(200,164,101,.5);font-family:var(--caps);font-size:12px;color:var(--on-dark);font-variant-numeric:tabular-nums}
+.heart:hover{border-color:var(--gold)}
+.heart:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.heart .h{color:var(--gold);font-size:15px;transition:transform .2s}
+.heart.on{background:var(--gold);border-color:var(--gold);color:var(--burgundy-deep)}
+.heart.on .h{color:var(--burgundy)}
+.heart.pop .h{transform:scale(1.5)}
+.pl-empty{font-style:italic;color:var(--on-dark-soft);font-size:18px;padding:18px 4px;border-top:1px solid rgba(200,164,101,.35)}
+.pl-more{margin-top:14px;font-family:var(--caps);font-size:11px;letter-spacing:.2em;color:var(--gold)}
+.pl-side .btn{margin-top:22px}
+.pl-note{margin-top:18px;font-size:15.5px;font-style:italic;color:var(--on-dark-soft)}
+@media (max-width:860px){.pl-grid{grid-template-columns:minmax(0,1fr);gap:28px}}
+/* 15:30 */
+.takeoff-toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 76px);transform:translateX(-50%);z-index:60;background:var(--burgundy-deep);color:var(--on-dark);border:1px solid var(--gold);padding:14px 22px;text-align:center;box-shadow:0 18px 40px -16px rgba(0,0,0,.6);width:max-content;max-width:calc(100% - 32px);animation:toast-in .5s ease both}
+@keyframes toast-in{from{opacity:0;transform:translate(-50%,-8px)}to{opacity:1;transform:translate(-50%,0)}}
+.takeoff-toast b{display:block;font-family:var(--script);font-weight:400;font-size:40px;color:var(--gold);line-height:1.1}
+.takeoff-toast span{font-family:var(--caps);font-size:11px;letter-spacing:.22em}
 /* INFO */
 .info{background:var(--paper)}
 .info-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:40px 36px}
@@ -469,6 +497,7 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
       <a href="#o-dia"><span lang="pt">O DIA</span><span lang="fr">LE JOUR J</span></a>
       <a href="#paleta"><span lang="pt">DRESS CODE</span><span lang="fr">DRESS CODE</span></a>
       <a href="#check-in">CHECK-IN</a>
+      <a href="#playlist">PLAYLIST</a>
       <a href="#informacoes"><span lang="pt">INFORMAÇÕES</span><span lang="fr">INFOS</span></a>
       <a href="#album"><span lang="pt">ÁLBUM</span><span lang="fr">ALBUM</span></a>
     </div>
@@ -873,6 +902,23 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
           <textarea id="msg-preview" readonly aria-label="Mensagem" hidden></textarea>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="playlist band" id="playlist">
+  <div class="wrap pl-grid">
+    <div class="pl-side">
+      <div class="eyebrow"><span lang="pt">Entretenimento a bordo</span><span lang="fr">Divertissement à bord</span></div>
+      <h2 class="h2"><span lang="pt">A banda sonora do voo</span><span lang="fr">La bande-son du vol</span></h2>
+      <p class="lead" style="margin-top:12px"><span lang="pt">Estas são as músicas pedidas pelos passageiros no check-in. Toquem no ♥ das que querem ouvir na pista de dança: as mais votadas vão para o DJ.</span><span lang="fr">Voici les chansons demandées par les passagers lors de l’enregistrement. Touchez le ♥ de celles que vous voulez entendre sur la piste : les plus votées iront au DJ.</span></p>
+      <a class="btn" href="#check-in"><span lang="pt">Pedir uma música</span><span lang="fr">Demander une chanson</span></a>
+      <p class="pl-note"><span lang="pt">Só aparecem as músicas, nunca quem as pediu.</span><span lang="fr">Seules les chansons apparaissent, jamais qui les a demandées.</span></p>
+    </div>
+    <div>
+      <ol class="pl-list" id="pl-list" hidden></ol>
+      <p class="pl-empty" id="pl-empty"><span lang="pt">Ainda não há pedidos. Faça o check-in e seja o primeiro a escolher uma música para a pista.</span><span lang="fr">Pas encore de demandes. Faites votre enregistrement et soyez le premier à choisir une chanson.</span></p>
+      <button class="pl-more btn ghost" type="button" id="pl-more" hidden style="all:unset;cursor:pointer;margin-top:14px;font-family:var(--caps);font-size:11px;letter-spacing:.2em;color:var(--gold)"></button>
     </div>
   </div>
 </section>
@@ -1504,6 +1550,65 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
       if(taps.length>=2) e.preventDefault();
       if(taps.length>=3){ taps=[]; burst(); }
     });
+  })();
+
+
+  // ===== 4 · playlist colaborativa =====
+  var plData=[], plShowAll=false;
+  function plKey(v){ return String(v||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim(); }
+  function plVoted(){ try{ return JSON.parse(localStorage.getItem('gm-votos')||'[]'); }catch(e){ return []; } }
+  function renderPlaylist(){
+    var ol=document.getElementById('pl-list'), empty=document.getElementById('pl-empty'), more=document.getElementById('pl-more'), fr=isFr(), voted=plVoted();
+    if(!plData.length){ ol.hidden=true; empty.hidden=false; more.hidden=true; return; }
+    empty.hidden=true; ol.hidden=false; ol.innerHTML='';
+    var list=plShowAll?plData:plData.slice(0,10);
+    list.forEach(function(it,i){
+      var li=document.createElement('li');
+      var n=document.createElement('span'); n.className='n'; n.textContent=String(i+1).padStart(2,'0');
+      var m=document.createElement('span'); m.className='m'; m.textContent=it.m;
+      var b=document.createElement('button'); b.type='button'; b.className='heart'+(voted.indexOf(plKey(it.m))>=0?' on':'');
+      b.setAttribute('aria-label',(fr?'Voter pour ':'Votar em ')+it.m);
+      b.innerHTML='<span class="h" aria-hidden="true">♥</span><span class="c"></span>'; b.querySelector('.c').textContent=it.v;
+      b.addEventListener('click',function(){ vote(it,b); });
+      li.appendChild(n); li.appendChild(m); li.appendChild(b); ol.appendChild(li);
+    });
+    more.hidden=plData.length<=10;
+    more.textContent=plShowAll?(fr?'VOIR MOINS':'VER MENOS'):(fr?'VOIR LES '+plData.length+' CHANSONS':'VER AS '+plData.length+' MÚSICAS');
+  }
+  function vote(it,b){
+    var k=plKey(it.m), voted=plVoted(); if(voted.indexOf(k)>=0) return;
+    voted.push(k); try{ localStorage.setItem('gm-votos',JSON.stringify(voted)); }catch(e){}
+    it.v++; b.classList.add('on','pop'); b.querySelector('.c').textContent=it.v; setTimeout(function(){b.classList.remove('pop')},250);
+    if(!RSVP_ENDPOINT) return;
+    var body=new URLSearchParams(); body.append('tipo','voto'); body.append('musica',it.m);
+    fetch(RSVP_ENDPOINT,{method:'POST',body:body}).then(function(r){return r.json()}).then(function(j){ if(j&&j.ok&&typeof j.votos==='number'){ it.v=j.votos; b.querySelector('.c').textContent=it.v; } }).catch(function(){});
+  }
+  function loadPlaylist(){
+    if(!RSVP_ENDPOINT) return;
+    fetch(RSVP_ENDPOINT+'?playlist=1').then(function(r){return r.json()}).then(function(j){
+      if(j&&j.ok&&Array.isArray(j.musicas)){ plData=j.musicas.filter(function(x){return x&&x.m}); renderPlaylist(); }
+    }).catch(function(){});
+  }
+  document.getElementById('pl-more').addEventListener('click',function(){ plShowAll=!plShowAll; renderPlaylist(); });
+  document.querySelectorAll('.lang button').forEach(function(b){b.addEventListener('click',renderPlaylist)});
+  loadPlaylist();
+  document.getElementById('rsvp').addEventListener('submit',function(){ if(document.getElementById('f-song').value.trim()) setTimeout(loadPlaylist,4000); });
+
+  // ===== 3 · às 15:30 do dia 17, a esquadrilha passa =====
+  (function(){
+    var T=Date.UTC(2027,8,17,14,30,0), KEY='gm-1530';
+    function played(){ try{ return localStorage.getItem(KEY)==='1'; }catch(e){ return false; } }
+    function fire(force){
+      if(!force&&played()) return; try{ localStorage.setItem(KEY,'1'); }catch(e){}
+      var fr=isFr(), t=document.createElement('div'); t.className='takeoff-toast'; t.setAttribute('role','status');
+      t.innerHTML='<b>'+(fr?'Oui !':'Sim!')+'</b><span>'+(fr?'15:30 · LES COMMANDANTS ONT DÉCOLLÉ ✈':'15:30 · OS COMANDANTES DESCOLARAM ✈')+'</span>';
+      document.body.appendChild(t); burst(); setTimeout(function(){ t.remove(); },7000);
+    }
+    var now=Date.now();
+    if(now<T && T-now<864e5) setTimeout(function(){ fire(false); }, T-now);
+    else if(now>=T && now-T<10*60000) setTimeout(function(){ fire(false); },1500);
+    function preview(){ if(location.hash==='#decolagem') setTimeout(function(){ fire(true); },600); }
+    preview(); window.addEventListener('hashchange',preview);
   })();
 
   (function counter(){
