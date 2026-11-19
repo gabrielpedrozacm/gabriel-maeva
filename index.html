@@ -102,7 +102,8 @@ html[data-lang="fr"] [lang="pt"]{display:none!important}
 .flora{position:absolute;z-index:4;pointer-events:none;height:auto}
 .flora.bl{left:-60px;bottom:-30px;width:clamp(170px,22vw,300px);transform:rotate(-6deg)}
 .flora.br{right:-60px;bottom:-30px;width:clamp(190px,25vw,340px);transform:scaleX(-1) rotate(6deg)}
-.stamp-hero{position:absolute;z-index:4;right:max(20px,calc(50% - 520px));top:84px;width:96px;height:96px;border-radius:50%;border:3px double var(--blush);color:#FBF4EA;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--caps);font-size:9.5px;letter-spacing:.14em;transform:rotate(14deg);text-align:center;line-height:1.4;background:rgba(69,22,31,.45);backdrop-filter:blur(3px)}
+.stamp-hero{position:absolute;z-index:4;right:max(20px,calc(50% - 540px));top:86px;width:200px;color:#F3E6D2;opacity:.82;transform:rotate(-9deg);filter:drop-shadow(0 1px 3px rgba(0,0,0,.35))}
+.stamp-hero svg{display:block;width:100%;height:auto}
 .slide-cap{position:absolute;z-index:4;left:0;right:0;text-align:center;bottom:60px;font-family:var(--caps);font-size:10px;letter-spacing:.24em;color:#F1E3D6;opacity:.85;text-shadow:0 1px 6px rgba(0,0,0,.6)}
 .hero .wrap > *{max-width:100%}
 @media (max-width:700px){.names .amp{display:block;padding:0;margin:.06em 0}}
@@ -111,7 +112,7 @@ html[data-lang="fr"] [lang="pt"]{display:none!important}
   .hero .wrap{padding-block:60px 110px}
   .crest{width:104px}
   .flora.bl{left:-40px;width:140px}.flora.br{right:-44px;width:160px}
-  .stamp-hero{right:14px;top:74px;width:70px;height:70px;font-size:7.5px}
+  .stamp-hero{right:6px;top:70px;width:118px}
   .slide-cap{bottom:54px;font-size:9px}
   .count div{min-width:78px}
 }
@@ -588,7 +589,15 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
   <div class="shade" aria-hidden="true"></div>
   <canvas id="petals" aria-hidden="true"></canvas>
   <div class="slide-cap" id="slide-cap" aria-hidden="true">PALÁCIO NACIONAL DE MAFRA</div>
-  <div class="stamp-hero" aria-hidden="true">LISBOA<br>✈<br>17·09·27</div>
+  <div class="stamp-hero" aria-hidden="true"><svg viewBox="0 0 230 120" fill="none" stroke="currentColor">
+    <g stroke-width="1.6" opacity=".85"><path d="M2 38 q12 -7 24 0 t24 0 t24 0 t24 0"/><path d="M2 52 q12 -7 24 0 t24 0 t24 0 t24 0"/><path d="M2 66 q12 -7 24 0 t24 0 t24 0 t24 0"/><path d="M2 80 q12 -7 24 0 t24 0 t24 0 t24 0"/></g>
+    <circle cx="168" cy="60" r="56" stroke-width="2.2"/><circle cx="168" cy="60" r="50" stroke-width="1"/><circle cx="168" cy="60" r="31" stroke-width="1"/>
+    <path id="pm-ring" d="M168 60 m-40.5 0 a40.5 40.5 0 1 1 81 0 a40.5 40.5 0 1 1 -81 0" stroke="none"/>
+    <text fill="currentColor" stroke="none" font-family="Cinzel, 'Trajan Pro', Georgia, serif" font-size="10.5" letter-spacing="2.6"><textPath href="#pm-ring">CORREIOS · LISBOA · PORTUGAL ·</textPath></text>
+    <text x="168" y="56" text-anchor="middle" fill="currentColor" stroke="none" font-family="Cinzel, Georgia, serif" font-size="13" letter-spacing="1.5">17 SET</text>
+    <text x="168" y="72" text-anchor="middle" fill="currentColor" stroke="none" font-family="Cinzel, Georgia, serif" font-size="12" letter-spacing="1.5">2027</text>
+    <path d="M160 79 h16" stroke-width="1"/><path d="M160 41 h16" stroke-width="1"/>
+  </svg></div>
   <div class="wrap">
     <svg class="crest" viewBox="0 0 200 200" aria-hidden="true">
   <g fill="none" stroke="currentColor" stroke-width="1.2"><path d="M79.0 168.7 A68 68 0 0 1 43.6 66.0"/><path d="M121.0 168.7 A68 68 0 0 0 156.4 66.0"/><circle cx="100" cy="104" r="54"/><circle cx="100" cy="104" r="49" stroke-dasharray="1 4"/><path d="M90 172 C95 176 105 176 110 172 M86 178 C95 184 105 184 114 178"/></g>
