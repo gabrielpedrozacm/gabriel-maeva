@@ -76,14 +76,14 @@ html[data-lang="pt"] [lang="fr"],html[data-lang="pt"] [lang="en"],html[data-lang
 .hero{position:relative;overflow:hidden;color:var(--on-dark);background:var(--burgundy-deep);min-height:clamp(600px,92vh,940px);display:flex;flex-direction:column}
 .slides{position:absolute;inset:0;z-index:0}
 .slides img{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;opacity:0;transition:opacity 1.8s ease;transform:scale(1.06)}
-.slides img.on{opacity:1;animation:kb 9s ease-out forwards}
+.slides img.on{opacity:1;transform:none}
 .slides img[data-pos="facade"]{object-position:50% 30%}
 .slides img[data-pos="quinta"]{object-position:50% 62%}
 @keyframes kb{from{transform:scale(1.06)}to{transform:scale(1.0)}}
 .shade{position:absolute;inset:0;z-index:1;pointer-events:none;background:
-  radial-gradient(ellipse 60% 55% at 50% 48%,rgba(43,15,20,.48),transparent 75%),
-  linear-gradient(180deg,rgba(43,15,20,.62) 0%,rgba(43,15,20,.18) 28%,rgba(43,15,20,.28) 62%,rgba(69,22,31,.92) 100%)}
-#petals{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none}
+  radial-gradient(ellipse 60% 55% at 50% 48%,rgba(43,15,20,.36),transparent 75%),
+  linear-gradient(180deg,rgba(43,15,20,.42) 0%,rgba(43,15,20,.08) 28%,rgba(43,15,20,.16) 62%,rgba(69,22,31,.82) 100%)}
+#petals{display:none}
 .hero .wrap{position:relative;z-index:3;flex:1;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;padding-block:72px 120px}
 .crest{width:132px;height:auto;color:var(--gold);filter:drop-shadow(0 2px 6px rgba(0,0,0,.35))}
 .hero .eyebrow{color:var(--on-dark);opacity:.92;font-size:11.5px;text-shadow:0 1px 8px rgba(0,0,0,.5)}
@@ -95,6 +95,8 @@ html[data-lang="pt"] [lang="fr"],html[data-lang="pt"] [lang="en"],html[data-lang
 .date{font-family:var(--caps);font-size:clamp(20px,3vw,26px);letter-spacing:.34em;margin-left:.34em;color:#FBF4EA;text-shadow:0 1px 10px rgba(0,0,0,.45)}
 .place{font-style:italic;font-size:20px;color:#F1E3D6;max-width:36ch;text-shadow:0 1px 10px rgba(0,0,0,.5)}
 .count{display:flex;margin-top:8px;background:rgba(43,15,20,.38);border:1px solid rgba(200,164,101,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.count-line{font-family:var(--caps);font-size:12.5px;letter-spacing:.28em;text-transform:uppercase;color:#F1E3D6;margin-top:4px;text-shadow:0 1px 8px rgba(0,0,0,.55)}
+.count-line b{font-family:var(--display);font-weight:500;font-size:1.6em;letter-spacing:.04em;color:var(--gold);vertical-align:-.08em;padding:0 .15em;font-variant-numeric:lining-nums}
 .count div{min-width:92px;padding:12px 10px;text-align:center}
 .count div + div{border-left:1px solid rgba(200,164,101,.4)}
 .count b{display:block;font-family:var(--display);font-size:36px;font-weight:500;line-height:1;font-variant-numeric:tabular-nums;color:#FBF4EA}
@@ -621,11 +623,7 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
       <div class="rule" aria-hidden="true"><i></i><svg viewBox="0 0 16 16"><path d="M8 1 C9 6 10 7 15 8 C10 9 9 10 8 15 C7 10 6 9 1 8 C6 7 7 6 8 1 Z" fill="currentColor"/></svg><i></i></div>
       <div class="date">17 · 09 · 2027</div>
       <p class="place"><span lang="pt">Convento de Mafra &amp; Casa de Reguengos, Lisboa</span><span lang="fr">Couvent de Mafra &amp; Casa de Reguengos, Lisbonne</span><span lang="en">Mafra Convent &amp; Casa de Reguengos, Lisbon</span></p>
-      <div class="count" aria-label="Contagem decrescente">
-        <div><b id="cd-d">—</b><span lang="pt">DIAS</span><span lang="fr">JOURS</span><span lang="en">DAYS</span></div>
-        <div><b id="cd-h">—</b><span lang="pt">HORAS</span><span lang="fr">HEURES</span><span lang="en">HOURS</span></div>
-        <div><b id="cd-m">—</b><span lang="pt">MINUTOS</span><span lang="fr">MINUTES</span><span lang="en">MINUTES</span></div>
-      </div>
+      <p class="count-line"><span lang="pt">faltam <b class="cd-days">—</b> dias</span><span lang="fr">plus que <b class="cd-days">—</b> jours</span><span lang="en"><b class="cd-days">—</b> days to go</span></p>
       <div class="cta-row">
         <a class="btn" href="#check-in"><span lang="pt">Fazer o check-in</span><span lang="fr">Faire l’enregistrement</span><span lang="en">Check in</span></a>
         <a class="btn ghost" href="#o-dia"><span lang="pt">Ver o plano de voo</span><span lang="fr">Voir le plan de vol</span><span lang="en">See the flight plan</span></a>
@@ -1053,9 +1051,7 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
   function tick(){
     var d=Math.max(0,target-Date.now());
     var days=Math.floor(d/864e5), h=Math.floor(d%864e5/36e5), m=Math.floor(d%36e5/6e4);
-    document.getElementById('cd-d').textContent=days;
-    document.getElementById('cd-h').textContent=String(h).padStart(2,'0');
-    document.getElementById('cd-m').textContent=String(m).padStart(2,'0');
+    document.querySelectorAll('.cd-days').forEach(function(el){el.textContent=days;});
   }
   tick(); setInterval(tick,30000);
 
@@ -1656,7 +1652,6 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
     function label(){ var c=caps[imgs[i].dataset.pos]; cap.textContent=c[T3(0,1,2)]; }
     label(); document.querySelectorAll('.lang button').forEach(function(b){b.addEventListener('click',label)});
     if(imgs.length<2||(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
-    setInterval(function(){ if(document.hidden) return; imgs[i].classList.remove('on'); i=(i+1)%imgs.length; imgs[i].classList.add('on'); label(); },7000);
   })();
 
   // easter egg · o postal levanta-se e vira
@@ -1693,7 +1688,7 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
 </script>
 <script>
 (function(){
-  var c=document.getElementById('petals'); if(!c||!c.getContext) return;
+  var c=document.getElementById('petals'); if(!c||!c.getContext||getComputedStyle(c).display==='none') return;
   var ctx=c.getContext('2d'), W=0,H=0, dpr=Math.min(2,window.devicePixelRatio||1), P=[];
   var cols=['#E9C9C6','#D9A3A1','#B25C5F','#F2D4CF'];
   function size(){var r=c.getBoundingClientRect();W=r.width;H=r.height;c.width=W*dpr;c.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);}
