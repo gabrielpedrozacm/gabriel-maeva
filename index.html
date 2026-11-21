@@ -548,10 +548,15 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
   .hero-frame .stamp-hero{right:-10px;top:-30px;width:112px}
 }
 
-/* contagem em destaque */
-.hero .count-line{display:inline-flex;flex-direction:column;align-items:center;margin-top:6px;padding:12px 34px 14px;border-top:1px solid var(--gold);border-bottom:1px solid var(--gold);font-size:11.5px;letter-spacing:.32em;color:var(--muted);line-height:1.2}
-.hero .count-line > span{display:flex;flex-direction:column;align-items:center;gap:4px}
-.hero .count-line b{display:block;font-family:var(--display);font-weight:500;font-size:clamp(54px,7vw,72px);line-height:.95;letter-spacing:.02em;color:var(--burgundy);padding:0;vertical-align:baseline;font-variant-numeric:lining-nums}
+/* contagem ao vivo */
+.count-live{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:8px;padding:14px 8px 16px;border-top:1px solid var(--gold);border-bottom:1px solid var(--gold);width:min(520px,100%)}
+.cl-head{font-family:var(--caps);font-size:10.5px;letter-spacing:.3em;color:var(--rose);text-transform:uppercase}
+.cl-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));width:100%}
+.cl-grid > div{display:flex;flex-direction:column;align-items:center;gap:6px;padding:0 4px}
+.cl-grid > div + div{border-left:1px solid rgba(200,164,101,.5)}
+.cl-grid b{font-family:var(--display);font-weight:500;font-size:clamp(38px,6vw,58px);line-height:1;color:var(--burgundy);font-variant-numeric:tabular-nums lining-nums}
+.cl-grid span{font-family:var(--caps);font-size:9.5px;letter-spacing:.22em;color:var(--muted);text-transform:uppercase}
+@media (max-width:420px){.cl-grid span{font-size:8.5px;letter-spacing:.14em}.count-live{padding-inline:0}}
 </style>
 
 <nav class="nav" aria-label="Secções">
@@ -662,7 +667,10 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
       </figure>
       <div class="date">17 · 09 · 2027</div>
       <p class="place"><span lang="pt">Convento de Mafra &amp; Casa de Reguengos, Lisboa</span><span lang="fr">Couvent de Mafra &amp; Casa de Reguengos, Lisbonne</span><span lang="en">Mafra Convent &amp; Casa de Reguengos, Lisbon</span></p>
-      <p class="count-line"><span lang="pt">faltam <b class="cd-days">—</b> dias</span><span lang="fr">plus que <b class="cd-days">—</b> jours</span><span lang="en"><b class="cd-days">—</b> days to go</span></p>
+      <div class="count-live" role="timer" aria-label="Contagem decrescente">
+        <div class="cl-head"><span lang="pt">Contagem para a decolagem</span><span lang="fr">Compte à rebours avant le décollage</span><span lang="en">Countdown to take-off</span></div>
+        <div class="cl-grid"><div><b class="cd-d">—</b><span><span lang="pt">dias</span><span lang="fr">jours</span><span lang="en">days</span></span></div><div><b class="cd-h">—</b><span><span lang="pt">horas</span><span lang="fr">heures</span><span lang="en">hours</span></span></div><div><b class="cd-m">—</b><span><span lang="pt">minutos</span><span lang="fr">minutes</span><span lang="en">minutes</span></span></div><div><b class="cd-s">—</b><span><span lang="pt">segundos</span><span lang="fr">secondes</span><span lang="en">seconds</span></span></div></div>
+      </div>
       <div class="cta-row">
         <a class="btn" href="#check-in"><span lang="pt">Fazer o check-in</span><span lang="fr">Faire l’enregistrement</span><span lang="en">Check in</span></a>
         <a class="btn ghost" href="#o-dia"><span lang="pt">Ver o plano de voo</span><span lang="fr">Voir le plan de vol</span><span lang="en">See the flight plan</span></a>
@@ -1085,10 +1093,11 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
   var target=Date.UTC(2027,8,17,14,30,0);
   function tick(){
     var d=Math.max(0,target-Date.now());
-    var days=Math.floor(d/864e5), h=Math.floor(d%864e5/36e5), m=Math.floor(d%36e5/6e4);
-    document.querySelectorAll('.cd-days').forEach(function(el){el.textContent=days;});
+    var days=Math.floor(d/864e5), h=Math.floor(d%864e5/36e5), m=Math.floor(d%36e5/6e4), sec=Math.floor(d%6e4/1e3);
+    function put(c,v){ var el=document.querySelector(c); if(el && el.textContent!==v) el.textContent=v; }
+    put('.cd-d',String(days)); put('.cd-h',String(h).padStart(2,'0')); put('.cd-m',String(m).padStart(2,'0')); put('.cd-s',String(sec).padStart(2,'0'));
   }
-  tick(); setInterval(tick,30000);
+  tick(); setInterval(tick,1000);
 
   // RSVP → cartão de embarque → registo das respostas (Google Sheets) + WhatsApp
   var RSVP_ENDPOINT='https://script.google.com/macros/s/AKfycbxNNOXXU7HNyqAtwDYVW_KumTEsyz2pCdKfvz64h4B4eBVw5KZ5CeGuQijqa_r57eSiRQ/exec'; // URL da aplicação web do Google Apps Script (ver README do repositório)
