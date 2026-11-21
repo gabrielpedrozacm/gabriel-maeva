@@ -145,20 +145,34 @@ html[data-lang="pt"] [lang="fr"],html[data-lang="pt"] [lang="en"],html[data-lang
 .postcard{position:relative;perspective:1400px}
 .pc-inner{position:relative;display:block;transform-style:preserve-3d;transform:rotate(-2.2deg);transition:transform .35s ease}
 .pc-face{backface-visibility:hidden;-webkit-backface-visibility:hidden;box-shadow:0 1px 0 #E6DCCB,0 24px 40px -18px rgba(69,22,31,.35),0 6px 14px -8px rgba(69,22,31,.25)}
-.pc-back{position:absolute;inset:0;transform:rotateY(180deg);background:#FFFDF8;padding:26px 24px 20px;display:flex;flex-direction:column;gap:12px;color:var(--ink);overflow:hidden}
+.pc-back{position:absolute;inset:0;transform:rotateY(180deg);background:#FFFDF8;padding:22px 22px 12px;display:flex;flex-direction:column;gap:6px;color:var(--ink);overflow:hidden}
 .pc-back::before{content:"";position:absolute;inset:10px;border:1px solid rgba(200,164,101,.6);pointer-events:none}
 .pc-back .eyebrow{color:var(--rose);font-size:10.5px}
-.pc-back h3{font-family:var(--script);font-weight:400;font-size:clamp(34px,4vw,42px);color:var(--burgundy);line-height:1.05}
+.pc-back h3{font-family:var(--script);font-weight:400;font-size:clamp(28px,3.4vw,36px);color:var(--burgundy);line-height:1.05}
 .pc-back p{font-size:17px;line-height:1.45;color:var(--muted)}
-.pc-back .lines{flex:1;min-height:12px;background:repeating-linear-gradient(transparent 0 27px,rgba(187,169,141,.45) 27px 28px)}
-.pc-back .reward{border:1.5px dashed var(--gold);padding:12px 14px;background:rgba(243,227,190,.35)}
-.pc-back .reward .k{font-family:var(--caps);font-size:9.5px;letter-spacing:.22em;color:#8A6A2E}
-.pc-back .reward p{color:var(--ink);font-size:16.5px;margin-top:4px}
-.pc-back .reward b{font-family:var(--script);font-weight:400;font-size:26px;color:var(--burgundy);white-space:nowrap}
-.pc-back .sign{font-family:var(--script);font-size:26px;color:var(--burgundy);text-align:right;line-height:1}
-.pc-back .turn{font-family:var(--caps);font-size:9.5px;letter-spacing:.2em;color:var(--muted);text-align:center}
 .tape{position:absolute;z-index:3;top:-12px;left:50%;width:120px;height:30px;transform:translateX(-50%) rotate(3deg);background:rgba(233,201,198,.8);box-shadow:0 1px 2px rgba(0,0,0,.08);transition:transform .45s ease,opacity .35s ease;pointer-events:none}
 .curl{position:absolute;right:0;bottom:0;width:26px;height:26px;background:linear-gradient(225deg,var(--ivory) 0 48%,#E9DFCC 50%,#FFFDF8 72%);box-shadow:-2px -2px 4px -2px rgba(69,22,31,.25);transition:width .3s ease,height .3s ease}
+/* raspadinha: conheces os noivos? */
+.pc-back .hint{font-size:14.5px;line-height:1.35}
+.quiz{display:flex;flex-direction:column;gap:8px;flex:1;justify-content:center;position:relative;z-index:1}
+.qrow{display:flex;flex-direction:column;gap:4px}
+.qrow .q{font-family:var(--caps);font-size:9.5px;letter-spacing:.16em;color:var(--burgundy);line-height:1.3}
+.qopts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.qt{position:relative;height:31px;border:1px solid rgba(200,164,101,.65);display:flex;align-items:center;justify-content:center;font-size:15.5px;color:var(--ink);background:#FFFDF8;overflow:hidden;transition:opacity .4s,background .4s}
+.qt b{font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 4px}
+.qt.ok{background:rgba(94,107,62,.16);border-color:var(--olive);color:var(--olive-deep)}
+.qt.no{background:rgba(168,80,90,.08);border-color:rgba(168,80,90,.55);color:var(--rose)}
+.qt canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:grab;transition:opacity .45s}
+.qt canvas:focus-visible{outline:2px solid var(--burgundy);outline-offset:-2px}
+.qt canvas.gone{opacity:0;pointer-events:none}
+.qrow.done .qt:not(.ok):not(.no){opacity:.4}
+.qres{font-family:var(--script);font-size:25px;color:var(--burgundy);text-align:center;min-height:1.15em;line-height:1.15;position:relative;z-index:1}
+.pc-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;position:relative;z-index:1}
+.pc-foot button{all:unset;cursor:pointer;font-family:var(--caps);font-size:9.5px;letter-spacing:.2em;color:var(--muted);padding:6px 2px}
+.pc-foot button:hover{color:var(--burgundy)}
+.pc-foot button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.pc-foot #pc-close{margin-left:auto}
+.postcard.open .pc-hit{display:none}
 .pc-hit{all:unset;position:absolute;inset:0;z-index:4;cursor:pointer}
 .pc-hit:focus-visible{outline:2px solid var(--gold);outline-offset:6px}
 .postcard:hover .pc-inner{transform:rotate(-1.4deg) translateY(-4px)}
@@ -688,16 +702,12 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
           <span class="curl" aria-hidden="true"></span>
         </figure>
         <div class="pc-face pc-back" aria-hidden="true" id="pc-back">
-          <div class="eyebrow"><span lang="pt">Bilhete postal · verso</span><span lang="fr">Carte postale · verso</span><span lang="en">Postcard · reverse</span></div>
-          <h3><span lang="pt">Viraste o postal!</span><span lang="fr">Tu as retourné la carte !</span><span lang="en">You turned the postcard over!</span></h3>
-          <p><span lang="pt">Poucos passageiros chegam aqui. Esta fotografia guarda um dos nossos momentos preferidos, e quem a vira merece um segredo.</span><span lang="fr">Peu de passagers arrivent jusqu’ici. Cette photo garde l’un de nos moments préférés, et celui qui la retourne mérite un secret.</span><span lang="en">Few passengers make it this far. This photo holds one of our favourite moments, and whoever turns it over deserves a secret.</span></p>
-          <div class="lines" aria-hidden="true"></div>
-          <div class="reward">
-            <div class="k"><span lang="pt">RECOMPENSA</span><span lang="fr">RÉCOMPENSE</span><span lang="en">REWARD</span></div>
-            <p><span lang="pt">No dia do casamento, procura os comandantes e diz a senha <b>Onde tudo começou</b>. Há um brinde especial à tua espera.</span><span lang="fr">Le jour du mariage, trouve les commandants et dis le mot de passe <b>Là où tout a commencé</b>. Un toast spécial t’attend.</span><span lang="en">On the wedding day, find the captains and say the password <b>Where it all began</b>. A special toast is waiting for you.</span></p>
-          </div>
-          <div class="sign">Gabriel &amp; Maeva</div>
-          <div class="turn"><span lang="pt">TOCA PARA VOLTAR A VIRAR</span><span lang="fr">TOUCHE POUR RETOURNER</span><span lang="en">TAP TO TURN IT BACK</span></div>
+          <div class="eyebrow"><span lang="pt">Raspadinha · verso</span><span lang="fr">Grattage · verso</span><span lang="en">Scratch card · reverse</span></div>
+          <h3><span lang="pt">Conheces os noivos?</span><span lang="fr">Connais-tu les mariés ?</span><span lang="en">Do you know the couple?</span></h3>
+          <p class="hint"><span lang="pt">Raspa a resposta que achas certa em cada linha.</span><span lang="fr">Gratte la réponse que tu crois juste sur chaque ligne.</span><span lang="en">Scratch the answer you think is right on each line.</span></p>
+          <div class="quiz" id="quiz"></div>
+          <p class="qres" id="qres" aria-live="polite"></p>
+          <div class="pc-foot"><button type="button" id="q-again" hidden><span lang="pt">JOGAR OUTRA VEZ</span><span lang="fr">REJOUER</span><span lang="en">PLAY AGAIN</span></button><button type="button" id="pc-close"><span lang="pt">VOLTAR A VIRAR ↺</span><span lang="fr">RETOURNER ↺</span><span lang="en">TURN BACK ↺</span></button></div>
         </div>
       </div>
       <button type="button" class="pc-hit" id="pc-hit" aria-pressed="false" aria-label="Virar o postal · Retourner la carte"></button>
@@ -1684,16 +1694,100 @@ footer p{font-style:italic;font-size:18px;max-width:46ch}
     if(imgs.length<2||(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
   })();
 
-  // easter egg · o postal levanta-se e vira
+  // easter egg · o postal vira e tem uma raspadinha "conheces os noivos?"
   (function(){
     var pc=document.getElementById('postcard'), hit=document.getElementById('pc-hit'), back=document.getElementById('pc-back'); if(!pc) return;
-    var open=false, t=null;
-    hit.addEventListener('click',function(){
-      clearTimeout(t); open=!open;
+    var t=null, built=false;
+    function setOpen(open){
+      clearTimeout(t);
       hit.setAttribute('aria-pressed',open); back.setAttribute('aria-hidden',!open);
-      if(open){ pc.classList.remove('closing'); pc.classList.add('open'); }
-      else{ pc.classList.remove('open'); pc.classList.add('closing'); t=setTimeout(function(){pc.classList.remove('closing')},1050); }
-    });
+      if(open){ pc.classList.remove('closing'); pc.classList.add('open'); if(!built){ build(); } setTimeout(function(){ var f=back.querySelector('canvas'); if(f) f.focus({preventScroll:true}); },900); }
+      else{ pc.classList.remove('open'); pc.classList.add('closing'); t=setTimeout(function(){pc.classList.remove('closing')},1050); hit.focus({preventScroll:true}); }
+    }
+    hit.addEventListener('click',function(){ setOpen(true); });
+    document.getElementById('pc-close').addEventListener('click',function(){ setOpen(false); });
+
+    // perguntas: [pergunta pt, fr, en], opções [pt, fr, en], índice da certa
+    var Q=[
+      {q:['Onde nos conhecemos?','Où nous sommes-nous rencontrés ?','Where did we meet?'], o:[['Lisboa','Lisbonne','Lisbon'],['Porto','Porto','Porto'],['Paris','Paris','Paris']], a:1},
+      {q:['Onde oficializámos o namoro?','Où avons-nous officialisé notre couple ?','Where did we make it official?'], o:[['Brasil','Brésil','Brazil'],['França','France','France'],['Portugal','Portugal','Portugal']], a:0},
+      {q:['A nossa primeira viagem?','Notre premier voyage ?','Our first trip together?'], o:[['Itália','Italie','Italy'],['Marrocos','Maroc','Morocco'],['Espanha','Espagne','Spain']], a:2},
+      {q:['Onde começámos a viver juntos?','Où avons-nous commencé à vivre ensemble ?','Where did we first live together?'], o:[['Porto','Porto','Porto'],['Lisboa','Lisbonne','Lisbon'],['Paris','Paris','Paris']], a:1}
+    ];
+    var MSG={4:['Boa! Conheces mesmo bem os noivos.','Bravo ! Tu connais vraiment bien les mariés.','Well done! You really know the couple.'],
+             3:['Quase! Só te escapou uma.','Presque ! Une seule t’a échappé.','So close! Just one got away.'],
+             0:['Ainda tens até setembro para nos conhecer melhor.','Tu as jusqu’en septembre pour mieux nous connaître.','You have until September to get to know us better.']};
+    var quiz=document.getElementById('quiz'), res=document.getElementById('qres'), again=document.getElementById('q-again');
+    var score=0, done=0;
+    function li(){ return T3(0,1,2); }
+    function foil(cv,label){
+      var w=cv.offsetWidth, h=cv.offsetHeight; if(!w||!h) return;
+      var d=Math.min(2,window.devicePixelRatio||1); cv.width=w*d; cv.height=h*d;
+      var x=cv.getContext('2d'); x.setTransform(d,0,0,d,0,0); x.globalCompositeOperation='source-over';
+      var g=x.createLinearGradient(0,0,w,h); g.addColorStop(0,'#E4CB93'); g.addColorStop(.45,'#C8A465'); g.addColorStop(.55,'#D9BD82'); g.addColorStop(1,'#B9945A');
+      x.fillStyle=g; x.fillRect(0,0,w,h);
+      x.globalAlpha=.18; x.fillStyle='#fff'; for(var i=0;i<w*h/22;i++){ x.fillRect(Math.random()*w,Math.random()*h,1,1); } x.globalAlpha=1;
+      x.fillStyle='#45161F'; x.font='500 15.5px "Cormorant Garamond", Georgia, serif'; x.textAlign='center'; x.textBaseline='middle'; x.fillText(label,w/2,h/2+1);
+      cv._left=null;
+    }
+    function cleared(cv){
+      var x=cv.getContext('2d'), data=x.getImageData(0,0,cv.width,cv.height).data, n=0, c=0;
+      for(var i=3;i<data.length;i+=4*16){ n++; if(data[i]===0) c++; }
+      return n? c/n : 0;
+    }
+    function pick(row,ti){
+      if(row.classList.contains('done')) return;
+      row.classList.add('done'); done++;
+      var q=Q[+row.dataset.i], tiles=row.querySelectorAll('.qt');
+      tiles.forEach(function(tile,j){
+        tile.querySelector('canvas').classList.add('gone');
+        tile.querySelector('canvas').tabIndex=-1;
+        var name=q.o[j][li()];
+        if(j===q.a){ tile.classList.add('ok'); tile.querySelector('b').textContent='✓ '+name; }
+        else if(j===ti){ tile.classList.add('no'); tile.querySelector('b').textContent='✗ '+name; }
+      });
+      if(ti===q.a) score++;
+      if(done===Q.length){
+        var m=score===4?MSG[4]:score===3?MSG[3]:MSG[0];
+        res.textContent=m[li()]+' '+score+'/4'; again.hidden=false;
+      } else {
+        var nxt=quiz.querySelector('.qrow:not(.done) canvas'); if(nxt) nxt.focus({preventScroll:true});
+      }
+    }
+    function build(){
+      built=true; score=0; done=0; res.textContent=''; again.hidden=true; quiz.innerHTML='';
+      Q.forEach(function(q,i){
+        var row=document.createElement('div'); row.className='qrow'; row.dataset.i=i;
+        row.innerHTML='<div class="q">'+q.q[li()]+'</div><div class="qopts"></div>';
+        var box=row.querySelector('.qopts');
+        q.o.forEach(function(o,j){
+          var tile=document.createElement('div'); tile.className='qt';
+          tile.innerHTML='<b>'+o[li()]+'</b><canvas tabindex="0" role="button" aria-label="'+o[li()]+'"></canvas>';
+          box.appendChild(tile);
+          var cv=tile.querySelector('canvas'), down=false, moves=0;
+          function at(e){ var r=cv.getBoundingClientRect(); return [(e.clientX-r.left)*(cv.offsetWidth/r.width),(e.clientY-r.top)*(cv.offsetHeight/r.height)]; }
+          function scratch(e){
+            var p=at(e), x=cv.getContext('2d'), d=cv.width/cv.offsetWidth;
+            x.setTransform(d,0,0,d,0,0); x.globalCompositeOperation='destination-out';
+            x.beginPath(); x.arc(p[0],p[1],11,0,6.283); x.fill();
+            if(cv._last){ x.lineWidth=22; x.lineCap='round'; x.beginPath(); x.moveTo(cv._last[0],cv._last[1]); x.lineTo(p[0],p[1]); x.stroke(); }
+            cv._last=p;
+            if(++moves%4===0 && cleared(cv)>.38) pick(row,j);
+          }
+          cv.addEventListener('pointerdown',function(e){ if(row.classList.contains('done')) return; down=true; cv._last=null; try{cv.setPointerCapture(e.pointerId)}catch(_){} scratch(e); e.preventDefault(); });
+          cv.addEventListener('pointermove',function(e){ if(down) scratch(e); });
+          ['pointerup','pointercancel','pointerleave'].forEach(function(ev){ cv.addEventListener(ev,function(){ if(down && cleared(cv)>.38) pick(row,j); down=false; cv._last=null; }); });
+          cv.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); pick(row,j); } });
+        });
+        quiz.appendChild(row);
+      });
+      var paint=function(){ quiz.querySelectorAll('.qrow').forEach(function(row){ var q=Q[+row.dataset.i]; row.querySelectorAll('canvas').forEach(function(cv,j){ foil(cv,q.o[j][li()]); }); }); };
+      if(document.fonts && document.fonts.ready){ document.fonts.ready.then(paint); } else paint();
+      setTimeout(paint,60);
+    }
+    again.addEventListener('click',function(){ build(); var f=back.querySelector('canvas'); if(f) f.focus({preventScroll:true}); });
+    document.querySelectorAll('.lang button').forEach(function(b){ b.addEventListener('click',function(){ if(built) build(); }); });
+    window.addEventListener('resize',function(){ if(built && pc.classList.contains('open') && !done) build(); });
   })();
 
   // easter egg 1 · dois toques no avião e ele descola
